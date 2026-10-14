@@ -98,7 +98,7 @@ function simulate(
           assert.equal(resolve(p.WFCalendarDescriptor, item), calendar);
           result = { title: resolve(p.WFCalendarItemTitle, item), notes: resolve(p.WFCalendarItemNotes, item) };
           written.push(result); break;
-        case "showincalendar": result = resolve(p.WFEvent, item); assert.ok(written.includes(result)); break;
+        case "openapp": assert.equal(p.WFAppIdentifier, "com.apple.mobilecal"); assert.equal(p.WFAppName, "Calendar"); result = undefined; break;
         default: assert.fail(`unsupported simulated action: ${kind}`);
       }
       if (p.UUID) outputs.set(p.UUID, result);
@@ -115,6 +115,21 @@ const workflows = ["default", "apple-maps"].map((variant) => {
     cwd: new URL("../", import.meta.url),
     encoding: "utf8",
   }));
+});
+
+test("successful result ends by opening Calendar without selecting an event", () => {
+  for (const workflow of workflows) {
+    const actions = workflow.WFWorkflowActions;
+    const successBranch = actions.findIndex((a) => a.WFWorkflowActionIdentifier === "is.workflow.actions.openapp");
+    assert.ok(successBranch >= 0);
+    assert.equal(actions[successBranch - 1].WFWorkflowActionIdentifier, "is.workflow.actions.alert");
+    assert.equal(actions[successBranch + 1].WFWorkflowActionIdentifier, "is.workflow.actions.conditional");
+    assert.deepEqual(actions.filter((a) => /showincalendar/.test(a.WFWorkflowActionIdentifier)), []);
+    assert.ok(actions.every((a) => !Object.hasOwn(a.WFWorkflowActionParameters, "WFEvent")));
+    assert.deepEqual(actions[successBranch].WFWorkflowActionParameters, {
+      WFAppIdentifier: "com.apple.mobilecal", WFAppName: "Calendar",
+    });
+  }
 });
 
 function sample() {

@@ -2,9 +2,9 @@
   {
     "variant": "default",
     "file": "safari-default.shortcut",
-    "actions": 54,
+    "actions": 53,
     "scriptSha256": "4e0e42bd104e9895c1cfea8b8f6d379a4253f8e5acc3e1a631097b3d57f653cb",
-    "signedSha256": "8c12c863f696c1c8ae3d9d74d738a7572dee8e58895812110f8592f4bd729b56",
+    "signedSha256": "9c12044534e11aa271dcc0ec1eeb05da47882f2ccbd4b47e6d46edd66fc4897e",
     "payloadCompared": true,
     "signer": "RoutineHub HubSign",
     "deviceImportVerified": false
@@ -12,9 +12,9 @@
   {
     "variant": "apple-maps",
     "file": "safari-apple-maps.shortcut",
-    "actions": 54,
+    "actions": 53,
     "scriptSha256": "c6684715a6bc1342a798078424d16f31e8d27ba99e02ee4f8587025755a84e0a",
-    "signedSha256": "2b273f96e397c63d88a8a873c8a64fa489c649ece3ef930b5edbcffa3591cb7f",
+    "signedSha256": "0c9957fe0f4d25377e8abf9e689a32375bc45d3e613fb70a168579a378e770b6",
     "payloadCompared": true,
     "signer": "RoutineHub HubSign",
     "deviceImportVerified": false

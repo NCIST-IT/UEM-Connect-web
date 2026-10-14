@@ -1,6 +1,6 @@
-# Safari 快捷指令课表直添（v10 · 试验）
+# Safari 快捷指令课表直添（v11 · 试验）
 
-首页“添加快捷指令”提供已签名的标准版与地图适配版。v10 用系统日历动作新建独立日历并批量添加日程，跳过本地 ICS 导入。结果数量直接统计本次添加动作返回的日程。原账号登录、周课表预览和 .ics 导出流程保留。
+首页“添加快捷指令”提供已签名的标准版与地图适配版。v11 用系统日历动作新建独立日历并批量添加日程，跳过本地 ICS 导入。结果数量直接统计本次添加动作返回的日程，结束时直接打开日历 App。原账号登录、周课表预览和 .ics 导出流程保留。
 
 ## 操作
 
@@ -26,7 +26,7 @@ convertScheduleToIcs 新增 calendarEvents 结果，直接复用既有 UID 去�
 
 学期标记为 [UEM-TERM:source:semesterId]，附在课程备注。脚本同时返回 groupMarkerPattern，以转义后的字面标记生成整行正则（兼容 LF/CRLF），原生 Get Details of Calendar Events 读取 Notes、Match Text 核验，未匹配的分支返回 Nothing。防重 Count 使用正式 Input 字段统计核验后的 Repeat Results，If 使用数量大于 0（条件 2、WFNumberValue=0），不直接对日历查询结果做 Has Any Value 判断。重复检查只针对该标记；仅限当前手机、当前学生的一次性学期导入场景，不新增账号管理。
 
-添加结果 Count 的 Input 引用添加课程循环的 Repeat Results，该循环的最后一个动作为 Add New Event，返回新建的 EKEvent 对象。结果页“本次添加日程”来自这些返回对象，不取计划数量代替、不重新查询 Library。Open in Calendar 同样使用本次返回的第一条日程。网页 JSON 的 version=9 为既有协议版本；v10 安装包只修改原生结果统计和页面说明，嵌入网页脚本 SHA-256 与 v9 相同。
+添加结果 Count 的 Input 引用添加课程循环的 Repeat Results，该循环的最后一个动作为 Add New Event，返回新建的 EKEvent 对象。结果页“本次添加日程”来自这些返回对象，不取计划数量代替、不重新查询 Library。成功后通过 Open App（`WFAppIdentifier=com.apple.mobilecal`、`WFAppName=Calendar`）直接启动日历，不传入课程事件。网页 JSON 的 version=9 为既有协议版本；v11 安装包只修改原生成功后的导航和页面说明，嵌入网页脚本 SHA-256 与 v9 相同。
 
 iOS 27 ToolKit v78 中确认存在：addnewcalendar(CalendarName)、addnewevent(WFCalendarDescriptor、ShowWhenRun 等)、filter.calendarevents、date、showincalendar。特别使用当前 WFCalendarDescriptor 而非旧的 WFCalendarItemCalendar；ShowWhenRun=false 关闭每节课的编辑窗口。日历查询显式选择 Library，避免继承上一步文本作为查询输入。重复项、日期和 Calendar 对象都通过显式变量引用。
 
@@ -85,4 +85,8 @@ pnpm build
 
 ## v10 添加结果统计修复
 
-用户反馈计划 286、结果显示已保存 16，但实际日历课程对得上。旧版将添加后日历搜索返回的数量作为已保存总数，存在查询日期范围、结果可见性或索引延迟造成偏少的可能；未确定手机上的具体原因。v10 删除结果统计的第二次日历搜索及备注核验，直接 Count 本次 Add New Event 循环返回的日程对象，文案改为“本次添加日程”，并打开本次返回的第一节课。添加失败不会走到整批结果提示。读取学校课表的网页脚本保持相同 SHA-256。此前尚未发布的短超时实验已保存为 Git stash，未包含在本版本中。
+用户反馈计划 286、结果显示已保存 16，但实际日历课程对得上。旧版将添加后日历搜索返回的数量作为已保存总数，存在查询日期范围、结果可见性或索引延迟造成偏少的可能；未确定手机上的具体原因。v10 删除结果统计的第二次日历搜索及备注核验，直接 Count 本次 Add New Event 循环返回的日程对象，文案改为“本次添加日程”。添加失败不会走到整批结果提示。读取学校课表的网页脚本保持相同 SHA-256。此前尚未发布的短超时实验已保存为 Git stash，未包含在本版本中。
+
+## v11 结束时打开日历
+
+成功提示后使用系统 Open App 动作直接启动 Calendar，不再将第一节课程事件传给 Show in Calendar，因此不会跳进某节课程详情。动作标识与 `WFAppIdentifier` / `WFAppName` 参数键来自本地 iOS 27 / macOS 27 Shortcuts ToolKit v78 动作元数据；日历应用标识为 `com.apple.mobilecal`。网页课表脚本及结果数量统计保持不变。
