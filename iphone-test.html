@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#eef4ee" />
+    <title>我的课表 · iPhone 日历测试</title>
+  </head>
+  <body>
+    <main class="page">
+      <header><span class="brand-dot"></span> UEM CONNECT <span class="badge">日历测试</span></header>
+      <section class="card">
+        <div class="calendar-icon" aria-hidden="true">
+          <svg viewBox="0 0 64 64" fill="none"><rect x="12" y="16" width="40" height="38" rx="9" stroke="currentColor" stroke-width="3"/><path d="M12 29h40M23 11v12M41 11v12" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><path d="m25 41 5 5 10-11" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <p class="eyebrow">已经准备好你的全学期课表</p>
+        <h1>我的课表<span>添加到 iPhone 日历</span></h1>
+        <p class="semester">2026–2027 学年度第一学期</p>
+        <div class="stats" aria-label="课表信息">
+          <div><strong>14<span> 门</span></strong><small>课程</small></div>
+          <div><strong>268<span> 次</span></strong><small>上课安排</small></div>
+          <div><strong class="zone">UTC+8</strong><small>北京时间</small></div>
+        </div>
+        <a id="calendar-link" class="primary" href="/import.ics" type="text/calendar">导入到 iPhone 日历 <span aria-hidden="true">↗</span></a>
+        <p class="instructions">在系统页面新建“课表”日历，<br />再点“添加全部”，添加到新日历中。</p>
+      </section>
+      <footer>一次性导入 · 北京时间 UTC+8<br />添加完成后，日程保存在你选择的日历中。</footer>
+    </main>
+    <script type="module" src="/src/iphone-test.js"></script>
+  </body>
+</html>

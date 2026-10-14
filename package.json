@@ -1,0 +1,41 @@
+{
+  "name": "uem-connect-web",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/build-safari-shortcut.mjs && vite",
+    "dev:api": "UEM_HOST=127.0.0.1 UEM_PORT=3001 node --watch server/index.js",
+    "start": "node server/index.js",
+    "build": "node scripts/build-safari-shortcut.mjs --verify-installers && vite build",
+    "lint": "oxlint",
+    "test": "node scripts/build-safari-shortcut.mjs && node --test tests/*.test.js",
+    "iphone:prepare": "vite build --config vite.iphone-test.config.js && node scripts/prepare-iphone-test.mjs",
+    "iphone:serve": "node scripts/serve-iphone-test.mjs",
+    "preview": "vite preview",
+    "shortcut:build": "node scripts/build-safari-shortcut.mjs",
+    "shortcut:package": "node scripts/build-safari-shortcut.mjs && python3 scripts/package-safari-shortcut.py"
+  },
+  "dependencies": {
+    "@base-ui/react": "^1.8.0",
+    "@fontsource-variable/roboto": "^5.3.0",
+    "@fontsource-variable/roboto-slab": "^5.3.0",
+    "@noble/ciphers": "^2.4.0",
+    "@phosphor-icons/react": "^2.1.10",
+    "class-variance-authority": "^0.7.1",
+    "cn": "^0.4.0",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "shadcn": "^4.21.4",
+    "tw-animate-css": "^1.4.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.3",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.7",
+    "@vitejs/plugin-react": "^6.1.1",
+    "oxlint": "^1.81.0",
+    "tailwindcss": "^4.3.3",
+    "vite": "^8.3.0"
+  }
+}

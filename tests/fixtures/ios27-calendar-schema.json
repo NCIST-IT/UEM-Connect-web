@@ -1,0 +1,284 @@
+{
+  "source": "https://github.com/viticci/shortcuts-playground-plugin/blob/main/codex/skills/shortcuts-playground/data/toolkit-v78-first-party-parameter-keys.json",
+  "tools": {
+    "is.workflow.actions.addnewevent": {
+      "displayName": "New Event",
+      "id": "is.workflow.actions.addnewevent",
+      "parameterCount": 10,
+      "parameters": [
+        {
+          "key": "WFCalendarItemTitle",
+          "typePythonName": "str",
+          "name": "Title",
+          "sortOrder": 0,
+          "flags": 0,
+          "platforms": ["iOS 27 Simulator", "macOS 27"]
+        },
+        {
+          "key": "WFCalendarItemLocation",
+          "typePythonName": "str",
+          "name": "Location",
+          "sortOrder": 1,
+          "flags": 0,
+          "platforms": ["iOS 27 Simulator", "macOS 27"]
+        },
+        {
+          "key": "WFCalendarDescriptor",
+          "typePythonName": "com_apple_shortcuts_wfcalendar_substitutable_state",
+          "name": "Calendar",
+          "sortOrder": 2,
+          "flags": 0,
+          "platforms": ["iOS 27 Simulator", "macOS 27"]
+        },
+        {
+          "key": "WFCalendarItemStartDate",
+          "typePythonName": "DateTime",
+          "name": "Start Date",
+          "sortOrder": 3,
+          "flags": 0,
+          "platforms": ["iOS 27 Simulator", "macOS 27"]
+        },
+        {
+          "key": "WFCalendarItemEndDate",
+          "typePythonName": "DateTime",
+          "name": "End Date",
+          "sortOrder": 4,
+          "flags": 0,
+          "platforms": ["iOS 27 Simulator", "macOS 27"]
+        },
+        {
+          "key": "WFCalendarItemAllDay",
+          "typePythonName": "bool",
+          "name": "All Day",
+          "sortOrder": 5,
+          "flags": 0,
+          "trueString": "On",
+          "falseString": "Off",
+          "platforms": ["iOS 27 Simulator", "macOS 27"]
+        },
+        {
+          "key": "WFAlertTime",
+          "typePythonName": "addnewevent_wfalert_time",
+          "name": "Alert",
+          "sortOrder": 6,
+          "flags": 0,
+          "platforms": ["iOS 27 Simulator", "macOS 27"]
+        },
+        {
+          "key": "WFAlertCustomTime",
+          "typePythonName": "str",
+          "name": "Alert Time",
+          "sortOrder": 7,
+          "flags": 0,
+          "platforms": ["iOS 27 Simulator", "macOS 27"]
+        },
+        {
+          "key": "WFCalendarItemNotes",
+          "typePythonName": "str",
+          "name": "Notes",
+          "sortOrder": 8,
+          "flags": 0,
+          "platforms": ["iOS 27 Simulator", "macOS 27"]
+        },
+        {
+          "key": "ShowWhenRun",
+          "typePythonName": "bool",
+          "name": "Show Compose Sheet",
+          "sortOrder": 9,
+          "flags": 2,
+          "trueString": "On",
+          "falseString": "Off",
+          "platforms": ["iOS 27 Simulator", "macOS 27"]
+        }
+      ],
+      "platforms": ["iOS 27 Simulator", "macOS 27"],
+      "pythonName": "calendar_new_event",
+      "toolType": "action"
+    },
+    "is.workflow.actions.addnewcalendar": {
+      "displayName": "Add New Calendar",
+      "id": "is.workflow.actions.addnewcalendar",
+      "parameterCount": 1,
+      "parameters": [
+        {
+          "key": "CalendarName",
+          "typePythonName": "str",
+          "name": "Calendar Name",
+          "sortOrder": 0,
+          "flags": 0,
+          "platforms": ["iOS 27 Simulator", "macOS 27"]
+        }
+      ],
+      "platforms": ["iOS 27 Simulator", "macOS 27"],
+      "pythonName": "calendar_add_new_calendar",
+      "toolType": "action"
+    },
+    "is.workflow.actions.filter.calendarevents": {
+      "displayName": "Find Calendar Events",
+      "id": "is.workflow.actions.filter.calendarevents",
+      "parameterCount": 7,
+      "parameters": [
+        {
+          "key": "WFContentItemFilter",
+          "sortOrder": 0,
+          "flags": 0,
+          "platforms": ["iOS 27 Simulator", "macOS 27"]
+        },
+        {
+          "key": "WFContentItemSortProperty",
+          "typePythonName": "filter_calendarevents_wfcontent_item_sort_property",
+          "name": "Sort by",
+          "sortOrder": 1,
+          "flags": 0,
+          "platforms": ["iOS 27 Simulator", "macOS 27"]
+        },
+        {
+          "key": "WFContentItemSortOrder",
+          "typePythonName": "str",
+          "name": "Order",
+          "sortOrder": 2,
+          "flags": 1,
+          "platforms": ["iOS 27 Simulator", "macOS 27"]
+        },
+        {
+          "key": "WFContentItemLimitEnabled",
+          "typePythonName": "bool",
+          "name": "Limit",
+          "sortOrder": 3,
+          "flags": 0,
+          "trueString": "On",
+          "falseString": "Off",
+          "platforms": ["iOS 27 Simulator", "macOS 27"]
+        },
+        {
+          "key": "WFContentItemLimitNumber",
+          "typePythonName": "float",
+          "name": "Get",
+          "sortOrder": 4,
+          "flags": 0,
+          "platforms": ["iOS 27 Simulator", "macOS 27"]
+        },
+        {
+          "key": "WFCompoundType",
+          "typePythonName": "filter_calendarevents_wfcompound_type",
+          "sortOrder": 5,
+          "flags": 1,
+          "platforms": ["iOS 27 Simulator", "macOS 27"]
+        },
+        {
+          "key": "WFContentItemInputParameter",
+          "typePythonName": "filter_calendarevents_wfcontent_item_input_parameter",
+          "name": "calendar events",
+          "sortOrder": 6,
+          "flags": 0,
+          "platforms": ["iOS 27 Simulator", "macOS 27"]
+        }
+      ],
+      "platforms": ["iOS 27 Simulator", "macOS 27"],
+      "pythonName": "calendar_find_calendar_events",
+      "toolType": "action"
+    },
+    "is.workflow.actions.date": {
+      "displayName": "Date",
+      "id": "is.workflow.actions.date",
+      "parameterCount": 4,
+      "parameters": [
+        {
+          "key": "WFDateActionMode",
+          "typePythonName": "str",
+          "name": "Date",
+          "sortOrder": 0,
+          "flags": 0,
+          "platforms": ["iOS 27 Simulator", "macOS 27"]
+        },
+        {
+          "key": "WFDateActionDate",
+          "typePythonName": "DateTime",
+          "name": "Date",
+          "sortOrder": 1,
+          "flags": 0,
+          "platforms": ["iOS 27 Simulator", "macOS 27"]
+        },
+        {
+          "key": "WFEventOccurrenceMode",
+          "typePythonName": "date_wfevent_occurrence_mode",
+          "name": "Occurrence",
+          "sortOrder": 2,
+          "flags": 0,
+          "platforms": ["iOS 27 Simulator", "macOS 27"]
+        },
+        {
+          "key": "WFEventOccurrenceSpecifiedYear",
+          "typePythonName": "str",
+          "name": "Year",
+          "sortOrder": 3,
+          "flags": 0,
+          "platforms": ["iOS 27 Simulator", "macOS 27"]
+        }
+      ],
+      "platforms": ["iOS 27 Simulator", "macOS 27"],
+      "pythonName": "com_apple_shortcuts_date",
+      "toolType": "action"
+    },
+    "is.workflow.actions.showincalendar": {
+      "displayName": "Open in Calendar",
+      "id": "is.workflow.actions.showincalendar",
+      "parameterCount": 1,
+      "parameters": [
+        {
+          "key": "WFEvent",
+          "typePythonName": "com_apple_shortcuts_wfcontent_item",
+          "name": "Event",
+          "sortOrder": 0,
+          "flags": 0,
+          "platforms": ["iOS 27 Simulator", "macOS 27"]
+        }
+      ],
+      "platforms": ["iOS 27 Simulator", "macOS 27"],
+      "pythonName": "calendar_open_in_calendar",
+      "toolType": "action"
+    },
+    "is.workflow.actions.properties.calendarevents": {
+      "platforms": ["iOS 27 Simulator", "macOS 27"],
+      "parameters": [
+        { "key": "WFContentItemPropertyName", "typePythonName": "properties_calendarevents_wfcontent_item_property_name" },
+        { "key": "WFInput", "typePythonName": "com_apple_shortcuts_wfcontent_item" }
+      ]
+    },
+    "is.workflow.actions.text.match": {
+      "platforms": ["iOS 27 Simulator", "macOS 27"],
+      "parameters": [
+        { "key": "text", "typePythonName": "str" },
+        { "key": "WFMatchTextPattern", "typePythonName": "str" },
+        { "key": "WFMatchTextCaseSensitive", "typePythonName": "bool" },
+        { "key": "ShowWhenRun", "typePythonName": "bool" }
+      ]
+    },
+    "is.workflow.actions.count": {
+      "displayName": "Count",
+      "id": "is.workflow.actions.count",
+      "parameterCount": 2,
+      "parameters": [
+        {
+          "key": "WFCountType",
+          "typePythonName": "count_wfcount_type",
+          "name": "Type",
+          "sortOrder": 0,
+          "flags": 0,
+          "platforms": ["iOS 27 Simulator", "macOS 27"]
+        },
+        {
+          "key": "Input",
+          "typePythonName": "com_apple_shortcuts_wfcontent_item",
+          "name": "Input",
+          "sortOrder": 1,
+          "flags": 4,
+          "platforms": ["iOS 27 Simulator", "macOS 27"]
+        }
+      ],
+      "platforms": ["iOS 27 Simulator", "macOS 27"],
+      "pythonName": "com_apple_shortcuts_count",
+      "toolType": "action"
+    }
+  }
+}

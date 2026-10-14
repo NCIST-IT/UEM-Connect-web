@@ -1,0 +1,22 @@
+[
+  {
+    "variant": "default",
+    "file": "safari-default.shortcut",
+    "actions": 64,
+    "scriptSha256": "4e0e42bd104e9895c1cfea8b8f6d379a4253f8e5acc3e1a631097b3d57f653cb",
+    "signedSha256": "43bc4548af51cd51ae8cb1dea11e33235b42f5bc012e41785341724d130769ce",
+    "payloadCompared": true,
+    "signer": "RoutineHub HubSign",
+    "deviceImportVerified": false
+  },
+  {
+    "variant": "apple-maps",
+    "file": "safari-apple-maps.shortcut",
+    "actions": 64,
+    "scriptSha256": "c6684715a6bc1342a798078424d16f31e8d27ba99e02ee4f8587025755a84e0a",
+    "signedSha256": "025d5be49218da952c40aa35c3e8f02db249a229d07ab4838ff1d397bd5d6004",
+    "payloadCompared": true,
+    "signer": "RoutineHub HubSign",
+    "deviceImportVerified": false
+  }
+]
