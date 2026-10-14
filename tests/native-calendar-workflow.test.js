@@ -10,7 +10,7 @@ function simulate(
   workflow,
   payload,
   candidates,
-  { calendar = { name: payload.calendarName } } = {},
+  { calendar = { name: payload.calendarName }, readbackLimit = Infinity, failAt = null } = {},
 ) {
   const outputs = new Map();
   const alerts = [],
@@ -78,7 +78,7 @@ function simulate(
         case "gettext": result = resolve(p.WFTextActionText, item); break;
         case "detect.dictionary": result = JSON.parse(resolve(p.WFInput, item)); break;
         case "getvalueforkey": result = resolve(p.WFInput, item)[p.WFDictionaryKey]; break;
-        case "filter.calendarevents": result = queries++ === 0 ? candidates : [...candidates, ...written]; break;
+        case "filter.calendarevents": result = queries++ === 0 ? candidates : [...candidates, ...written].slice(0, readbackLimit); break;
         case "properties.calendarevents":
           assert.equal(p.WFContentItemPropertyName, "Notes");
           result = resolve(p.WFInput, item).notes ?? ""; break;
@@ -94,6 +94,7 @@ function simulate(
         case "addnewcalendar": calendars++; result = calendar; break;
         case "date": result = resolve(p.WFDateActionDate, item); break;
         case "addnewevent":
+          if (written.length === failAt) throw new Error("simulated calendar write failure");
           assert.equal(resolve(p.WFCalendarDescriptor, item), calendar);
           result = { title: resolve(p.WFCalendarItemTitle, item), notes: resolve(p.WFCalendarItemNotes, item) };
           written.push(result); break;
@@ -105,7 +106,7 @@ function simulate(
     return result;
   }
   run(0, actions.length);
-  return { alerts, written, calendars };
+  return { alerts, written, calendars, queries };
 }
 
 const workflows = ["default", "apple-maps"].map((variant) => {
@@ -128,7 +129,7 @@ function sample() {
   });
 }
 
-test("empty calendars and unrelated personal/holiday events do not block import or inflate saved count", async () => {
+test("empty calendars and unrelated personal/holiday events do not block import or inflate returned-event count", async () => {
   const payload = await sample();
   const unrelated = [
     { notes: "" }, { notes: "中国大陆节假日" },
@@ -141,7 +142,27 @@ test("empty calendars and unrelated personal/holiday events do not block import 
     assert.equal(result.calendars, 1);
     assert.equal(result.written.length, payload.count);
     assert.ok(!result.alerts.some((a) => a.title.includes("已有应大通课表")));
-    assert.match(result.alerts.find((a) => a.title === "课表添加结果").message, new RegExp(`系统日历已保存：${payload.count}`));
+    assert.match(result.alerts.find((a) => a.title === "课表添加结果").message, new RegExp(`本次添加日程：${payload.count}`));
+  }
+});
+
+test("286 successful additions report 286 even when a subsequent library query would return only 16", () => {
+  const payload = sample();
+  payload.events = Array.from({ length: 286 }, (_, index) => ({
+    ...payload.events[index % payload.events.length], title: `测试课程 ${index + 1}`,
+  }));
+  payload.count = 286;
+  for (const workflow of workflows) {
+    const result = simulate(workflow, payload, [], { readbackLimit: 16 });
+    assert.equal(result.written.length, 286);
+    assert.equal(result.queries, 1, "only the pre-import duplicate query runs");
+    assert.match(result.alerts.find((a) => a.title === "课表添加结果").message, /计划课程次数：286\n本次添加日程：286/);
+  }
+});
+
+test("a failed addition stops the workflow instead of reporting the planned total", () => {
+  for (const workflow of workflows) {
+    assert.throws(() => simulate(workflow, sample(), [], { failAt: 1 }), /calendar write failure/);
   }
 });
 

@@ -49,10 +49,10 @@ def iso_date_token(reference):
     return text_token(formatted)
 
 def package(script, variant):
-    keys = ['javascript','text-result','dictionary','events','summary','planned-count','calendar-name','term-marker','marker-pattern','existing','existing-count','calendar','if-calendar','created','saved','if-saved','count','first-event','error','if-events','if-existing','repeat']
-    for stage in ['existing', 'saved']:
+    keys = ['javascript','text-result','dictionary','events','summary','planned-count','calendar-name','term-marker','marker-pattern','existing','existing-count','calendar','if-calendar','created','if-created','count','first-event','error','if-events','if-existing','repeat']
+    for stage in ['existing']:
         keys += [stage + '-' + key for key in ['repeat','notes','match','if-match','event','verified']]
-    ids = {key: identifier(variant + '-v9-' + key) for key in keys}
+    ids = {key: identifier(variant + '-v10-' + key) for key in keys}
     value = lambda key, name: ref(ids[key], name)
     result = value('javascript', '网页脚本结果')
     contents = value('text-result', '课表 JSON')
@@ -89,7 +89,7 @@ def package(script, variant):
             action('repeat.each', UUID=ids[stage + '-verified'], GroupingIdentifier=ids[stage + '-repeat'], WFControlFlowMode=2),
         ]
     actions = [
-        action('comment', WFCommentActionText='应大通课表直接添加 v9\n从信息门户进入学校课表后，通过 Safari 分享菜单运行。确认后新建独立日历并批量添加。防重逐条核验日程备注中的完整学期标记，再判断匹配数量。只读取学校课表和已有的应大通学期标记，不读取密码或 Cookie，不向服务器回传数据。'),
+        action('comment', WFCommentActionText='应大通课表直接添加 v10\n从信息门户进入学校课表后，通过 Safari 分享菜单运行。确认后新建独立日历并批量添加。结果数量直接统计本次添加动作返回的日程，不使用日历搜索数量。防重逐条核验日程备注中的完整学期标记，再判断匹配数量。只读取学校课表和已有的应大通学期标记，不读取密码或 Cookie，不向服务器回传数据。'),
         action('runjavascriptonwebpage', UUID=ids['javascript'], WFJavaScript=script, WFInput={'Value':{'Type':'ExtensionInput'},'WFSerializationType':'WFTextTokenAttachment'}),
         action('gettext', UUID=ids['text-result'], WFTextActionText=text_token(result)),
         action('detect.dictionary', UUID=ids['dictionary'], WFInput=contents),
@@ -104,7 +104,7 @@ def package(script, variant):
         *verify_events('existing'),
         action('count', UUID=ids['existing-count'], Input=value('existing-verified','已核验的已有课表日程'), WFCountType='Items'),
         positive_count('if-existing',value('existing-count','已有课表数量')),
-        action('alert', WFAlertActionTitle='此学期已有应大通课表 · v9', WFAlertActionMessage=text_parts('已核验备注中包含本学期完整标记的日程：',value('existing-count','已有课表数量'),' 条。\n为避免重复，本次没有创建日历或添加课程。\n如果上次添加中断，或你要重新导入，请先在日历 App 删除此前生成的整本应大通课表日历，再运行此快捷指令。'), WFAlertActionCancelButtonShown=False),
+        action('alert', WFAlertActionTitle='此学期已有应大通课表 · v10', WFAlertActionMessage=text_parts('已核验备注中包含本学期完整标记的日程：',value('existing-count','已有课表数量'),' 条。\n为避免重复，本次没有创建日历或添加课程。\n如果上次添加中断，或你要重新导入，请先在日历 App 删除此前生成的整本应大通课表日历，再运行此快捷指令。'), WFAlertActionCancelButtonShown=False),
         branch('if-existing',1),
         action('alert', WFAlertActionTitle='确认添加课表', WFAlertActionMessage=text_token(summary), WFAlertActionCancelButtonShown=True),
         action('addnewcalendar', UUID=ids['calendar'], CalendarName=text_token(name)),
@@ -113,37 +113,31 @@ def package(script, variant):
     ]
     fields = {}
     for key in ['title','start','end','location','notes']:
-        field_id = identifier(variant + '-v9-event-' + key)
+        field_id = identifier(variant + '-v10-event-' + key)
         fields[key] = ref(field_id, '课程' + key)
         actions.append(action('getvalueforkey', UUID=field_id, WFGetDictionaryValueType='Value', WFDictionaryKey=key, WFInput=repeat_item))
-    start = identifier(variant + '-v9-start-date')
-    end = identifier(variant + '-v9-end-date')
+    start = identifier(variant + '-v10-start-date')
+    end = identifier(variant + '-v10-end-date')
     actions += [
         action('date', UUID=start, WFDateActionMode='Specified Date', WFDateActionDate=text_token(fields['start'])),
         action('date', UUID=end, WFDateActionMode='Specified Date', WFDateActionDate=text_token(fields['end'])),
         action('addnewevent', WFCalendarItemTitle=text_token(fields['title']), WFCalendarItemLocation=text_token(fields['location']), WFCalendarDescriptor=calendar, WFCalendarItemStartDate=iso_date_token(ref(start,'开始时间')), WFCalendarItemEndDate=iso_date_token(ref(end,'结束时间')), WFCalendarItemAllDay=False, WFCalendarItemNotes=text_token(fields['notes']), ShowWhenRun=False),
         action('repeat.each', UUID=ids['created'], GroupingIdentifier=ids['repeat'], WFControlFlowMode=2),
-        action('filter.calendarevents', UUID=ids['saved'], WFContentItemFilter={
-            'Value': {'WFActionParameterFilterPrefix':1,'WFActionParameterFilterTemplates':[
-                {'Operator':99,'Property':'Notes','Removable':True,'Values':{'String':text_token(marker)}}
-            ],'WFContentPredicateBoundedDate':False}, 'WFSerializationType':'WFContentPredicateTableTemplate'
-        }, WFContentItemInputParameter='Library', WFContentItemLimitEnabled=False, WFContentItemSortProperty='Start Date', WFContentItemSortOrder='Oldest First'),
-        *verify_events('saved'),
-        action('count', UUID=ids['count'], Input=value('saved-verified','已核验的已保存课表日程'), WFCountType='Items'),
-        positive_count('if-saved',value('count','实际保存数量')),
-        action('alert', WFAlertActionTitle='课表添加结果', WFAlertActionMessage=text_parts('日历：',name,'\n计划课程次数：',value('planned-count','计划数量'),'\n系统日历已保存：',value('count','实际保存数量'),'\n\n如数量不一致，请检查本次课表日历；删除该整本日历后可以重新添加。'), WFAlertActionCancelButtonShown=False),
-        action('getitemfromlist', UUID=ids['first-event'], WFInput=value('saved-verified','已核验的已保存课表日程'), WFItemSpecifier='First Item'),
+        action('count', UUID=ids['count'], Input=value('created','本次添加动作返回的日程'), WFCountType='Items'),
+        positive_count('if-created',value('count','本次添加数量')),
+        action('alert', WFAlertActionTitle='课表添加结果', WFAlertActionMessage=text_parts('日历：',name,'\n计划课程次数：',value('planned-count','计划数量'),'\n本次添加日程：',value('count','本次添加数量'),'\n\n数量来自本次添加动作返回的日程。'), WFAlertActionCancelButtonShown=False),
+        action('getitemfromlist', UUID=ids['first-event'], WFInput=value('created','本次添加动作返回的日程'), WFItemSpecifier='First Item'),
         action('showincalendar', WFEvent=value('first-event','第一节课')),
-        branch('if-saved',1),
-        action('alert', WFAlertActionTitle='尚未确认添加成功', WFAlertActionMessage='系统日历未返回本次课表日程，请检查日历权限和生成的课表日历。此次不报告添加成功。', WFAlertActionCancelButtonShown=False),
-        branch('if-saved',2),
+        branch('if-created',1),
+        action('alert', WFAlertActionTitle='未取得添加结果', WFAlertActionMessage='添加动作没有返回日程结果，请在日历 App 检查本次生成的课表日历。', WFAlertActionCancelButtonShown=False),
+        branch('if-created',2),
         branch('if-calendar',1),
         action('alert', WFAlertActionTitle='未取得新建的课表日历', WFAlertActionMessage='系统没有返回新建的日历对象，未继续添加课程。请检查日历账户和权限后再试。', WFAlertActionCancelButtonShown=False),
         branch('if-calendar',2),
         branch('if-existing',2),
         branch('if-events',1),
         get('error','error'),
-        action('alert', WFAlertActionTitle='课表读取未完成 · v9', WFAlertActionMessage=text_token(value('error','错误原因'),'未添加任何日程。具体原因：\n\n'), WFAlertActionCancelButtonShown=False),
+        action('alert', WFAlertActionTitle='课表读取未完成 · v10', WFAlertActionMessage=text_token(value('error','错误原因'),'未添加任何日程。具体原因：\n\n'), WFAlertActionCancelButtonShown=False),
         branch('if-events',2),
     ]
     return {

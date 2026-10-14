@@ -354,7 +354,7 @@ test("v9 standalone failures return a nonempty string with the failing school st
   assert.match(payload.error, /HTTP 503/);
 });
 
-test("native workflow confirms and writes only into a newly created calendar, with duplicate and persisted-result checks", async () => {
+test("native workflow confirms and writes only into a newly created calendar, counting returned events", async () => {
   const { execFileSync } = await import("node:child_process");
   const script = `import importlib.util,json; s=importlib.util.spec_from_file_location('package','scripts/package-safari-shortcut.py'); m=importlib.util.module_from_spec(s); s.loader.exec_module(m); print(json.dumps(m.package('standalone-test-script','default'),ensure_ascii=False))`;
   const native = JSON.parse(
@@ -406,7 +406,7 @@ test("native workflow confirms and writes only into a newly created calendar, wi
       a.WFWorkflowActionIdentifier.endsWith("filter.calendarevents"),
     )
     .map((a) => a.WFWorkflowActionParameters);
-  assert.equal(filters.length, 2);
+  assert.equal(filters.length, 1);
   for (const f of filters) {
     assert.equal(f.WFContentItemInputParameter, "Library");
     const predicate =
@@ -419,7 +419,6 @@ test("native workflow confirms and writes only into a newly created calendar, wi
     );
   }
   assert.equal(filters[0].WFContentItemLimitEnabled, false);
-  assert.equal(filters[1].WFContentItemLimitEnabled, false);
   const counts = actions.filter((a) => a.WFWorkflowActionIdentifier.endsWith(".count"));
   assert.equal(counts.length, 2);
   for (const count of counts) {
@@ -428,6 +427,9 @@ test("native workflow confirms and writes only into a newly created calendar, wi
     assert.equal(verified.WFWorkflowActionIdentifier, "is.workflow.actions.repeat.each");
     assert.equal(verified.WFWorkflowActionParameters.WFControlFlowMode, 2);
   }
+  const writeRepeat = actions[actions.findIndex((a) => a.WFWorkflowActionIdentifier === "is.workflow.actions.addnewevent") + 1];
+  assert.equal(writeRepeat.WFWorkflowActionIdentifier, "is.workflow.actions.repeat.each");
+  assert.equal(counts[1].WFWorkflowActionParameters.Input.Value.OutputUUID, writeRepeat.WFWorkflowActionParameters.UUID);
   const dates = actions
     .filter((a) => a.WFWorkflowActionIdentifier === "is.workflow.actions.date")
     .map((a) => a.WFWorkflowActionParameters);

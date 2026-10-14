@@ -33,7 +33,7 @@ import mapsScriptUrl from "../generated/safari-apple-maps.js?url";
 import bundledSource from "../generated/safari-shortcut.txt?raw";
 import { createShortcutSource } from "../shortcut/source.js";
 
-const shortcutVersion = "v9";
+const shortcutVersion = "v10";
 const portalUrl = "https://my1.ncist.edu.cn/";
 
 export default function SafariShortcut() {
@@ -82,7 +82,7 @@ export default function SafariShortcut() {
         <CardContent className="space-y-2">
           <p className="text-xs leading-6 text-muted-foreground">
             {shortcutVersion}{" "}
-            已修复“没有课表日历却提示已添加”的防重判断。已安装旧版的用户，请重新添加并选择替换。
+            添加数量改为统计本次添加动作返回的日程，修正添加后查询数量偏少的显示问题。已安装旧版的用户，请重新添加并选择替换。
           </p>
           <Button
             className="h-10 w-full text-sm"
@@ -134,7 +134,7 @@ export default function SafariShortcut() {
             <DialogDescription className="text-sm leading-6">
               {shortcutVersion}{" "}
               使用系统日历动作批量添加课程，自动新建独立课表日历。已安装旧版请重新添加并替换；iPhone
-              批量添加已通过实机反馈，新版防重判断仍需在手机确认。
+              批量添加已通过实机反馈，新版结果统计仍需在手机确认。
             </DialogDescription>
           </DialogHeader>
           <Alert>
