@@ -8,7 +8,7 @@
 2. 用 Safari 登录信息门户 https://my1.ncist.edu.cn/ ，从门户进入本科“教务管理系统 → 我的课表”，或“研究生管理系统 → 个人课表”。在课表页面分享菜单运行“应大通课表导出”。
 3. 读取课程后，对日历查询返回的候选日程逐条读取备注，匹配完整独立一行的本学期标记。只有匹配数量大于 0 时才停止，并提示核验数量。个人日程、节假日及其他学期不会阻止导入。若上次只添加一部分或要重新导入，用户可在日历 App 删除此前生成的整本课表日历，再运行。
 4. 核对摘要并确认后，新建“应大通课表 · 学期名称”，逐条调用原生添加日程，关闭逐条编辑窗口。所有日程只写入本次新建的日历；新建动作未返回日历对象时停止。
-5. 完成后直接统计“添加新日程”循环返回的日程对象，显示计划数量与本次添加数量，再打开本次返回的第一节课。添加动作失败时快捷指令停止，不显示整批完成结果；未返回日程对象时显示“未取得添加结果”。
+5. 完成后直接统计“添加新日程”循环返回的日程对象，显示计划数量与本次添加数量，随后使用“打开 App”动作直接启动日历，不弹出课程详情。添加动作失败时快捷指令停止，不显示整批完成结果；未返回日程对象时显示“未取得添加结果”。
 
 批量操作不是事务。中断时已有日程保留，本直添版标记会阻止重复运行；用户删除整本课表日历后可重试。不自动删除、覆盖任何已有日历或日程。防重检查针对本直添版标记，不覆盖旧的 ICS 手动导入或订阅记录，也不承诺并发调用下的事务隔离。
 
@@ -28,7 +28,7 @@ convertScheduleToIcs 新增 calendarEvents 结果，直接复用既有 UID 去�
 
 添加结果 Count 的 Input 引用添加课程循环的 Repeat Results，该循环的最后一个动作为 Add New Event，返回新建的 EKEvent 对象。结果页“本次添加日程”来自这些返回对象，不取计划数量代替、不重新查询 Library。成功后通过 Open App（`WFAppIdentifier=com.apple.mobilecal`、`WFAppName=Calendar`）直接启动日历，不传入课程事件。网页 JSON 的 version=9 为既有协议版本；v11 安装包只修改原生成功后的导航和页面说明，嵌入网页脚本 SHA-256 与 v9 相同。
 
-iOS 27 ToolKit v78 中确认存在：addnewcalendar(CalendarName)、addnewevent(WFCalendarDescriptor、ShowWhenRun 等)、filter.calendarevents、date、showincalendar。特别使用当前 WFCalendarDescriptor 而非旧的 WFCalendarItemCalendar；ShowWhenRun=false 关闭每节课的编辑窗口。日历查询显式选择 Library，避免继承上一步文本作为查询输入。重复项、日期和 Calendar 对象都通过显式变量引用。
+iOS 27 ToolKit v78 中确认存在：addnewcalendar(CalendarName)、addnewevent(WFCalendarDescriptor、ShowWhenRun 等)、filter.calendarevents、date、openapp。特别使用当前 WFCalendarDescriptor 而非旧的 WFCalendarItemCalendar；ShowWhenRun=false 关闭每节课的编辑窗口。日历查询显式选择 Library，避免继承上一步文本作为查询输入。重复项、日期和 Calendar 对象都通过显式变量引用。结束时使用 Open App 打开日历，不再使用 showincalendar 传入具体日程。
 
 独立脚本返回 JSON 字符串：成功包含 version、events、calendarName、groupMarker、groupMarkerPattern、count、unscheduledCount、summary；失败 events=[] 并包含 error。原生动作显式 Detect Dictionary，不依赖 JavaScript 结果自动判定类型。
 

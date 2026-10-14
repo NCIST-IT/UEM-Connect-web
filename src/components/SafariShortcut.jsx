@@ -33,7 +33,7 @@ import mapsScriptUrl from "../generated/safari-apple-maps.js?url";
 import bundledSource from "../generated/safari-shortcut.txt?raw";
 import { createShortcutSource } from "../shortcut/source.js";
 
-const shortcutVersion = "v10";
+const shortcutVersion = "v11";
 const portalUrl = "https://my1.ncist.edu.cn/";
 
 export default function SafariShortcut() {
@@ -82,7 +82,7 @@ export default function SafariShortcut() {
         <CardContent className="space-y-2">
           <p className="text-xs leading-6 text-muted-foreground">
             {shortcutVersion}{" "}
-            添加数量改为统计本次添加动作返回的日程，修正添加后查询数量偏少的显示问题。已安装旧版的用户，请重新添加并选择替换。
+            完成后直接打开日历 App，不再弹出某一节课程。已安装旧版的用户，请重新添加并选择替换。
           </p>
           <Button
             className="h-10 w-full text-sm"
@@ -133,8 +133,8 @@ export default function SafariShortcut() {
             </DialogTitle>
             <DialogDescription className="text-sm leading-6">
               {shortcutVersion}{" "}
-              使用系统日历动作批量添加课程，自动新建独立课表日历。已安装旧版请重新添加并替换；iPhone
-              批量添加已通过实机反馈，新版结果统计仍需在手机确认。
+              使用系统日历动作批量添加课程，自动新建独立课表日历。已安装旧版请重新添加并替换；完成后打开日历
+              App，不进入课程详情。
             </DialogDescription>
           </DialogHeader>
           <Alert>
@@ -160,7 +160,7 @@ export default function SafariShortcut() {
               （研究生）后，点击分享按钮，选择“应大通课表导出”。不要在信息门户页面直接运行。
             </li>
             <li>
-              首次运行按系统提示允许读取和添加日历；读取用于防重复和核对结果。核对摘要并确认后，自动新建独立日历并批量添加课程，完成后打开第一节课。
+              首次运行按系统提示允许读取和添加日历；读取用于防重复，结果数量来自本次添加动作返回的日程。核对摘要并确认后，自动新建独立日历并批量添加课程，完成后直接打开日历 App。
             </li>
           </ol>
           <p className="text-xs leading-6 text-muted-foreground">
