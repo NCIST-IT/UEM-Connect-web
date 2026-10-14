@@ -10,7 +10,7 @@ import { collectNativeCalendar } from "./native-calendar.js";
   } catch (error) {
     completion(
       JSON.stringify({
-        version: 9,
+        version: 10,
         ok: false,
         events: [],
         error:

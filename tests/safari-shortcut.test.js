@@ -255,7 +255,7 @@ test("standalone Shortcuts bundle calls completion once, needs no cookie access,
   const result = await done;
   assert.equal(typeof result, "string");
   const payload = JSON.parse(result);
-  assert.equal(payload.version, 9);
+  assert.equal(payload.version, 10);
   assert.equal(payload.events.length, 3);
   assert.equal(payload.events[0].start, "2026-09-07T00:00:00Z");
   assert.equal(results.length, 1);
@@ -304,13 +304,22 @@ test("signed installers are pinned to the current reviewed script and expected p
   const { createHash } = await import("node:crypto");
   const sha256 = (bytes) => createHash("sha256").update(bytes).digest("hex");
   const directory = new URL("../src/shortcut/install/", import.meta.url);
+  const alerts = JSON.parse(
+    await readFile(
+      new URL("../src/shortcut/alerts.json", import.meta.url),
+      "utf8",
+    ),
+  );
   const manifest = JSON.parse(
     await readFile(new URL("manifest.json", directory), "utf8"),
   );
-  assert.deepEqual(manifest.map((item) => item.variant).sort(), [
-    "apple-maps",
-    "default",
-  ]);
+  assert.equal(manifest.length, alerts.length * 2);
+  assert.deepEqual(
+    manifest.map((item) => `${item.variant}/${item.alert}`).sort(),
+    ["default", "apple-maps"]
+      .flatMap((variant) => alerts.map((alert) => `${variant}/${alert.id}`))
+      .sort(),
+  );
   for (const item of manifest) {
     const signed = await readFile(new URL(item.file, directory));
     const script = await readFile(
@@ -323,7 +332,7 @@ test("signed installers are pinned to the current reviewed script and expected p
   }
 });
 
-test("v9 standalone failures return a nonempty string with the failing school step", async () => {
+test("v12 standalone failures return a nonempty string with the failing school step", async () => {
   const source = await readFile(
     new URL("../src/generated/safari-default.js", import.meta.url),
     "utf8",
@@ -348,7 +357,7 @@ test("v9 standalone failures return a nonempty string with the failing school st
   const result = await done;
   assert.equal(typeof result, "string");
   const payload = JSON.parse(result);
-  assert.equal(payload.version, 9);
+  assert.equal(payload.version, 10);
   assert.deepEqual(payload.events, []);
   assert.match(payload.error, /读取本科学期/);
   assert.match(payload.error, /HTTP 503/);
@@ -407,18 +416,41 @@ test("native workflow confirms and writes only into a newly created calendar, co
     )
     .map((a) => a.WFWorkflowActionParameters);
   assert.equal(filters.length, 1);
-  for (const f of filters) {
-    assert.equal(f.WFContentItemInputParameter, "Library");
-    const predicate =
-      f.WFContentItemFilter.Value.WFActionParameterFilterTemplates[0];
-    assert.equal(predicate.Property, "Notes");
-    assert.equal(predicate.Operator, 99);
-    assert.equal(
-      predicate.Values.String.WFSerializationType,
-      "WFTextTokenString",
-    );
-  }
-  assert.equal(filters[0].WFContentItemLimitEnabled, false);
+  assert.equal(filters[0].WFContentItemInputParameter, "Library");
+  assert.equal(filters[0].WFContentItemLimitEnabled, true);
+  assert.equal(filters[0].WFContentItemLimitNumber, 1);
+  const predicate =
+    filters[0].WFContentItemFilter.Value.WFActionParameterFilterTemplates[0];
+  assert.equal(predicate.Property, "Calendar");
+  assert.equal(predicate.Operator, 4);
+  assert.equal(
+    predicate.Values.Enumeration.WFSerializationType,
+    "WFStringSubstitutableState",
+  );
+  const nameField = actions.find(
+    (a) => a.WFWorkflowActionParameters.WFDictionaryKey === "calendarName",
+  );
+  assert.equal(
+    predicate.Values.Enumeration.Value.Value.OutputUUID,
+    nameField.WFWorkflowActionParameters.UUID,
+  );
+  const details = actions.filter((a) =>
+    a.WFWorkflowActionIdentifier.endsWith("properties.calendarevents"),
+  );
+  assert.equal(details.length, 1);
+  assert.equal(details[0].WFWorkflowActionParameters.WFContentItemPropertyName, "Calendar");
+  const patternField = actions.find(
+    (a) => a.WFWorkflowActionParameters.WFDictionaryKey === "calendarNamePattern",
+  );
+  const match = actions.find((a) =>
+    a.WFWorkflowActionIdentifier.endsWith("text.match"),
+  );
+  assert.equal(
+    match.WFWorkflowActionParameters.WFMatchTextPattern.Value.attachmentsByRange[
+      "{0, 1}"
+    ].OutputUUID,
+    patternField.WFWorkflowActionParameters.UUID,
+  );
   const counts = actions.filter((a) => a.WFWorkflowActionIdentifier.endsWith(".count"));
   assert.equal(counts.length, 2);
   for (const count of counts) {

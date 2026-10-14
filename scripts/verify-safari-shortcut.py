@@ -60,22 +60,30 @@ def extract(data):
 
 if __name__ == '__main__':
     OUT.mkdir(parents=True, exist_ok=True)
+    unsigned_manifest = json.loads((WORK / 'unsigned-manifest.json').read_text())
     manifest = []
-    for variant in ['default', 'apple-maps']:
-        unsigned = plistlib.loads((WORK / f'safari-{variant}.unsigned.shortcut').read_bytes())
-        data = (WORK / f'safari-{variant}.signed.shortcut').read_bytes()
+    for item in unsigned_manifest:
+        variant = item['variant']
+        unsigned = plistlib.loads((WORK / item['unsigned']).read_bytes())
+        data = (WORK / item['unsigned'].replace('.unsigned.shortcut', '.signed.shortcut')).read_bytes()
         payload = extract(data)
         # Signing legitimately normalizes these non-action metadata fields.
         permitted = {'WFWorkflowName', 'WFWorkflowClientVersion', 'WFWorkflowHasOutputFallback'}
         left = {k:v for k,v in unsigned.items() if k not in permitted}
         right = {k:v for k,v in payload.items() if k not in permitted}
         if left != right:
-            raise ValueError(f'{variant}: signed workflow differs from the reviewed local source')
+            raise ValueError(f'{variant}/{item["alert"]}: signed workflow differs from the reviewed local source')
         script = payload['WFWorkflowActions'][1]['WFWorkflowActionParameters']['WFJavaScript']
         source = (ROOT / 'src' / 'generated' / f'safari-{variant}.js').read_text()
         if script != source:
-            raise ValueError(f'{variant}: embedded JavaScript changed')
-        (OUT / f'safari-{variant}.shortcut').write_bytes(data)
-        manifest.append({'variant':variant,'file':f'safari-{variant}.shortcut','actions':len(payload['WFWorkflowActions']),'scriptSha256':hashlib.sha256(source.encode()).hexdigest(),'signedSha256':hashlib.sha256(data).hexdigest(),'payloadCompared':True,'signer':'RoutineHub HubSign','deviceImportVerified':False})
+            raise ValueError(f'{variant}/{item["alert"]}: embedded JavaScript changed')
+        file = f'safari-{variant}-{item["alert"]}.shortcut'
+        (OUT / file).write_bytes(data)
+        manifest.append({'variant':variant,'alert':item['alert'],'file':file,'actions':len(payload['WFWorkflowActions']),'scriptSha256':hashlib.sha256(source.encode()).hexdigest(),'signedSha256':hashlib.sha256(data).hexdigest(),'payloadCompared':True,'signer':'RoutineHub HubSign','deviceImportVerified':False})
+    expected = {entry['file'] for entry in manifest}
+    for stale in OUT.glob('*.shortcut'):
+        if stale.name not in expected:
+            stale.unlink()
+            print(f'removed stale installer {stale.name}')
     (OUT / 'manifest.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n')
-    print(json.dumps(manifest,ensure_ascii=False,indent=2))
+    print(json.dumps({'installers': len(manifest), 'actionsPerInstaller': manifest[0]['actions']},ensure_ascii=False))

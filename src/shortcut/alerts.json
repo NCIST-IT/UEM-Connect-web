@@ -1,0 +1,13 @@
+[
+  { "id": "none", "label": "无", "alertTime": null },
+  { "id": "time", "label": "日程开启时", "alertTime": "At time of event" },
+  { "id": "5m", "label": "5分钟前", "alertTime": "5 minutes before" },
+  { "id": "10m", "label": "10分钟前", "alertTime": "Custom" },
+  { "id": "15m", "label": "15分钟前", "alertTime": "15 minutes before" },
+  { "id": "30m", "label": "30分钟前", "alertTime": "30 minutes before" },
+  { "id": "1h", "label": "1小时前", "alertTime": "1 hour before" },
+  { "id": "2h", "label": "2小时前", "alertTime": "2 hours before" },
+  { "id": "1d", "label": "1天前", "alertTime": "1 day before" },
+  { "id": "2d", "label": "2天前", "alertTime": "2 days before" },
+  { "id": "1w", "label": "1周前", "alertTime": "1 week before" }
+]

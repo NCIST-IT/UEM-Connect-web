@@ -42,14 +42,18 @@ test("native calendar writes exactly the same deduplicated occurrences and absol
   );
   assert.ok(payload.calendarName.includes("2026-2027学年度第一学期"));
   assert.ok(payload.summary.includes("3 次课程"));
-  assert.ok(payload.events.every((e) => e.notes.includes(payload.groupMarker)));
+  assert.equal(
+    Date.parse(payload.events[0].alert),
+    Date.parse(payload.events[0].start) - 10 * 60 * 1000,
+  );
+  assert.ok(payload.events.every((e) => e.notes.includes("[UEM-TERM:jwxt:84]")));
 });
 test("native prefix only changes locations and cannot bypass the semester duplicate marker", () => {
   const plain = nativeCalendarPayload(packet([row]));
   const maps = nativeCalendarPayload(packet([row]), {
     addUniversityPrefix: true,
   });
-  assert.equal(plain.groupMarker, maps.groupMarker);
+  assert.equal(plain.calendarNamePattern, maps.calendarNamePattern);
   assert.equal(plain.calendarName, maps.calendarName);
   for (let i = 0; i < plain.events.length; i++)
     assert.deepEqual(
@@ -88,6 +92,7 @@ test("native summary exposes unscheduled courses and does not include credential
   assert.ok(payload.summary.includes("1 条未排课"));
   assert.ok(!JSON.stringify(payload).includes("never include"));
   assert.deepEqual(Object.keys(payload.events[0]).sort(), [
+    "alert",
     "end",
     "location",
     "notes",

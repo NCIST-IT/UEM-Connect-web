@@ -10,23 +10,21 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / '.local' / 'shortcut-packages'
 NS = uuid.UUID('34c1e37a-7055-4e7d-a79c-a92402475016')
+ALERTS = json.loads((ROOT / 'src' / 'shortcut' / 'alerts.json').read_text())
+
 
 def identifier(label):
     return str(uuid.uuid5(NS, label)).upper()
-
 def ref(output, name):
     return {'Value': {'Type': 'ActionOutput', 'OutputUUID': output, 'OutputName': name}, 'WFSerializationType': 'WFTextTokenAttachment'}
-
 def action(name, **params):
     return {'WFWorkflowActionIdentifier': 'is.workflow.actions.' + name, 'WFWorkflowActionParameters': params}
-
 def text_token(reference, prefix=''):
     position = len(prefix.encode('utf-16-le')) // 2
     return {
         'Value': {'string': prefix + '\uFFFC', 'attachmentsByRange': {f'{{{position}, 1}}': reference['Value']}},
         'WFSerializationType': 'WFTextTokenString',
     }
-
 def text_parts(*parts):
     text = ''
     attachments = {}
@@ -38,7 +36,6 @@ def text_parts(*parts):
             attachments[f'{{{position}, 1}}'] = part['Value']
             text += '\uFFFC'
     return {'Value': {'string':text,'attachmentsByRange':attachments},'WFSerializationType':'WFTextTokenString'}
-
 def iso_date_token(reference):
     formatted = copy.deepcopy(reference)
     formatted['Value']['Aggrandizements'] = [{
@@ -48,11 +45,11 @@ def iso_date_token(reference):
     }]
     return text_token(formatted)
 
-def package(script, variant):
-    keys = ['javascript','text-result','dictionary','events','summary','planned-count','calendar-name','term-marker','marker-pattern','existing','existing-count','calendar','if-calendar','created','if-created','count','first-event','error','if-events','if-existing','repeat']
-    for stage in ['existing']:
-        keys += [stage + '-' + key for key in ['repeat','notes','match','if-match','event','verified']]
-    ids = {key: identifier(variant + '-v11-' + key) for key in keys}
+def package(script, variant, alert=None):
+    alert = alert or {'id': 'none', 'label': '无', 'alertTime': None}
+    keys = ['javascript','text-result','dictionary','events','summary','planned-count','calendar-name','calendar-name-pattern','existing','existing-count','calendar','if-calendar','created','if-created','count','error','if-events','if-existing','repeat']
+    keys += ['existing-' + key for key in ['repeat','detail','match','if-match','event','verified']]
+    ids = {key: identifier(variant + '-v12-' + key) for key in keys}
     value = lambda key, name: ref(ids[key], name)
     result = value('javascript', '网页脚本结果')
     contents = value('text-result', '课表 JSON')
@@ -60,7 +57,7 @@ def package(script, variant):
     events = value('events', '课程列表')
     summary = value('summary', '添加摘要')
     name = value('calendar-name', '课表日历名称')
-    marker = value('term-marker', '本学期课表标记')
+    pattern = value('calendar-name-pattern', '课表日历名称匹配规则')
     calendar = value('calendar', '新建的课表日历')
     repeat_item = {'Value': {'Type': 'Variable', 'VariableName': 'Repeat Item'}, 'WFSerializationType': 'WFTextTokenAttachment'}
     def get(key, output, source=dictionary):
@@ -71,17 +68,17 @@ def package(script, variant):
             parameters.update(WFCondition=100, WFInput={'Type':'Variable','Variable':input_value})
         return action('conditional', **parameters)
     def positive_count(group, source):
-        result = branch(group, 0, source)
-        result['WFWorkflowActionParameters'].update(WFCondition=2, WFNumberValue=0)
+        result = positive = branch(group, 0, source)
+        positive['WFWorkflowActionParameters'].update(WFCondition=2, WFNumberValue=0)
         return result
-    def verify_events(stage):
-        # Native search is only a candidate query. Confirm an exact marker line
-        # in each event's actual Notes before treating it as an imported course.
+    def verify_named_calendar(stage):
+        # The native search is only a candidate query. Confirm that the found
+        # event actually belongs to a calendar with the expected name.
         return [
             action('repeat.each', GroupingIdentifier=ids[stage + '-repeat'], WFControlFlowMode=0, WFInput=value(stage,'候选日程')),
-            action('properties.calendarevents', UUID=ids[stage + '-notes'], WFContentItemPropertyName='Notes', WFInput=repeat_item),
-            action('text.match', UUID=ids[stage + '-match'], text=text_token(value(stage + '-notes','日程备注')), WFMatchTextPattern=text_token(value('marker-pattern','完整学期标记匹配规则')), WFMatchTextCaseSensitive=True),
-            branch(stage + '-if-match',0,value(stage + '-match','匹配的学期标记')),
+            action('properties.calendarevents', UUID=ids[stage + '-detail'], WFContentItemPropertyName='Calendar', WFInput=repeat_item),
+            action('text.match', UUID=ids[stage + '-match'], text=text_token(value(stage + '-detail','日程所在日历')), WFMatchTextPattern=text_token(pattern), WFMatchTextCaseSensitive=True),
+            branch(stage + '-if-match',0,value(stage + '-match','匹配的课表日历名称')),
             action('getitemfromlist', UUID=ids[stage + '-event'], WFInput=repeat_item, WFItemSpecifier='First Item'),
             branch(stage + '-if-match',1),
             action('nothing'),
@@ -89,22 +86,22 @@ def package(script, variant):
             action('repeat.each', UUID=ids[stage + '-verified'], GroupingIdentifier=ids[stage + '-repeat'], WFControlFlowMode=2),
         ]
     actions = [
-        action('comment', WFCommentActionText='应大通课表直接添加 v11\n从信息门户进入学校课表后，通过 Safari 分享菜单运行。确认后新建独立日历并批量添加。结果数量直接统计本次添加动作返回的日程，不使用日历搜索数量。防重逐条核验日程备注中的完整学期标记，再判断匹配数量。只读取学校课表和已有的应大通学期标记，不读取密码或 Cookie，不向服务器回传数据。'),
+        action('comment', WFCommentActionText='应大通课表直接添加 v12\n从信息门户进入学校课表后，通过 Safari 分享菜单运行。确认后新建独立日历并批量添加。添加前检测是否已存在同名课表日历；提醒时间由安装的版本决定（默认无提醒）。只读取学校课表和已有课表日历，不读取密码或 Cookie，不向服务器回传数据。'),
         action('runjavascriptonwebpage', UUID=ids['javascript'], WFJavaScript=script, WFInput={'Value':{'Type':'ExtensionInput'},'WFSerializationType':'WFTextTokenAttachment'}),
         action('gettext', UUID=ids['text-result'], WFTextActionText=text_token(result)),
         action('detect.dictionary', UUID=ids['dictionary'], WFInput=contents),
         get('events','events'),
         branch('if-events',0,events),
-        get('summary','summary'), get('count','planned-count'), get('calendarName','calendar-name'), get('groupMarker','term-marker'), get('groupMarkerPattern','marker-pattern'),
+        get('summary','summary'), get('count','planned-count'), get('calendarName','calendar-name'), get('calendarNamePattern','calendar-name-pattern'),
         action('filter.calendarevents', UUID=ids['existing'], WFContentItemFilter={
             'Value': {'WFActionParameterFilterPrefix':1,'WFActionParameterFilterTemplates':[
-                {'Operator':99,'Property':'Notes','Removable':True,'Values':{'String':text_token(marker)}}
+                {'Operator':4,'Property':'Calendar','Removable':True,'Values':{'Enumeration':{'Value':name,'WFSerializationType':'WFStringSubstitutableState'}}}
             ],'WFContentPredicateBoundedDate':False}, 'WFSerializationType':'WFContentPredicateTableTemplate'
-        }, WFContentItemInputParameter='Library', WFContentItemLimitEnabled=False),
-        *verify_events('existing'),
-        action('count', UUID=ids['existing-count'], Input=value('existing-verified','已核验的已有课表日程'), WFCountType='Items'),
-        positive_count('if-existing',value('existing-count','已有课表数量')),
-        action('alert', WFAlertActionTitle='此学期已有应大通课表 · v11', WFAlertActionMessage=text_parts('已核验备注中包含本学期完整标记的日程：',value('existing-count','已有课表数量'),' 条。\n为避免重复，本次没有创建日历或添加课程。\n如果上次添加中断，或你要重新导入，请先在日历 App 删除此前生成的整本应大通课表日历，再运行此快捷指令。'), WFAlertActionCancelButtonShown=False),
+        }, WFContentItemInputParameter='Library', WFContentItemLimitEnabled=True, WFContentItemLimitNumber=1),
+        *verify_named_calendar('existing'),
+        action('count', UUID=ids['existing-count'], Input=value('existing-verified','已核验的同名课表日程'), WFCountType='Items'),
+        positive_count('if-existing',value('existing-count','同名课表数量')),
+        action('alert', WFAlertActionTitle='已存在同名课表日历 · v12', WFAlertActionMessage=text_parts('已存在同名课表日历：\n',name,'\n\n为避免重复，本次没有创建日历或添加课程。'), WFAlertActionCancelButtonShown=False),
         branch('if-existing',1),
         action('alert', WFAlertActionTitle='确认添加课表', WFAlertActionMessage=text_token(summary), WFAlertActionCancelButtonShown=True),
         action('addnewcalendar', UUID=ids['calendar'], CalendarName=text_token(name)),
@@ -112,16 +109,33 @@ def package(script, variant):
         action('repeat.each', GroupingIdentifier=ids['repeat'], WFControlFlowMode=0, WFInput=events),
     ]
     fields = {}
-    for key in ['title','start','end','location','notes']:
-        field_id = identifier(variant + '-v11-event-' + key)
+    field_keys = ['title','start','end','location','notes']
+    if alert.get('alertTime') == 'Custom':
+        field_keys.append('alert')
+    for key in field_keys:
+        field_id = identifier(variant + '-v12-event-' + key)
         fields[key] = ref(field_id, '课程' + key)
         actions.append(action('getvalueforkey', UUID=field_id, WFGetDictionaryValueType='Value', WFDictionaryKey=key, WFInput=repeat_item))
-    start = identifier(variant + '-v11-start-date')
-    end = identifier(variant + '-v11-end-date')
+    start = identifier(variant + '-v12-start-date')
+    end = identifier(variant + '-v12-end-date')
+    event_params = {
+        'WFCalendarItemTitle': text_token(fields['title']),
+        'WFCalendarItemLocation': text_token(fields['location']),
+        'WFCalendarDescriptor': calendar,
+        'WFCalendarItemStartDate': iso_date_token(ref(start,'开始时间')),
+        'WFCalendarItemEndDate': iso_date_token(ref(end,'结束时间')),
+        'WFCalendarItemAllDay': False,
+        'WFCalendarItemNotes': text_token(fields['notes']),
+        'ShowWhenRun': False,
+    }
+    if alert.get('alertTime'):
+        event_params['WFAlertTime'] = alert['alertTime']
+        if alert['alertTime'] == 'Custom':
+            event_params['WFAlertCustomTime'] = text_token(fields['alert'])
     actions += [
         action('date', UUID=start, WFDateActionMode='Specified Date', WFDateActionDate=text_token(fields['start'])),
         action('date', UUID=end, WFDateActionMode='Specified Date', WFDateActionDate=text_token(fields['end'])),
-        action('addnewevent', WFCalendarItemTitle=text_token(fields['title']), WFCalendarItemLocation=text_token(fields['location']), WFCalendarDescriptor=calendar, WFCalendarItemStartDate=iso_date_token(ref(start,'开始时间')), WFCalendarItemEndDate=iso_date_token(ref(end,'结束时间')), WFCalendarItemAllDay=False, WFCalendarItemNotes=text_token(fields['notes']), ShowWhenRun=False),
+        action('addnewevent', **event_params),
         action('repeat.each', UUID=ids['created'], GroupingIdentifier=ids['repeat'], WFControlFlowMode=2),
         action('count', UUID=ids['count'], Input=value('created','本次添加动作返回的日程'), WFCountType='Items'),
         positive_count('if-created',value('count','本次添加数量')),
@@ -136,7 +150,7 @@ def package(script, variant):
         branch('if-existing',2),
         branch('if-events',1),
         get('error','error'),
-        action('alert', WFAlertActionTitle='课表读取未完成 · v11', WFAlertActionMessage=text_token(value('error','错误原因'),'未添加任何日程。具体原因：\n\n'), WFAlertActionCancelButtonShown=False),
+        action('alert', WFAlertActionTitle='课表读取未完成 · v12', WFAlertActionMessage=text_token(value('error','错误原因'),'未添加任何日程。具体原因：\n\n'), WFAlertActionCancelButtonShown=False),
         branch('if-events',2),
     ]
     return {
@@ -158,11 +172,11 @@ if __name__ == '__main__':
     summaries = []
     for variant in ['default', 'apple-maps']:
         script = (ROOT / 'src' / 'generated' / f'safari-{variant}.js').read_text()
-        obj = package(script, variant)
-        xml = plistlib.dumps(obj, fmt=plistlib.FMT_XML, sort_keys=False)
-        path = OUT / f'safari-{variant}.unsigned.shortcut'
-        path.write_bytes(xml)
-        (OUT / f'safari-{variant}.actions.json').write_text(json.dumps(obj, ensure_ascii=False, indent=2))
-        summaries.append({'variant': variant, 'name': obj['WFWorkflowName'], 'actions': len(obj['WFWorkflowActions']), 'scriptSha256': hashlib.sha256(script.encode()).hexdigest(), 'unsignedSha256': hashlib.sha256(xml).hexdigest(), 'path': str(path)})
+        for alert in ALERTS:
+            obj = package(script, variant, alert)
+            xml = plistlib.dumps(obj, fmt=plistlib.FMT_XML, sort_keys=False)
+            unsigned = f'safari-{variant}-{alert["id"]}.unsigned.shortcut'
+            (OUT / unsigned).write_bytes(xml)
+            summaries.append({'variant': variant, 'alert': alert['id'], 'name': obj['WFWorkflowName'], 'actions': len(obj['WFWorkflowActions']), 'scriptSha256': hashlib.sha256(script.encode()).hexdigest(), 'unsignedSha256': hashlib.sha256(xml).hexdigest(), 'unsigned': unsigned})
     (OUT / 'unsigned-manifest.json').write_text(json.dumps(summaries, ensure_ascii=False, indent=2))
-    print(json.dumps(summaries, ensure_ascii=False, indent=2))
+    print(f'{len(summaries)} unsigned packages written to {OUT}')

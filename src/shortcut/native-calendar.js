@@ -2,6 +2,12 @@ import { normalizeSchedule } from "../lib/schedule-model.js";
 import { convertScheduleToIcs } from "../lib/timetable-to-ics.js";
 import { collectSafariSchedule } from "./safari-calendar.js";
 
+// The "10 minutes before" option uses the native Custom alert with an absolute
+// alert time; every event carries it so one shared script covers that variant.
+const CUSTOM_ALERT_OFFSET_MS = 10 * 60 * 1000;
+
+const escapePattern = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
 export function nativeCalendarPayload(
   packet,
   { addUniversityPrefix = false } = {},
@@ -17,16 +23,18 @@ export function nativeCalendarPayload(
   const events = result.calendarEvents.map((event) => ({
     start: event.start,
     end: event.end,
+    alert: new Date(Date.parse(event.start) - CUSTOM_ALERT_OFFSET_MS)
+      .toISOString()
+      .replace(".000Z", "Z"),
     title: event.title.replace(/[\r\n]+/g, " "),
     location: event.location.replace(/[\r\n]+/g, " "),
     notes: `${event.notes}\n\n${groupMarker}`,
   }));
   return {
-    version: 9,
+    version: 10,
     ok: true,
     calendarName,
-    groupMarker,
-    groupMarkerPattern: `(?m)^${groupMarker.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\r?$`,
+    calendarNamePattern: `(?m)^${escapePattern(calendarName)}\\r?$`,
     events,
     count: events.length,
     unscheduledCount: snapshot.unscheduled.length,

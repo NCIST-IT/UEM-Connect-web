@@ -42,31 +42,34 @@ await writeFile(
 if (process.argv.includes("--verify-installers")) {
   const sha256 = (data) => createHash("sha256").update(data).digest("hex");
   const install = new URL("../src/shortcut/install/", import.meta.url);
+  const alerts = JSON.parse(
+    await readFile(new URL("../src/shortcut/alerts.json", import.meta.url), "utf8"),
+  );
   const manifest = JSON.parse(
     await readFile(new URL("manifest.json", install), "utf8"),
   );
-  if (
-    manifest.length !== 2 ||
-    manifest
-      .map((item) => item.variant)
-      .sort()
-      .join(",") !== "apple-maps,default"
-  )
+  if (manifest.length !== alerts.length * 2)
     throw new Error("Missing reviewed Safari installers");
-  for (const item of manifest) {
-    const script = await readFile(
-      new URL(`safari-${item.variant}.js`, directory),
-    );
-    const signed = await readFile(new URL(item.file, install));
-    if (
-      sha256(script) !== item.scriptSha256 ||
-      sha256(signed) !== item.signedSha256 ||
-      signed.subarray(0, 4).toString() !== "AEA1" ||
-      !item.payloadCompared
-    ) {
-      throw new Error(
-        "Safari shortcut source changed: repackage, sign, and compare the installer before deployment.",
+  for (const variant of ["default", "apple-maps"]) {
+    for (const alert of alerts) {
+      const item = manifest.find(
+        (entry) => entry.variant === variant && entry.alert === alert.id,
       );
+      if (!item) throw new Error(`Missing reviewed installer ${variant}/${alert.id}`);
+      const script = await readFile(
+        new URL(`safari-${variant}.js`, directory),
+      );
+      const signed = await readFile(new URL(item.file, install));
+      if (
+        sha256(script) !== item.scriptSha256 ||
+        sha256(signed) !== item.signedSha256 ||
+        signed.subarray(0, 4).toString() !== "AEA1" ||
+        !item.payloadCompared
+      ) {
+        throw new Error(
+          "Safari shortcut source changed: repackage, sign, and compare the installer before deployment.",
+        );
+      }
     }
   }
 }

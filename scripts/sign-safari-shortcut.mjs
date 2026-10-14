@@ -2,13 +2,13 @@
 // Sends the reviewed program definition (no user data) to RoutineHub HubSign.
 import { readFile, writeFile } from "node:fs/promises";
 const directory = new URL("../.local/shortcut-packages/", import.meta.url);
-for (const variant of ["default", "apple-maps"]) {
-  const shortcut = await readFile(
-    new URL(`safari-${variant}.unsigned.shortcut`, directory),
-    "utf8",
-  );
-  const shortcutName =
-    variant === "default" ? "应大通课表导出" : "应大通课表导出（地图适配）";
+const manifest = JSON.parse(
+  await readFile(new URL("unsigned-manifest.json", directory), "utf8"),
+);
+if (!Array.isArray(manifest) || !manifest.length)
+  throw new Error("Run pnpm shortcut:package before signing");
+for (const item of manifest) {
+  const shortcut = await readFile(new URL(item.unsigned, directory), "utf8");
   const response = await fetch("https://hubsign.routinehub.services/sign", {
     method: "POST",
     headers: {
@@ -17,7 +17,7 @@ for (const variant of ["default", "apple-maps"]) {
       Origin: "https://routinehub.co",
       Referer: "https://routinehub.co/",
     },
-    body: JSON.stringify({ shortcutName, shortcut }),
+    body: JSON.stringify({ shortcutName: item.name, shortcut }),
     signal: AbortSignal.timeout(30000),
   });
   const data = Buffer.from(await response.arrayBuffer());
@@ -27,13 +27,13 @@ for (const variant of ["default", "apple-maps"]) {
     data.subarray(0, 4).toString() !== "AEA1"
   )
     throw new Error(
-      `Signing failed: HTTP ${response.status}; no installer published`,
+      `Signing failed for ${item.variant}/${item.alert}: HTTP ${response.status}; no installer published`,
     );
   await writeFile(
-    new URL(`safari-${variant}.signed.shortcut`, directory),
+    new URL(item.unsigned.replace(".unsigned.shortcut", ".signed.shortcut"), directory),
     data,
   );
   console.log(
-    `${variant}: signed archive received; run verify-safari-shortcut.py before publishing.`,
+    `${item.variant}/${item.alert}: signed archive received; run verify-safari-shortcut.py before publishing.`,
   );
 }

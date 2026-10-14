@@ -25,15 +25,21 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
+import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import plainInstallerUrl from "../shortcut/install/safari-default.shortcut?url";
-import mapsInstallerUrl from "../shortcut/install/safari-apple-maps.shortcut?url";
 import plainScriptUrl from "../generated/safari-default.js?url";
 import mapsScriptUrl from "../generated/safari-apple-maps.js?url";
 import bundledSource from "../generated/safari-shortcut.txt?raw";
+import shortcutAlerts from "../shortcut/alerts.json";
 import { createShortcutSource } from "../shortcut/source.js";
 
-const shortcutVersion = "v11";
+const installers = import.meta.glob("../shortcut/install/*.shortcut", {
+  eager: true,
+  query: "?url",
+  import: "default",
+});
+
+const shortcutVersion = "v12";
 const portalUrl = "https://my1.ncist.edu.cn/";
 
 export default function SafariShortcut() {
@@ -41,6 +47,15 @@ export default function SafariShortcut() {
   const [prefix, setPrefix] = useState(false);
   const [message, setMessage] = useState("");
   const [inspect, setInspect] = useState(false);
+  const [alertId, setAlertId] = useState("none");
+  const alert =
+    shortcutAlerts.find((entry) => entry.id === alertId) ?? shortcutAlerts[0];
+  const installerUrl = (maps) =>
+    installers[
+      `../shortcut/install/safari-${maps ? "apple-maps" : "default"}-${alert.id}.shortcut`
+    ];
+  const installerName = (maps) =>
+    `应大通课表导出${maps ? "（地图适配）" : ""}${alert.id === "none" ? "" : `（${alert.label}）`}.shortcut`;
   const code = useMemo(
     () => createShortcutSource(bundledSource, { addUniversityPrefix: prefix }),
     [prefix],
@@ -82,12 +97,32 @@ export default function SafariShortcut() {
         <CardContent className="space-y-2">
           <p className="text-xs leading-6 text-muted-foreground">
             {shortcutVersion}{" "}
-            完成后直接打开日历 App，不再弹出某一节课程。已安装旧版的用户，请重新添加并选择替换。
+            新增课程提醒选择，默认不提醒；添加前检测是否已存在同名课表日历。已安装旧版的用户，请重新添加并选择替换。
           </p>
+          <div className="flex items-center justify-between gap-3 rounded-md border p-3">
+            <div>
+              <Label htmlFor="shortcut-alert">课程提醒</Label>
+              <p className="mt-1 text-xs text-muted-foreground">
+                默认不提醒；选择后每节课按所选时间提醒一次。10分钟前使用系统“自定提醒”写入。
+              </p>
+            </div>
+            <NativeSelect
+              id="shortcut-alert"
+              value={alertId}
+              onChange={(event) => setAlertId(event.target.value)}
+              className="w-36 shrink-0"
+            >
+              {shortcutAlerts.map((entry) => (
+                <NativeSelectOption key={entry.id} value={entry.id}>
+                  {entry.label}
+                </NativeSelectOption>
+              ))}
+            </NativeSelect>
+          </div>
           <Button
             className="h-10 w-full text-sm"
             render={
-              <a href={plainInstallerUrl} download="应大通课表导出.shortcut" />
+              <a href={installerUrl(false)} download={installerName(false)} />
             }
             nativeButton={false}
           >
@@ -133,7 +168,7 @@ export default function SafariShortcut() {
             </DialogTitle>
             <DialogDescription className="text-sm leading-6">
               {shortcutVersion}{" "}
-              使用系统日历动作批量添加课程，自动新建独立课表日历。已安装旧版请重新添加并替换；完成后打开日历
+              使用系统日历动作批量添加课程，自动新建独立课表日历；添加前检测同名课表日历。已安装旧版请重新添加并替换；完成后打开日历
               App，不进入课程详情。
             </DialogDescription>
           </DialogHeader>
@@ -146,7 +181,8 @@ export default function SafariShortcut() {
           </Alert>
           <ol className="list-decimal space-y-4 pl-5 text-sm leading-6">
             <li>
-              点击“添加快捷指令”，在 iPhone 系统页面确认添加。如果 Safari
+              在首页选择“课程提醒”（默认不提醒），点击“添加快捷指令”，在 iPhone
+              系统页面确认添加。如果 Safari
               先下载文件，点开下载的 .shortcut 文件导入。
             </li>
             <li>
@@ -169,8 +205,7 @@ export default function SafariShortcut() {
           </p>
           <Alert>
             <AlertDescription>
-              仅当日程备注中确实存在本直添版的完整同学期标记时才会停止，并显示匹配数量。个人日程和节假日不会触发防重。若中途停止或要重新添加，请先在日历
-              App 删除之前生成的整本课表日历，再运行。
+              添加前会检测是否已存在同名课表日历（应大通课表 · 学期名称）；检测到会停止，不重复创建。个人日程、节假日和其他日历不受影响。旧版按备注标记检测，请重新添加并替换旧快捷指令。
             </AlertDescription>
           </Alert>
           <div className="flex flex-wrap gap-3 text-xs text-primary">
@@ -184,6 +219,26 @@ export default function SafariShortcut() {
             >
               苹果官方说明
             </a>
+          </div>
+          <div className="flex items-center justify-between gap-3 rounded-md border p-3">
+            <div>
+              <Label htmlFor="shortcut-alert-dialog">课程提醒</Label>
+              <p className="mt-1 text-xs text-muted-foreground">
+                当前离线文件会写入“{alert.label}”；如需更换请在首页重新选择后再添加。
+              </p>
+            </div>
+            <NativeSelect
+              id="shortcut-alert-dialog"
+              value={alertId}
+              onChange={(event) => setAlertId(event.target.value)}
+              className="w-36 shrink-0"
+            >
+              {shortcutAlerts.map((entry) => (
+                <NativeSelectOption key={entry.id} value={entry.id}>
+                  {entry.label}
+                </NativeSelectOption>
+              ))}
+            </NativeSelect>
           </div>
           <div className="flex items-center justify-between gap-3 rounded-md border p-3">
             <div>
@@ -205,12 +260,8 @@ export default function SafariShortcut() {
             className="h-10 w-full text-sm"
             render={
               <a
-                href={prefix ? mapsInstallerUrl : plainInstallerUrl}
-                download={
-                  prefix
-                    ? "应大通课表导出（地图适配）.shortcut"
-                    : "应大通课表导出.shortcut"
-                }
+                href={installerUrl(prefix)}
+                download={installerName(prefix)}
               />
             }
             nativeButton={false}
