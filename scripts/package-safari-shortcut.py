@@ -49,7 +49,7 @@ def package(script, variant, alert=None):
     alert = alert or {'id': 'none', 'label': '无', 'alertTime': None}
     keys = ['javascript','text-result','dictionary','events','summary','planned-count','calendar-name','calendar-name-pattern','existing','existing-count','calendar','if-calendar','created','if-created','count','error','if-events','if-existing','repeat']
     keys += ['existing-' + key for key in ['repeat','detail','match','if-match','event','verified']]
-    ids = {key: identifier(variant + '-v12-' + key) for key in keys}
+    ids = {key: identifier(variant + '-v13-' + key) for key in keys}
     value = lambda key, name: ref(ids[key], name)
     result = value('javascript', '网页脚本结果')
     contents = value('text-result', '课表 JSON')
@@ -86,7 +86,7 @@ def package(script, variant, alert=None):
             action('repeat.each', UUID=ids[stage + '-verified'], GroupingIdentifier=ids[stage + '-repeat'], WFControlFlowMode=2),
         ]
     actions = [
-        action('comment', WFCommentActionText='应大通课表直接添加 v12\n从信息门户进入学校课表后，通过 Safari 分享菜单运行。确认后新建独立日历并批量添加。添加前检测是否已存在同名课表日历；提醒时间由安装的版本决定（默认无提醒）。只读取学校课表和已有课表日历，不读取密码或 Cookie，不向服务器回传数据。'),
+        action('comment', WFCommentActionText='应大通课表直接添加 v13\n从信息门户进入学校课表后，通过 Safari 分享菜单运行。确认后新建独立日历并批量添加。添加前检测是否已存在同名课表日历；提醒时间由安装的版本决定（默认无提醒）。只读取学校课表和已有课表日历，不读取密码或 Cookie，不向服务器回传数据。'),
         action('runjavascriptonwebpage', UUID=ids['javascript'], WFJavaScript=script, WFInput={'Value':{'Type':'ExtensionInput'},'WFSerializationType':'WFTextTokenAttachment'}),
         action('gettext', UUID=ids['text-result'], WFTextActionText=text_token(result)),
         action('detect.dictionary', UUID=ids['dictionary'], WFInput=contents),
@@ -101,7 +101,7 @@ def package(script, variant, alert=None):
         *verify_named_calendar('existing'),
         action('count', UUID=ids['existing-count'], Input=value('existing-verified','已核验的同名课表日程'), WFCountType='Items'),
         positive_count('if-existing',value('existing-count','同名课表数量')),
-        action('alert', WFAlertActionTitle='已存在同名课表日历 · v12', WFAlertActionMessage=text_parts('已存在同名课表日历：\n',name,'\n\n为避免重复，本次没有创建日历或添加课程。'), WFAlertActionCancelButtonShown=False),
+        action('alert', WFAlertActionTitle='已存在同名课表日历 · v13', WFAlertActionMessage=text_parts('已存在同名课表日历：\n',name,'\n\n为避免重复，本次没有创建日历或添加课程。'), WFAlertActionCancelButtonShown=False),
         branch('if-existing',1),
         action('alert', WFAlertActionTitle='确认添加课表', WFAlertActionMessage=text_token(summary), WFAlertActionCancelButtonShown=True),
         action('addnewcalendar', UUID=ids['calendar'], CalendarName=text_token(name)),
@@ -113,11 +113,11 @@ def package(script, variant, alert=None):
     if alert.get('alertTime') == 'Custom':
         field_keys.append('alert')
     for key in field_keys:
-        field_id = identifier(variant + '-v12-event-' + key)
+        field_id = identifier(variant + '-v13-event-' + key)
         fields[key] = ref(field_id, '课程' + key)
         actions.append(action('getvalueforkey', UUID=field_id, WFGetDictionaryValueType='Value', WFDictionaryKey=key, WFInput=repeat_item))
-    start = identifier(variant + '-v12-start-date')
-    end = identifier(variant + '-v12-end-date')
+    start = identifier(variant + '-v13-start-date')
+    end = identifier(variant + '-v13-end-date')
     event_params = {
         'WFCalendarItemTitle': text_token(fields['title']),
         'WFCalendarItemLocation': text_token(fields['location']),
@@ -140,7 +140,7 @@ def package(script, variant, alert=None):
         action('count', UUID=ids['count'], Input=value('created','本次添加动作返回的日程'), WFCountType='Items'),
         positive_count('if-created',value('count','本次添加数量')),
         action('alert', WFAlertActionTitle='课表添加结果', WFAlertActionMessage=text_parts('日历：',name,'\n计划课程次数：',value('planned-count','计划数量'),'\n本次添加日程：',value('count','本次添加数量'),'\n\n数量来自本次添加动作返回的日程。'), WFAlertActionCancelButtonShown=False),
-        action('openapp', WFAppIdentifier='com.apple.mobilecal', WFAppName='Calendar'),
+        action('openapp', WFSelectedApp={'BundleIdentifier':'com.apple.mobilecal','Name':'Calendar'}),
         branch('if-created',1),
         action('alert', WFAlertActionTitle='未取得添加结果', WFAlertActionMessage='添加动作没有返回日程结果，请在日历 App 检查本次生成的课表日历。', WFAlertActionCancelButtonShown=False),
         branch('if-created',2),
@@ -150,7 +150,7 @@ def package(script, variant, alert=None):
         branch('if-existing',2),
         branch('if-events',1),
         get('error','error'),
-        action('alert', WFAlertActionTitle='课表读取未完成 · v12', WFAlertActionMessage=text_token(value('error','错误原因'),'未添加任何日程。具体原因：\n\n'), WFAlertActionCancelButtonShown=False),
+        action('alert', WFAlertActionTitle='课表读取未完成 · v13', WFAlertActionMessage=text_token(value('error','错误原因'),'未添加任何日程。具体原因：\n\n'), WFAlertActionCancelButtonShown=False),
         branch('if-events',2),
     ]
     return {

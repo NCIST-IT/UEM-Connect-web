@@ -1,4 +1,4 @@
-# Safari 快捷指令课表直添（v12 · 试验）
+# Safari 快捷指令课表直添（v13 · 试验）
 
 首页“添加快捷指令”提供已签名的标准版与地图适配版，并可选课程提醒时间（默认不提醒）。v12 用系统日历动作新建独立日历并批量添加日程，跳过本地 ICS 导入；添加前检测同名课表日历，结果数量来自本次添加动作返回的日程，结束时直接打开日历 App。原账号登录、周课表预览和 .ics 导出流程保留。
 
@@ -26,7 +26,7 @@ convertScheduleToIcs 新增 calendarEvents 结果，直接复用既有 UID 去�
 
 学期标记 [UEM-TERM:source:semesterId] 仍附在课程备注便于识别，但不再用于防重扫描。脚本返回 calendarNamePattern，以转义后的字面日历名称生成整行正则（兼容 LF/CRLF）。防重使用 Find Calendar Events（Calendar 为“是”所选日历名、Library、取 1 条），再重复读取候选日程的 Calendar 详情、Match Text 核验后计数；Count 使用正式 Input 字段统计核验后的 Repeat Results，If 使用数量大于 0（条件 2、WFNumberValue=0），不直接对日历查询结果做 Has Any Value 判断。仅限当前手机、当前学生的一次性学期导入场景，不新增账号管理。
 
-添加结果 Count 的 Input 引用添加课程循环的 Repeat Results，该循环的最后一个动作为 Add New Event，返回新建的 EKEvent 对象。结果页“本次添加日程”来自这些返回对象，不取计划数量代替、不重新查询 Library。成功后通过 Open App（`WFAppIdentifier=com.apple.mobilecal`、`WFAppName=Calendar`）直接启动日历，不传入课程事件。
+添加结果 Count 的 Input 引用添加课程循环的 Repeat Results，该循环的最后一个动作为 Add New Event，返回新建的 EKEvent 对象。结果页“本次添加日程”来自这些返回对象，不取计划数量代替、不重新查询 Library。成功后通过 Open App（`WFSelectedApp` = `{BundleIdentifier: com.apple.mobilecal, Name: Calendar}`）直接启动日历，不传入课程事件。
 
 提醒时间写入 Add New Event 的 WFAlertTime（iOS 27 ToolKit v78 枚举：None、At time of event、5/15/30 minutes、1/2 hours、1/2 days、1 week before、Custom），按所选安装版本在打包时固定。“10分钟前”不在该枚举中，改用 Custom 提醒配 WFAlertCustomTime：网页脚本为每节课附带 start 减 10 分钟的 ISO 时间 alert，原生按 ISO 文本传入，待实机确认。系统“新建日程”动作没有旅行时间/出发时间参数，课程地点也是纯文本，因此不提供“出发时间”。每个日程仅支持一条提醒；第二条提醒无法由快捷指令写入。
 
@@ -91,8 +91,16 @@ pnpm build
 
 ## v11 结束时打开日历
 
-成功提示后使用系统 Open App 动作直接启动 Calendar，不再将第一节课程事件传给 Show in Calendar，因此不会跳进某节课程详情。动作标识与 `WFAppIdentifier` / `WFAppName` 参数键来自本地 iOS 27 / macOS 27 Shortcuts ToolKit v78 动作元数据；日历应用标识为 `com.apple.mobilecal`。网页课表脚本及结果数量统计保持不变。
+成功提示后使用系统 Open App 动作直接启动 Calendar，不再将第一节课程事件传给 Show in Calendar，因此不会跳进某节课程详情。动作标识来自本地 iOS 27 / macOS 27 Shortcuts ToolKit v78 动作元数据；日历应用标识为 `com.apple.mobilecal`。网页课表脚本及结果数量统计保持不变。
+
+后续实机发现 v11–v12 的 Open App 显示为未选择应用：旧写法使用了已过时的 `WFAppIdentifier` / `WFAppName`。iOS 27 ToolKit v78 中该动作参数为 `WFSelectedApp`（应用选择器状态）与 `WFAppName`；cherri 编译器与 shortcuts-playground 回归样例均使用 `WFSelectedApp = {BundleIdentifier, Name}` 写入应用。
 
 ## v12 提醒选项与同名日历检测
 
 首页新增“课程提醒”下拉：无（默认）、日程开启时、5/10/15/30分钟前、1/2小时前、1/2天前、1周前，共 11 种；标准版与地图版各 11 个安装文件，合计 22 个已签名安装包（每个 52 个动作）。标准 10 项直接写入 Add New Event 的 WFAlertTime；WFAlertTime 枚举不含“10分钟前”，该选项改用 Custom + WFAlertCustomTime，由网页脚本为每节课计算开始前 10 分钟的 ISO 时间。所有提醒选项共用同一网页脚本，脚本版本为 10；“出发时间”因动作无旅行时间参数、课程地点为纯文本而不提供。删除课程后不再扫描备注标记：防重改为添加前按日历名称过滤候选日程（Operator 4 + Enumeration 字符串），再逐条读取 Calendar 详情并以整行正则核验，核验计数大于 0 才停止，个人日程、节假日与其他日历不会触发。按钮文案与提示同步更新；注意旧版快捷指令不会随网页更新，需重新添加替换。
+
+## v13 打开应用参数修复
+
+用户实机指出快捷指令末尾“打开 App”动作没有指定应用。v11–v12 使用了旧版参数键 `WFAppIdentifier` + `WFAppName`，在 iOS 27 上无法填充应用选择器。v13 改为 `WFSelectedApp = {"BundleIdentifier":"com.apple.mobilecal","Name":"Calendar"}`；该写法与 cherri `openApp` 实现及 shortcuts-playground 的 Open App 回归样例一致，并把 `is.workflow.actions.openapp` 加入 iOS 27 参数白名单 fixture。两个变体 × 11 种提醒共 22 个安装包全部重新签名并回读核对（每个 52 个动作），网页脚本保持 version 10 不变。
+
+关于实机看到的提醒列表：iOS 27 的 Add New Event 动作在设备上支持多行提醒，网页选择的提醒会出现在第二行，首行默认显示“出发时间”（Time to Leave）。公开的 ToolKit v78 参数快照、旧版动作元数据与真实导出样本中，该动作的提醒参数只有一组 `WFAlertTime` / `WFAlertCustomTime`，没有首行“出发时间”对应的可编程字段；在未获得真实 iOS 27 导出样本前不猜测隐藏键。该首行可在快捷指令 App 中手动修改。

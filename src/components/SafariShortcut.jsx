@@ -39,7 +39,7 @@ const installers = import.meta.glob("../shortcut/install/*.shortcut", {
   import: "default",
 });
 
-const shortcutVersion = "v12";
+const shortcutVersion = "v13";
 const portalUrl = "https://my1.ncist.edu.cn/";
 
 export default function SafariShortcut() {
@@ -97,7 +97,7 @@ export default function SafariShortcut() {
         <CardContent className="space-y-2">
           <p className="text-xs leading-6 text-muted-foreground">
             {shortcutVersion}{" "}
-            新增课程提醒选择，默认不提醒；添加前检测是否已存在同名课表日历。已安装旧版的用户，请重新添加并选择替换。
+            修复结束时“打开 App”未指定应用的问题（现在明确打开日历）；新增课程提醒选择，默认不提醒；添加前检测是否已存在同名课表日历。已安装旧版的用户，请重新添加并选择替换。
           </p>
           <div className="flex items-center justify-between gap-3 rounded-md border p-3">
             <div>

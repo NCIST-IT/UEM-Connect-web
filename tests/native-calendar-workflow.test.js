@@ -270,8 +270,10 @@ test("the success path opens the Calendar app instead of an event", () => {
       (a) => a.WFWorkflowActionIdentifier === "is.workflow.actions.openapp",
     ).WFWorkflowActionParameters;
     assert.deepEqual(open, {
-      WFAppIdentifier: "com.apple.mobilecal",
-      WFAppName: "Calendar",
+      WFSelectedApp: {
+        BundleIdentifier: "com.apple.mobilecal",
+        Name: "Calendar",
+      },
     });
     assert.ok(
       !target.WFWorkflowActions.some((a) =>
