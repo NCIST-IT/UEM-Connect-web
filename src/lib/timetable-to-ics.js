@@ -253,23 +253,3 @@ export function convertTimetableToIcs(input, options = {}) {
   );
   return convertScheduleToIcs(snapshot, options);
 }
-
-/** Download generated iCalendar text in the browser; no file is uploaded. */
-export function downloadIcs(ics, filename = "我的课表.ics") {
-  if (typeof document === "undefined")
-    throw new Error("downloadIcs 只能在浏览器中调用");
-  if (typeof ics !== "string") throw new TypeError("ics 必须是字符串");
-  if (typeof filename !== "string" || !filename.trim())
-    throw new TypeError("文件名不能为空");
-  const url = URL.createObjectURL(
-    new Blob([ics], { type: "text/calendar;charset=utf-8" }),
-  );
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = /\.ics$/i.test(filename) ? filename : `${filename}.ics`;
-  document.body.append(link);
-  link.click();
-  link.remove();
-  // Give the browser time to start reading the Blob before releasing it.
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
-}

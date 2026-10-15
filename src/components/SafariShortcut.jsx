@@ -97,13 +97,13 @@ export default function SafariShortcut() {
         <CardContent className="space-y-2">
           <p className="text-xs leading-6 text-muted-foreground">
             {shortcutVersion}{" "}
-            修复结束时“打开 App”未指定应用的问题（现在明确打开日历）；新增课程提醒选择，默认不提醒；添加前检测是否已存在同名课表日历。已安装旧版的用户，请重新添加并选择替换。
+            添加前检测同名课表日历，完成后打开日历 App。已安装旧版的用户，请重新添加并选择替换。
           </p>
           <div className="flex items-center justify-between gap-3 rounded-md border p-3">
             <div>
-              <Label htmlFor="shortcut-alert">课程提醒</Label>
+              <Label htmlFor="shortcut-alert">第二个提醒</Label>
               <p className="mt-1 text-xs text-muted-foreground">
-                默认不提醒；选择后每节课按所选时间提醒一次。10分钟前使用系统“自定提醒”写入。
+                默认不额外设置提醒；首个“出发时间”由系统处理。10分钟前使用系统“自定提醒”。
               </p>
             </div>
             <NativeSelect
@@ -181,7 +181,7 @@ export default function SafariShortcut() {
           </Alert>
           <ol className="list-decimal space-y-4 pl-5 text-sm leading-6">
             <li>
-              在首页选择“课程提醒”（默认不提醒），点击“添加快捷指令”，在 iPhone
+              在首页选择“第二个提醒”（默认不额外设置），点击“添加快捷指令”，在 iPhone
               系统页面确认添加。如果 Safari
               先下载文件，点开下载的 .shortcut 文件导入。
             </li>
@@ -222,7 +222,7 @@ export default function SafariShortcut() {
           </div>
           <div className="flex items-center justify-between gap-3 rounded-md border p-3">
             <div>
-              <Label htmlFor="shortcut-alert-dialog">课程提醒</Label>
+              <Label htmlFor="shortcut-alert-dialog">第二个提醒</Label>
               <p className="mt-1 text-xs text-muted-foreground">
                 当前离线文件会写入“{alert.label}”；如需更换请在首页重新选择后再添加。
               </p>

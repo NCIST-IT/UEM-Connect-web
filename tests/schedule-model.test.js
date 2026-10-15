@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { normalizeSchedule, weekBlocks } from "../src/lib/schedule-model.js";
+import { normalizeSchedule } from "../src/lib/schedule-model.js";
 import {
   convertScheduleToIcs,
   convertTimetableToIcs,
@@ -53,13 +53,12 @@ function gmsWeek(wi, periods, encoding = "array") {
     })),
   ];
 }
-test("preview and export share JWXT occurrences, prefix changes only LOCATION", () => {
+test("JWXT conversion preserves occurrences and prefix changes only LOCATION", () => {
   const snapshot = normalizeSchedule(jwxt([row]), {
     now: new Date("2026-09-21T00:00:00Z"),
   });
   assert.equal(snapshot.currentWeek, 3);
   assert.equal(snapshot.occurrences.length, 3);
-  assert.equal(weekBlocks(snapshot, 2).length, 1);
   const stamp = new Date("2026-10-08T00:00:00Z");
   const plain = convertScheduleToIcs(snapshot, {
     timestamp: stamp,
@@ -97,14 +96,18 @@ test("missing school dates block export; unscheduled classes are explicitly show
   assert.equal(model.semesterStartDate, null);
   assert.throws(() => convertScheduleToIcs(model), /起始日期/);
 });
-test("overlapping classes use separate lanes and preserve real occurrences", () => {
+test("overlapping classes remain distinct calendar events", () => {
   const model = normalizeSchedule(
     jwxt([row, { ...row, RPDTId: 2, LUName: "第二门课", TimeSlotEnd: 105 }]),
   );
-  const blocks = weekBlocks(model, 1);
-  assert.equal(blocks.length, 2);
-  assert.ok(blocks.every((b) => b.laneCount === 2));
-  assert.notEqual(blocks[0].lane, blocks[1].lane);
+  const { calendarEvents } = convertScheduleToIcs(model);
+  assert.equal(calendarEvents.length, 6);
+  const firstDay = calendarEvents.filter((event) =>
+    event.start.startsWith("2026-09-07"),
+  );
+  assert.equal(firstDay.length, 2);
+  assert.equal(firstDay[0].start, firstDay[1].start);
+  assert.notEqual(firstDay[0].uid, firstDay[1].uid);
 });
 for (const encoding of ["array", "object", "json"])
   test(`GMS ${encoding}: merges adjacent periods within each exact week, never unions weeks`, () => {

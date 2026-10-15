@@ -372,37 +372,3 @@ export function parseGmsCell(value) {
   if (typeof value === "object") return [value];
   throw new Error("研究生课程单元格格式不支持");
 }
-
-export function weekBlocks(snapshot, week) {
-  const blocks = snapshot.occurrences
-    .filter((e) => e.week === week)
-    .map((e) => ({ ...e, lane: 0, laneCount: 1 }));
-  for (let day = 1; day <= 7; day++) {
-    const items = blocks
-      .filter((e) => e.day === day)
-      .sort((a, b) => a.start - b.start || a.end - b.end);
-    let group = [];
-    let maxEnd = 0;
-    const layout = () => {
-      const ends = [];
-      for (const e of group) {
-        let lane = ends.findIndex((n) => n <= e.start);
-        if (lane < 0) lane = ends.length;
-        ends[lane] = e.end;
-        e.lane = lane;
-      }
-      for (const e of group) e.laneCount = ends.length;
-    };
-    for (const e of items) {
-      if (group.length && e.start >= maxEnd) {
-        layout();
-        group = [];
-        maxEnd = 0;
-      }
-      group.push(e);
-      maxEnd = Math.max(maxEnd, e.end);
-    }
-    layout();
-  }
-  return blocks;
-}

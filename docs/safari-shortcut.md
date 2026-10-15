@@ -1,10 +1,10 @@
 # Safari 快捷指令课表直添（v13 · 试验）
 
-首页“添加快捷指令”提供已签名的标准版与地图适配版，并可选课程提醒时间（默认不提醒）。v12 用系统日历动作新建独立日历并批量添加日程，跳过本地 ICS 导入；添加前检测同名课表日历，结果数量来自本次添加动作返回的日程，结束时直接打开日历 App。原账号登录、周课表预览和 .ics 导出流程保留。
+首页“添加快捷指令”提供已签名的标准版与地图适配版，并可选课程提醒时间（默认不额外设置提醒）。v13 用系统日历动作新建独立日历并批量添加日程；添加前检测同名课表日历，结果数量来自本次添加动作返回的日程，结束时直接打开日历 App（已实机确认）。网站仅提供快捷指令安装、脚本审阅和使用说明，以纯静态方式部署。
 
 ## 操作
 
-1. 在首页选择课程提醒时间（默认不提醒），重新添加并替换旧版快捷指令。首次使用允许网页脚本，并按系统提示授权读取和添加日历。读取用于添加前检测同名课表日历。
+1. 在首页选择“第二个提醒”（默认不额外设置），重新添加并替换旧版快捷指令。首次使用允许网页脚本，并按系统提示授权读取和添加日历。读取用于添加前检测同名课表日历。
 2. 用 Safari 登录信息门户 https://my1.ncist.edu.cn/ ，从门户进入本科“教务管理系统 → 我的课表”，或“研究生管理系统 → 个人课表”。在课表页面分享菜单运行“应大通课表导出”。
 3. 读取课程后，查询是否存在名为“应大通课表 · 学期名称”的日历：先按日历名称过滤候选日程，再逐条核验所在日历名称完全一致。只有核验到同名日历才停止，不重复创建。若已删除该日历可重新运行；删除等清理由用户自行处理。
 4. 核对摘要并确认后，新建“应大通课表 · 学期名称”，逐条调用原生添加日程，关闭逐条编辑窗口。所有日程只写入本次新建的日历；新建动作未返回日历对象时停止。
@@ -28,7 +28,7 @@ convertScheduleToIcs 新增 calendarEvents 结果，直接复用既有 UID 去�
 
 添加结果 Count 的 Input 引用添加课程循环的 Repeat Results，该循环的最后一个动作为 Add New Event，返回新建的 EKEvent 对象。结果页“本次添加日程”来自这些返回对象，不取计划数量代替、不重新查询 Library。成功后通过 Open App（`WFSelectedApp` = `{BundleIdentifier: com.apple.mobilecal, Name: Calendar}`）直接启动日历，不传入课程事件。
 
-提醒时间写入 Add New Event 的 WFAlertTime（iOS 27 ToolKit v78 枚举：None、At time of event、5/15/30 minutes、1/2 hours、1/2 days、1 week before、Custom），按所选安装版本在打包时固定。“10分钟前”不在该枚举中，改用 Custom 提醒配 WFAlertCustomTime：网页脚本为每节课附带 start 减 10 分钟的 ISO 时间 alert，原生按 ISO 文本传入，待实机确认。系统“新建日程”动作没有旅行时间/出发时间参数，课程地点也是纯文本，因此不提供“出发时间”。每个日程仅支持一条提醒；第二条提醒无法由快捷指令写入。
+提醒时间写入 Add New Event 的 WFAlertTime（iOS 27 ToolKit v78 枚举：None、At time of event、5/15/30 minutes、1/2 hours、1/2 days、1 week before、Custom），按所选安装版本在打包时固定。“10分钟前”不在该枚举中，改用 Custom 提醒配 WFAlertCustomTime：网页脚本为每节课附带 start 减 10 分钟的 ISO 时间 alert，原生按 ISO 文本传入。用户实机确认网页选择对应第二个提醒，首行默认“出发时间”，并可继续添加更多提醒；此前“一条提醒”的判断不准确。目前仅控制已核实的这一组提醒参数，尚未确认首行“出发时间”的程序化设置方式。“无”版本不写入 WFAlertTime，不保证关闭系统继承的提醒。
 
 iOS 27 ToolKit v78 中确认存在：addnewcalendar(CalendarName)、addnewevent(WFCalendarDescriptor、ShowWhenRun 等)、filter.calendarevents、date、openapp。特别使用当前 WFCalendarDescriptor 而非旧的 WFCalendarItemCalendar；ShowWhenRun=false 关闭每节课的编辑窗口。日历查询显式选择 Library，避免继承上一步文本作为查询输入。重复项、日期和 Calendar 对象都通过显式变量引用。结束时使用 Open App 打开日历，不再使用 showincalendar 传入具体日程。
 
@@ -47,7 +47,7 @@ pnpm build
 
 签名请求只有程序代码。安装文件内容回读与本地所有动作和脚本一致后才发布；manifest 固定文件和脚本 SHA-256，源码变动而未重新签名时构建停止。内容比较不替代 Apple 设备的签名信任验证。运行时不连接签名服务。
 
-59 项本地测试通过：包括原生/ICS 数量和绝对时间一致、单双周及完整学期、午夜跨年、地图前缀、未排课提醒、JSON 传输、当前 iOS 27 参数名称、目标日历必须来自本次创建、确认先于写入、同名日历检测和本次添加结果的引用链、提醒选项写入每个日程。模拟原生动作执行的回归用例包括：空结果、个人/节假日等其他日历、同名日历阻止写入、无提醒/预设提醒/自定提醒的序列化、“添加 286 条”仍报告本次添加 286、未取得日历或添加失败时停止、成功路径打开日历而非课程详情。它们不等于 iPhone 实际写入验收；需要用户运行确认权限、创建日历、批量保存与结果数量，以及“10分钟前”自定提醒。
+当前保留 51 项快捷指令及共用转换逻辑测试：包括原生/ICS 数量和绝对时间一致、单双周及完整学期、午夜跨年、地图前缀、未排课提醒、JSON 传输、当前 iOS 27 参数名称、目标日历必须来自本次创建、确认先于写入、同名日历检测和本次添加结果的引用链、提醒选项写入每个日程。模拟原生动作执行的回归用例包括：空结果、个人/节假日等其他日历、同名日历阻止写入、无提醒/预设提醒/自定提醒的序列化、“添加 286 条”仍报告本次添加 286、未取得日历或添加失败时停止、成功路径打开日历而非课程详情。它们不等于 iPhone 实际写入验收；权限、创建日历、批量保存与结果数量及自定提醒的表现仍以设备反馈为准。用户已确认 v13 可以成功打开日历 App。
 
 协议依据：[Apple 网页脚本动作](https://support.apple.com/guide/shortcuts/apd218e2187d/ios)、[iOS 27 ToolKit 参数快照](https://github.com/viticci/shortcuts-playground-plugin/blob/main/codex/skills/shortcuts-playground/data/toolkit-v78-first-party-parameter-keys.json)、[Cherri 签名接口](https://github.com/electrikmilk/cherri/blob/main/signing.go)。
 
