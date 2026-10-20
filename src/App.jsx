@@ -27,7 +27,7 @@ import { androidInstaller, communityUrl, projectUrl } from "@/data/sites";
 import "./App.css";
 
 const SafariShortcut = lazy(() => import("@/components/SafariShortcut"));
-const pages = ["navigation", "app", "downloads"];
+const pages = ["navigation", "app", "downloads", "shortcut"];
 const year = new Date().getFullYear();
 const features = [
   [
@@ -67,9 +67,7 @@ function ProductPage({ onNavigate }) {
     <div className="page-enter">
       <section className="product-hero">
         <div className="product-intro">
-          <div className="eyebrow">
-            MADE FOR YOUR CAMPUS
-          </div>
+          <div className="eyebrow">MADE FOR YOUR CAMPUS</div>
           <div className="product-name">
             <span className="product-logo">
               <img src="/images/app-icon.png" alt="" />
@@ -132,7 +130,89 @@ function ProductPage({ onNavigate }) {
   );
 }
 
-function DownloadPage() {
+function IosShortcutCard({ installer = false, onNavigate }) {
+  const Heading = installer ? "h1" : "h2";
+  return (
+    <section className="ios-download" aria-labelledby="ios-title">
+      <div className="download-platform">
+        <span className="platform-icon">
+          <AppleLogoIcon weight="fill" />
+        </span>
+        <Badge variant="outline">iOS SHORTCUT</Badge>
+      </div>
+      <Heading id="ios-title">让课表，住进日历。</Heading>
+      <p className="download-description">
+        用 Safari 读取学校课表，
+        <br />
+        一键添加到 iPhone 系统日历。
+      </p>
+      {installer ? (
+        <Suspense
+          fallback={
+            <p
+              role="status"
+              className="py-12 text-center text-sm text-muted-foreground"
+            >
+              正在加载快捷指令安装选项…
+            </p>
+          }
+        >
+          <SafariShortcut />
+        </Suspense>
+      ) : (
+        <>
+          <div className="download-feature-list">
+            {["课表导入系统日历", "11 种提醒选项", "可选 Apple 地图适配"].map(
+              (text) => (
+                <p key={text}>
+                  <CheckIcon />
+                  {text}
+                </p>
+              ),
+            )}
+          </div>
+          <div className="shortcut-entry-art" aria-hidden="true">
+            <CalendarBlankIcon weight="duotone" />
+            <span>SAFARI → CALENDAR</span>
+          </div>
+          <Button
+            className="shortcut-entry-button h-12 w-full"
+            render={<a href="#shortcut" />}
+            nativeButton={false}
+            onClick={(event) => {
+              if (
+                event.metaKey ||
+                event.ctrlKey ||
+                event.shiftKey ||
+                event.altKey
+              )
+                return;
+              event.preventDefault();
+              onNavigate("shortcut");
+            }}
+          >
+            <CalendarBlankIcon />
+            打开课表导出
+            <ArrowRightIcon className="ml-auto" />
+          </Button>
+          <p className="download-file-note">
+            选择提醒、添加快捷指令与查看使用说明
+          </p>
+        </>
+      )}
+    </section>
+  );
+}
+
+function ShortcutPage() {
+  return (
+    <div className="page-enter shortcut-page">
+      <IosShortcutCard installer />
+    </div>
+  );
+}
+
+function DownloadPage({ onNavigate }) {
   return (
     <div className="page-enter downloads-page">
       <div className="page-heading">
@@ -198,32 +278,7 @@ function DownloadPage() {
             查看更新记录 <ArrowUpRightIcon />
           </a>
         </section>
-        <section className="ios-download" aria-labelledby="ios-title">
-          <div className="download-platform">
-            <span className="platform-icon">
-              <AppleLogoIcon weight="fill" />
-            </span>
-            <Badge variant="outline">iOS SHORTCUT</Badge>
-          </div>
-          <h2 id="ios-title">让课表，住进日历。</h2>
-          <p className="download-description">
-            用 Safari 读取学校课表，
-            <br />
-            一键添加到 iPhone 系统日历。
-          </p>
-          <Suspense
-            fallback={
-              <p
-                role="status"
-                className="py-12 text-center text-sm text-muted-foreground"
-              >
-                正在加载快捷指令安装选项…
-              </p>
-            }
-          >
-            <SafariShortcut />
-          </Suspense>
-        </section>
+        <IosShortcutCard onNavigate={onNavigate} />
       </div>
       <div className="download-help">
         <ShieldCheckIcon />
@@ -253,7 +308,7 @@ export default function App() {
     }
   }, [dark]);
   useEffect(() => {
-    document.title = `${{ navigation: "校园导航", app: "应大通", downloads: "下载" }[page]} · IT 智云社`;
+    document.title = `${{ navigation: "校园导航", app: "应大通", downloads: "下载", shortcut: "课表导出" }[page]} · IT 智云社`;
   }, [page]);
   function navigate(value) {
     setPage(value);
@@ -335,7 +390,10 @@ export default function App() {
           <ProductPage onNavigate={navigate} />
         </TabsContent>
         <TabsContent value="downloads">
-          <DownloadPage />
+          <DownloadPage onNavigate={navigate} />
+        </TabsContent>
+        <TabsContent value="shortcut" aria-label="课表导出">
+          <ShortcutPage />
         </TabsContent>
       </main>
       <footer className="site-footer">

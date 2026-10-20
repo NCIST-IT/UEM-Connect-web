@@ -112,9 +112,7 @@ export default function Directory({ onNavigate }) {
     <div className="page-enter">
       <section className="directory-hero" aria-labelledby="directory-title">
         <div>
-          <div className="eyebrow">
-            YOUR CAMPUS, CONNECTED
-          </div>
+          <div className="eyebrow">YOUR CAMPUS, CONNECTED</div>
           <h1 id="directory-title">
             校园很大，
             <br className="sm:hidden" />
@@ -243,8 +241,20 @@ export default function Directory({ onNavigate }) {
                         >
                           <a
                             href={site.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
+                            target={site.page ? undefined : "_blank"}
+                            rel={site.page ? undefined : "noopener noreferrer"}
+                            onClick={(event) => {
+                              if (
+                                !site.page ||
+                                event.metaKey ||
+                                event.ctrlKey ||
+                                event.shiftKey ||
+                                event.altKey
+                              )
+                                return;
+                              event.preventDefault();
+                              onNavigate(site.page);
+                            }}
                             className="site-link"
                             title={`${site.name}\n${site.description}\n${site.status}\n${site.url}`}
                           >
@@ -259,7 +269,11 @@ export default function Directory({ onNavigate }) {
                                   {site.statusLabel}
                                 </span>
                               )}
-                              <ArrowUpRightIcon className="site-arrow" />
+                              {site.page ? (
+                                <ArrowRightIcon className="site-arrow" />
+                              ) : (
+                                <ArrowUpRightIcon className="site-arrow" />
+                              )}
                             </div>
                             <h3>{site.name}</h3>
                             <p>{site.description}</p>

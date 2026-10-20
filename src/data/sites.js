@@ -1,10 +1,24 @@
 import resources from "./resources.json";
 
+const directoryItems = [
+  {
+    category: "教务与图书",
+    name: "课表导出",
+    url: "#shortcut",
+    page: "shortcut",
+    campus: "全校",
+    status: "本站工具",
+    description: "将学校课表添加到 iPhone 日历",
+    icon: "calendar",
+  },
+  ...resources.items,
+];
+
 export const categories = [
   "全部站点",
   ...new Set(resources.items.map((item) => item.category)),
 ];
-export const totalSites = resources.items.length;
+export const totalSites = directoryItems.length;
 export const researchDate = resources.research_date;
 
 function siteIcon(item) {
@@ -51,12 +65,12 @@ export const schools = [
   },
 ].map((school) => ({
   ...school,
-  sites: resources.items
+  sites: directoryItems
     .filter((item) => item.campus === school.campus)
     .map((item) => ({
       ...item,
       id: item.url,
-      icon: siteIcon(item),
+      icon: item.icon ?? siteIcon(item),
       featured: /信息门户|统一身份认证|应急管理大学主站/.test(item.name),
       statusLabel: /历史/.test(item.status)
         ? "历史入口"

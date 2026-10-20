@@ -1,6 +1,6 @@
 # IT 智云社 · 校园门户
 
-基于 React、Vite、Tailwind CSS 4 和 shadcn/ui 的纯静态校园网站，包含「导航 / 应大通 / 下载」三个页面，默认进入校园导航。
+基于 React、Vite、Tailwind CSS 4 和 shadcn/ui 的纯静态校园网站，包含「导航 / 应大通 / 下载 / 课表导出」四个页面，默认进入校园导航。
 
 ## 启动
 
@@ -16,13 +16,14 @@ pnpm start
 
 - **导航**：按全校通用、华科（东院）、防灾（西院）分组，支持实时搜索、分类、站点展开与本地收藏。按 `/` 可聚焦搜索框。
 - **应大通**：应用介绍、用户提供的课表和地图实机截图，点击图片可放大。
-- **下载**：Android 最新 APK 代理下载，以及 iOS Safari 课表快捷指令（标准版 / 地图适配版 × 11 种提醒，合计 22 个已签名安装包）。
+- **下载**：Android 最新 APK 代理下载，以及 iOS 课表导出子页面入口。
+- **课表导出**（`#shortcut`）：独立的 iOS Safari 快捷指令子页面，提供标准版 / 地图适配版 × 11 种提醒，合计 22 个已签名安装包；从导航首页或下载页进入。顶部 Dock 保持「导航 / 应大通 / 下载」三项。
 - 支持浅色 / 深色模式、移动端布局、键盘操作和减少动态效果偏好。收藏与主题只保存在当前浏览器。
 
 ## 数据与资源
 
 - `src/data/resources.json`：用户提供的 2026-10-20 校园 Web 资源清单，75 条入口，保留原始分类、校区、状态和来源。历史 / 待核验入口有状态标记；列表不代表所有链接均已实机登录验证。
-- `src/data/sites.js`：清单展示映射、社区地址和 Android 下载地址。
+- `src/data/sites.js`：清单展示映射、本站课表导出入口、社区地址和 Android 下载地址；首页合计 76 个入口（75 个清单站点 + 1 个本站工具）。
 - Android 下载：`https://v4.gh-proxy.org/https://github.com/NCIST-IT/UEM-Connect-board/releases/latest/download/uem-connect.apk`。
 - `public/images/community.png`：来自用户指定的 [NCIST-IT/resource](https://github.com/NCIST-IT/resource) 中的 `icon-square.png`。
 - `public/images/schedule.png`、`campus-map.png`：用户提供的两张实机截图。

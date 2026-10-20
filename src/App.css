@@ -1065,6 +1065,48 @@ button:focus-visible {
   letter-spacing: -0.6px;
   margin-bottom: 13px;
 }
+.shortcut-page {
+  max-width: 470px;
+  margin: 48px auto 0;
+}
+.shortcut-page h1 {
+  font-weight: 650;
+  font-size: 24px;
+  letter-spacing: -0.6px;
+  margin-bottom: 13px;
+}
+.download-grid .ios-download {
+  display: flex;
+  flex-direction: column;
+}
+.download-grid .ios-download .download-description {
+  margin-bottom: 0;
+}
+.shortcut-entry-art {
+  flex: 1;
+  min-height: 201px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  color: var(--primary);
+}
+.shortcut-entry-art > svg {
+  width: 82px;
+  height: 82px;
+  transform: rotate(-7deg);
+}
+.shortcut-entry-art > span {
+  font: 8px var(--font-heading);
+  letter-spacing: 3px;
+  color: var(--muted-foreground);
+}
+.shortcut-entry-button {
+  margin-top: 25px;
+  border-radius: 11px;
+  font-size: 12px;
+}
 .download-description {
   font-size: 12px;
   color: var(--muted-foreground);
