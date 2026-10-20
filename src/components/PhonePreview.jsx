@@ -52,7 +52,7 @@ export default function PhonePreview() {
           </button>
         ))}
         <div className="preview-note">
-          <span className="status-dot" /> 你的校园日常，井井有条
+          你的校园日常，井井有条
           <span className="preview-disclaimer">实机截图 · 点击查看大图</span>
         </div>
       </div>

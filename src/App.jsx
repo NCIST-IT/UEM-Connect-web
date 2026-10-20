@@ -68,7 +68,7 @@ function ProductPage({ onNavigate }) {
       <section className="product-hero">
         <div className="product-intro">
           <div className="eyebrow">
-            <span className="status-dot" /> MADE FOR YOUR CAMPUS
+            MADE FOR YOUR CAMPUS
           </div>
           <div className="product-name">
             <span className="product-logo">

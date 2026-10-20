@@ -128,15 +128,6 @@
   font: 500 10px/1.5 var(--font-heading);
   letter-spacing: 2px;
 }
-.status-dot {
-  display: inline-block;
-  width: 6px;
-  height: 6px;
-  flex-shrink: 0;
-  border-radius: 50%;
-  background: #4f9477;
-  box-shadow: 0 0 0 3px #4f947710;
-}
 .directory-hero {
   display: flex;
   align-items: center;
@@ -948,11 +939,6 @@ button:focus-visible {
   font-size: 10px;
   text-align: center;
   color: var(--muted-foreground);
-}
-.preview-note .status-dot {
-  width: 4px;
-  height: 4px;
-  margin-right: 6px;
 }
 .preview-disclaimer {
   display: block;

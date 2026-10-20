@@ -113,7 +113,7 @@ export default function Directory({ onNavigate }) {
       <section className="directory-hero" aria-labelledby="directory-title">
         <div>
           <div className="eyebrow">
-            <span className="status-dot" /> YOUR CAMPUS, CONNECTED
+            YOUR CAMPUS, CONNECTED
           </div>
           <h1 id="directory-title">
             校园很大，
@@ -340,8 +340,7 @@ export default function Directory({ onNavigate }) {
 
       <div className="directory-notes">
         <span>
-          <span className="status-dot" /> {totalSites} 个校园资源 ·{" "}
-          {researchDate}
+          {totalSites} 个校园资源 · {researchDate}
         </span>
         <p>按资源清单收录，含历史入口；部分服务需校园网或登录</p>
         <a
