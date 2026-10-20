@@ -94,20 +94,20 @@ test("Safari allowlisted semesters retain requested history instead of raw Curre
     /学期/,
   );
 });
-test("Safari prefix option is off by default and leaves UIDs unchanged", async () => {
+test("Safari suffix repair leaves UIDs unchanged and can be disabled", async () => {
   const plain = await createSafariCalendar({ origin, ...school() });
-  const prefix = await createSafariCalendar({
+  const repaired = await createSafariCalendar({
     origin,
     ...school(),
-    addUniversityPrefix: true,
+    addUniversitySuffix: true,
   });
   const uids = (s) =>
     s
       .replaceAll("\r\n ", "")
       .split("\r\n")
       .filter((x) => x.startsWith("UID:"));
-  assert.deepEqual(uids(plain.ics), uids(prefix.ics));
-  assert.ok(prefix.ics.includes("LOCATION:应急管理大学 中区 教学楼 101"));
+  assert.deepEqual(uids(plain.ics), uids(repaired.ics));
+  assert.ok(repaired.ics.includes("LOCATION:中区 教学楼 101 应急管理大学"));
 });
 test("Safari GMS reads only the school current-semester metadata and complete week cells", async () => {
   const calls = [];
@@ -264,8 +264,8 @@ test("standalone Shortcuts bundle calls completion once, needs no cookie access,
   assert.ok(!source.includes("/api/"));
 });
 
-test("downloadable standalone scripts preserve their selected map setting", async () => {
-  for (const [name, prefix] of [
+test("downloadable standalone scripts preserve their selected navigation repair setting", async () => {
+  for (const [name, repair] of [
     ["safari-default.js", false],
     ["safari-apple-maps.js", true],
   ]) {
@@ -293,9 +293,12 @@ test("downloadable standalone scripts preserve their selected map setting", asyn
     const result = await done;
     assert.equal(typeof result, "string");
     const payload = JSON.parse(result);
-    assert.equal(
-      payload.events[0].location.startsWith("应急管理大学 "),
-      prefix,
+    assert.ok(
+      payload.events.every(
+        (event) =>
+          event.location ===
+          (repair ? "中区 教学楼 101 应急管理大学" : "中区 教学楼 101"),
+      ),
     );
   }
 });
@@ -438,30 +441,54 @@ test("native workflow confirms and writes only into a newly created calendar, co
     a.WFWorkflowActionIdentifier.endsWith("properties.calendarevents"),
   );
   assert.equal(details.length, 1);
-  assert.equal(details[0].WFWorkflowActionParameters.WFContentItemPropertyName, "Calendar");
+  assert.equal(
+    details[0].WFWorkflowActionParameters.WFContentItemPropertyName,
+    "Calendar",
+  );
   const patternField = actions.find(
-    (a) => a.WFWorkflowActionParameters.WFDictionaryKey === "calendarNamePattern",
+    (a) =>
+      a.WFWorkflowActionParameters.WFDictionaryKey === "calendarNamePattern",
   );
   const match = actions.find((a) =>
     a.WFWorkflowActionIdentifier.endsWith("text.match"),
   );
   assert.equal(
-    match.WFWorkflowActionParameters.WFMatchTextPattern.Value.attachmentsByRange[
-      "{0, 1}"
-    ].OutputUUID,
+    match.WFWorkflowActionParameters.WFMatchTextPattern.Value
+      .attachmentsByRange["{0, 1}"].OutputUUID,
     patternField.WFWorkflowActionParameters.UUID,
   );
-  const counts = actions.filter((a) => a.WFWorkflowActionIdentifier.endsWith(".count"));
+  const counts = actions.filter((a) =>
+    a.WFWorkflowActionIdentifier.endsWith(".count"),
+  );
   assert.equal(counts.length, 2);
   for (const count of counts) {
     assert.ok(!Object.hasOwn(count.WFWorkflowActionParameters, "WFInput"));
-    const verified = actions.find((a) => a.WFWorkflowActionParameters.UUID === count.WFWorkflowActionParameters.Input.Value.OutputUUID);
-    assert.equal(verified.WFWorkflowActionIdentifier, "is.workflow.actions.repeat.each");
+    const verified = actions.find(
+      (a) =>
+        a.WFWorkflowActionParameters.UUID ===
+        count.WFWorkflowActionParameters.Input.Value.OutputUUID,
+    );
+    assert.equal(
+      verified.WFWorkflowActionIdentifier,
+      "is.workflow.actions.repeat.each",
+    );
     assert.equal(verified.WFWorkflowActionParameters.WFControlFlowMode, 2);
   }
-  const writeRepeat = actions[actions.findIndex((a) => a.WFWorkflowActionIdentifier === "is.workflow.actions.addnewevent") + 1];
-  assert.equal(writeRepeat.WFWorkflowActionIdentifier, "is.workflow.actions.repeat.each");
-  assert.equal(counts[1].WFWorkflowActionParameters.Input.Value.OutputUUID, writeRepeat.WFWorkflowActionParameters.UUID);
+  const writeRepeat =
+    actions[
+      actions.findIndex(
+        (a) =>
+          a.WFWorkflowActionIdentifier === "is.workflow.actions.addnewevent",
+      ) + 1
+    ];
+  assert.equal(
+    writeRepeat.WFWorkflowActionIdentifier,
+    "is.workflow.actions.repeat.each",
+  );
+  assert.equal(
+    counts[1].WFWorkflowActionParameters.Input.Value.OutputUUID,
+    writeRepeat.WFWorkflowActionParameters.UUID,
+  );
   const dates = actions
     .filter((a) => a.WFWorkflowActionIdentifier === "is.workflow.actions.date")
     .map((a) => a.WFWorkflowActionParameters);
@@ -502,7 +529,13 @@ test("native workflow confirms and writes only into a newly created calendar, co
       a.WFWorkflowActionParameters.WFControlFlowMode === 0,
   )) {
     const params = a.WFWorkflowActionParameters;
-    if (counts.some((count) => count.WFWorkflowActionParameters.UUID === params.WFInput.Variable.Value.OutputUUID)) {
+    if (
+      counts.some(
+        (count) =>
+          count.WFWorkflowActionParameters.UUID ===
+          params.WFInput.Variable.Value.OutputUUID,
+      )
+    ) {
       assert.equal(params.WFCondition, 2);
       assert.equal(params.WFNumberValue, 0);
     } else {

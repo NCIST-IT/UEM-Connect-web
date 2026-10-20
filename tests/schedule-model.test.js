@@ -53,7 +53,7 @@ function gmsWeek(wi, periods, encoding = "array") {
     })),
   ];
 }
-test("JWXT conversion preserves occurrences and prefix changes only LOCATION", () => {
+test("JWXT conversion preserves occurrences and suffix repair changes only LOCATION", () => {
   const snapshot = normalizeSchedule(jwxt([row]), {
     now: new Date("2026-09-21T00:00:00Z"),
   });
@@ -62,20 +62,20 @@ test("JWXT conversion preserves occurrences and prefix changes only LOCATION", (
   const stamp = new Date("2026-10-08T00:00:00Z");
   const plain = convertScheduleToIcs(snapshot, {
     timestamp: stamp,
-    addUniversityPrefix: false,
+    addUniversitySuffix: false,
   }).ics;
   const added = convertScheduleToIcs(snapshot, {
     timestamp: stamp,
-    addUniversityPrefix: true,
+    addUniversitySuffix: true,
   }).ics;
   const unfold = (s) => s.replace(/\r\n /g, "");
   assert.equal(
-    unfold(added).replaceAll("LOCATION:应急管理大学 ", "LOCATION:"),
+    unfold(added).replaceAll(" 应急管理大学\r\n", "\r\n"),
     unfold(plain),
   );
   const legacy = convertTimetableToIcs(jwxt([row]).raw, {
     timestamp: stamp,
-    addUniversityPrefix: false,
+    addUniversitySuffix: false,
   }).ics;
   assert.equal(plain, legacy);
 });

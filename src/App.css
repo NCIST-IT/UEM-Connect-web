@@ -1270,11 +1270,27 @@ button:focus-visible {
 .shortcut-query-note strong {
   font-weight: 600;
 }
-.shortcut-steps .shortcut-graduate-note {
+.shortcut-steps .shortcut-graduate-note,
+.shortcut-steps .shortcut-version-note {
   font-size: 11px;
 }
-.shortcut-more-options {
-  margin-top: 26px;
+.shortcut-navigation-option {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 8px;
+  padding-top: 15px;
+  border-top: 1px solid var(--border);
+}
+.shortcut-navigation-option > div {
+  flex: 1;
+  min-width: 0;
+}
+.shortcut-navigation-option p {
+  margin-top: 6px;
+}
+.shortcut-navigation-option [data-slot="switch"] {
+  flex-shrink: 0;
 }
 .download-help {
   display: flex;

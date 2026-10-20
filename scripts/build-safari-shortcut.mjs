@@ -36,14 +36,17 @@ await writeFile(
 );
 await writeFile(
   new URL("safari-apple-maps.js", directory),
-  createShortcutSource(chunk.code, { addUniversityPrefix: true }),
+  createShortcutSource(chunk.code, { addUniversitySuffix: true }),
 );
 
 if (process.argv.includes("--verify-installers")) {
   const sha256 = (data) => createHash("sha256").update(data).digest("hex");
   const install = new URL("../src/shortcut/install/", import.meta.url);
   const alerts = JSON.parse(
-    await readFile(new URL("../src/shortcut/alerts.json", import.meta.url), "utf8"),
+    await readFile(
+      new URL("../src/shortcut/alerts.json", import.meta.url),
+      "utf8",
+    ),
   );
   const manifest = JSON.parse(
     await readFile(new URL("manifest.json", install), "utf8"),
@@ -55,10 +58,9 @@ if (process.argv.includes("--verify-installers")) {
       const item = manifest.find(
         (entry) => entry.variant === variant && entry.alert === alert.id,
       );
-      if (!item) throw new Error(`Missing reviewed installer ${variant}/${alert.id}`);
-      const script = await readFile(
-        new URL(`safari-${variant}.js`, directory),
-      );
+      if (!item)
+        throw new Error(`Missing reviewed installer ${variant}/${alert.id}`);
+      const script = await readFile(new URL(`safari-${variant}.js`, directory));
       const signed = await readFile(new URL(item.file, install));
       if (
         sha256(script) !== item.scriptSha256 ||

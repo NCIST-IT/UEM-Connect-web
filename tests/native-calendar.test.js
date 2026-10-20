@@ -30,7 +30,7 @@ test("native calendar writes exactly the same deduplicated occurrences and absol
   const p = packet([row, { ...row }]);
   const payload = nativeCalendarPayload(p);
   const ics = convertScheduleToIcs(normalizeSchedule(p), {
-    addUniversityPrefix: false,
+    addUniversitySuffix: false,
   });
   assert.equal(payload.count, ics.eventCount);
   assert.equal(payload.events.length, 3);
@@ -46,12 +46,14 @@ test("native calendar writes exactly the same deduplicated occurrences and absol
     Date.parse(payload.events[0].alert),
     Date.parse(payload.events[0].start) - 10 * 60 * 1000,
   );
-  assert.ok(payload.events.every((e) => e.notes.includes("[UEM-TERM:jwxt:84]")));
+  assert.ok(
+    payload.events.every((e) => e.notes.includes("[UEM-TERM:jwxt:84]")),
+  );
 });
-test("native prefix only changes locations and cannot bypass the semester duplicate marker", () => {
+test("native navigation repair appends the university to every address without changing event identity", () => {
   const plain = nativeCalendarPayload(packet([row]));
   const maps = nativeCalendarPayload(packet([row]), {
-    addUniversityPrefix: true,
+    addUniversitySuffix: true,
   });
   assert.equal(plain.calendarNamePattern, maps.calendarNamePattern);
   assert.equal(plain.calendarName, maps.calendarName);
@@ -60,7 +62,29 @@ test("native prefix only changes locations and cannot bypass the semester duplic
       { ...maps.events[i], location: plain.events[i].location },
       plain.events[i],
     );
-  assert.equal(maps.events[0].location, "应急管理大学 中区 教学楼 101");
+  assert.ok(
+    maps.events.every(
+      (event) => event.location === "中区 教学楼 101 应急管理大学",
+    ),
+  );
+});
+test("navigation repair handles missing addresses and does not repeat an existing university suffix", () => {
+  for (const [address, expected] of [
+    ["", "应急管理大学"],
+    ["教学楼 101", "教学楼 101 应急管理大学"],
+    ["教学楼 101 应急管理大学", "教学楼 101 应急管理大学"],
+    ["应急管理大学", "应急管理大学"],
+  ]) {
+    const input = packet([
+      { ...row, Campus: "", Building: "", Classroom: address },
+    ]);
+    const repaired = nativeCalendarPayload(input, {
+      addUniversitySuffix: true,
+    });
+    const plain = nativeCalendarPayload(input, { addUniversitySuffix: false });
+    assert.ok(repaired.events.every((event) => event.location === expected));
+    assert.ok(plain.events.every((event) => event.location === address));
+  }
 });
 test("native dates respect midnight across years and block unknown school dates", () => {
   const p = packet([

@@ -171,7 +171,7 @@ export async function createSafariCalendar(options = {}) {
   if (!snapshot.occurrences.length)
     throw new Error("当前学期没有可导出的已排课日程。");
   const { ics } = convertScheduleToIcs(snapshot, {
-    addUniversityPrefix: options.addUniversityPrefix === true,
+    addUniversitySuffix: options.addUniversitySuffix === true,
     calendarName: `应大通 · ${snapshot.semester.name}`,
   });
   return {

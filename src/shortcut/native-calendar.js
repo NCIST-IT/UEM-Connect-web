@@ -10,12 +10,12 @@ const escapePattern = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
 export function nativeCalendarPayload(
   packet,
-  { addUniversityPrefix = false } = {},
+  { addUniversitySuffix = false } = {},
 ) {
   const snapshot = normalizeSchedule(packet);
   const calendarName = `应大通课表 · ${snapshot.semester.name}`;
   const result = convertScheduleToIcs(snapshot, {
-    addUniversityPrefix,
+    addUniversitySuffix,
     calendarName,
   });
   if (!result.eventCount) throw new Error("该学期没有可添加的已排课日程。");

@@ -168,7 +168,7 @@ function IosShortcutCard({ installer = false, onNavigate }) {
       ) : (
         <>
           <div className="download-feature-list">
-            {["课表导入系统日历", "11 种提醒选项", "可选 Apple 地图适配"].map(
+            {["课表导入系统日历", "11 种提醒选项", "导航修复默认开启"].map(
               (text) => (
                 <p key={text}>
                   <CheckIcon />

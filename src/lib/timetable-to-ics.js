@@ -100,7 +100,7 @@ function stableUid(identity) {
   );
 }
 
-/** Browser-only common writer. Prefix changes display location only, never UID. */
+/** Browser-only common writer. Suffix changes display location only, never UID. */
 export function convertScheduleToIcs(snapshot, options = {}) {
   if (!snapshot || !Array.isArray(snapshot.occurrences))
     throw new TypeError("课表模型无效");
@@ -115,9 +115,9 @@ export function convertScheduleToIcs(snapshot, options = {}) {
   const dtstamp = utcDateTime(timestamp.getTime());
   const name = text(options.calendarName ?? "我的课表");
   const calendarId = text(options.calendarId ?? `ncist-${snapshot.source}`);
-  const prefix = options.addUniversityPrefix ?? true;
-  if (typeof prefix !== "boolean")
-    throw new TypeError("addUniversityPrefix 必须是布尔值");
+  const suffix = options.addUniversitySuffix ?? true;
+  if (typeof suffix !== "boolean")
+    throw new TypeError("addUniversitySuffix 必须是布尔值");
   const events = new Map();
   let duplicateEventCount = 0;
   for (const e of snapshot.occurrences) {
@@ -135,10 +135,12 @@ export function convertScheduleToIcs(snapshot, options = {}) {
     const end = day + e.end * 60000 - CHINA_OFFSET_MS;
     const title = text(e.name);
     const rawLocation = text(e.location);
-    const location =
-      prefix && rawLocation && !rawLocation.startsWith("应急管理大学 ")
-        ? `应急管理大学 ${rawLocation}`
-        : rawLocation;
+    const address = rawLocation.trimEnd();
+    const location = suffix
+      ? /(?:^| )应急管理大学$/.test(address)
+        ? address
+        : [address, "应急管理大学"].filter(Boolean).join(" ")
+      : rawLocation;
     const uid = stableUid([
       calendarId,
       text(snapshot.semester.id),
