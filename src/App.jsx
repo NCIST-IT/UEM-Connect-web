@@ -142,9 +142,15 @@ function IosShortcutCard({ installer = false, onNavigate }) {
       </div>
       <Heading id="ios-title">让课表，住进日历。</Heading>
       <p className="download-description">
-        用 Safari 读取学校课表，
-        <br />
-        一键添加到 iPhone 系统日历。
+        {installer ? (
+          "跟着下面四步操作，把学校课表添加到 iPhone 系统日历。"
+        ) : (
+          <>
+            用 Safari 读取学校课表，
+            <br />
+            一键添加到 iPhone 系统日历。
+          </>
+        )}
       </p>
       {installer ? (
         <Suspense

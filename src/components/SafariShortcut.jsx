@@ -1,20 +1,11 @@
 import { useMemo, useRef, useState } from "react";
 import {
   CopyIcon,
-  CompassIcon,
   DownloadSimpleIcon,
   PlusIcon,
   ArrowUpRightIcon,
 } from "@phosphor-icons/react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-} from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
@@ -25,7 +16,10 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
+import {
+  NativeSelect,
+  NativeSelectOption,
+} from "@/components/ui/native-select";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import plainScriptUrl from "../generated/safari-default.js?url";
 import mapsScriptUrl from "../generated/safari-apple-maps.js?url";
@@ -81,64 +75,72 @@ export default function SafariShortcut() {
   }
   return (
     <>
-      <Card className="mb-6 gap-4 [--card-spacing:--spacing(5)]">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 font-sans text-base">
-            <CompassIcon className="size-5 text-primary" />
-            Safari 快捷指令导出{" "}
-            <Badge variant="secondary">{shortcutVersion} · 试验</Badge>
-          </CardTitle>
-          <CardDescription className="mt-1 text-sm leading-6">
-            使用 Safari
-            已登录的学校会话，确认后新建独立日历并添加全部课程。账号、密码和
-            Cookie 不经过本站。
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-2">
-          <p className="text-xs leading-6 text-muted-foreground">
-            {shortcutVersion}{" "}
-            添加前检测同名课表日历，完成后打开日历 App。已安装旧版的用户，请重新添加并选择替换。
-          </p>
-          <div className="flex items-center justify-between gap-3 rounded-md border p-3">
-            <div>
-              <Label htmlFor="shortcut-alert">第二个提醒</Label>
-              <p className="mt-1 text-xs text-muted-foreground">
+      <div className="shortcut-guide">
+        <ol className="shortcut-steps" aria-label="课表导出使用步骤">
+          <li>
+            <h2>
+              <span>第一步</span>用 Safari 打开并下载
+            </h2>
+            <p>
+              请用 Safari
+              浏览器打开此页面，点击下方“添加快捷指令”，并在弹出的提示中确认下载。
+            </p>
+            <div className="shortcut-alert-options">
+              <Label htmlFor="shortcut-alert">第二个提醒（可选）</Label>
+              <p>
                 默认不额外设置提醒；首个“出发时间”由系统处理。10分钟前使用系统“自定提醒”。
               </p>
+              <NativeSelect
+                id="shortcut-alert"
+                value={alertId}
+                onChange={(event) => setAlertId(event.target.value)}
+              >
+                {shortcutAlerts.map((entry) => (
+                  <NativeSelectOption key={entry.id} value={entry.id}>
+                    {entry.label}
+                  </NativeSelectOption>
+                ))}
+              </NativeSelect>
             </div>
-            <NativeSelect
-              id="shortcut-alert"
-              value={alertId}
-              onChange={(event) => setAlertId(event.target.value)}
-              className="w-36 shrink-0"
+            <Button
+              className="shortcut-step-action h-11 w-full text-sm"
+              render={
+                <a href={installerUrl(false)} download={installerName(false)} />
+              }
+              nativeButton={false}
             >
-              {shortcutAlerts.map((entry) => (
-                <NativeSelectOption key={entry.id} value={entry.id}>
-                  {entry.label}
-                </NativeSelectOption>
-              ))}
-            </NativeSelect>
-          </div>
-          <Button
-            className="h-10 w-full text-sm"
-            render={
-              <a href={installerUrl(false)} download={installerName(false)} />
-            }
-            nativeButton={false}
-          >
-            <PlusIcon /> 添加快捷指令
-          </Button>
-          <Button
-            variant="ghost"
-            className="h-9 w-full text-sm"
-            onClick={() => setOpen(true)}
-          >
-            使用说明 / 地图适配版
-          </Button>
-          <div className="border-t pt-3">
+              <PlusIcon /> 添加快捷指令
+            </Button>
+          </li>
+          <li>
+            <h2>
+              <span>第二步</span>添加快捷指令，开启脚本权限
+            </h2>
+            <p>
+              在 Safari
+              的下载界面点开刚下载的文件，将它添加到“快捷指令”。向下滑动，找到“在网页上运行
+              JavaScript”操作。
+            </p>
+            <p>
+              如果看到“此脚本无法运行，因为脚本操作已停用”，点击下方“打开设置”，开启“允许运行脚本”选项，然后回到
+              Safari 浏览器。
+            </p>
+          </li>
+          <li>
+            <h2>
+              <span>第三步</span>登录门户，打开学期课表
+            </h2>
+            <p>
+              点击下方“登录信息门户”，打开“教务管理系统”，点击“我的课表”，选择“学期课表”。
+            </p>
+            <p className="shortcut-query-note">
+              <strong>
+                点一下上方的“查询条件”。无论当前显示的课表是不是你的，都要点击；如果不是你的课表，请切换成自己的课表。
+              </strong>
+            </p>
             <Button
               variant="outline"
-              className="h-10 w-full text-sm"
+              className="shortcut-step-action h-11 w-full text-sm"
               render={
                 <a href={portalUrl} target="_blank" rel="noreferrer noopener" />
               }
@@ -146,14 +148,32 @@ export default function SafariShortcut() {
             >
               登录信息门户 <ArrowUpRightIcon />
             </Button>
-          </div>
-          <div className="space-y-1 text-xs leading-6 text-muted-foreground">
-            <p>本科：信息门户 → 教务管理系统 → 我的课表</p>
-            <p>研究生：信息门户 → 研究生管理系统 → 个人课表</p>
-            <p>打开课表后，再从 Safari 分享菜单运行快捷指令。</p>
-          </div>
-        </CardContent>
-      </Card>
+            <p className="shortcut-graduate-note">
+              研究生入口：信息门户 → 研究生管理系统 → 个人课表。
+            </p>
+          </li>
+          <li>
+            <h2>
+              <span>第四步</span>从 Safari 共享菜单运行
+            </h2>
+            <p>
+              点开 Safari
+              菜单，选择“共享”，点击“查看更多”，向下滑动找到并点击“应大通课表导出”。
+            </p>
+            <p>
+              随后按提示选择“允许”或“始终允许”，即可将课表添加到 iPhone
+              系统日历。
+            </p>
+          </li>
+        </ol>
+        <Button
+          variant="ghost"
+          className="shortcut-more-options h-10 w-full text-sm"
+          onClick={() => setOpen(true)}
+        >
+          地图适配版 / 更多选项
+        </Button>
+      </div>
       <Dialog
         open={open}
         onOpenChange={(value) => {
@@ -164,7 +184,7 @@ export default function SafariShortcut() {
         <DialogContent className="max-h-[88dvh] overflow-y-auto sm:max-w-xl">
           <DialogHeader>
             <DialogTitle className="font-sans text-lg">
-              Safari 快捷指令导出
+              地图适配与更多选项
             </DialogTitle>
             <DialogDescription className="text-sm leading-6">
               {shortcutVersion}{" "}
@@ -179,33 +199,17 @@ export default function SafariShortcut() {
               Cookie。
             </AlertDescription>
           </Alert>
-          <ol className="list-decimal space-y-4 pl-5 text-sm leading-6">
-            <li>
-              在首页选择“第二个提醒”（默认不额外设置），点击“添加快捷指令”，在 iPhone
-              系统页面确认添加。如果 Safari
-              先下载文件，点开下载的 .shortcut 文件导入。
-            </li>
-            <li>
-              如果系统要求，在“快捷指令”的高级设置中开启“允许运行脚本”。首次访问学校网站时，按系统提示确认授权。
-            </li>
-            <li>
-              先在 Safari
-              登录信息门户，再从门户进入对应系统：本科选择“教务管理系统”→“我的课表”；研究生选择“研究生管理系统”→“个人课表”。
-              确认课表页面域名为 <code>jw.cidp.edu.cn</code>（本科）或{" "}
-              <code>gms.ncist.edu.cn</code>
-              （研究生）后，点击分享按钮，选择“应大通课表导出”。不要在信息门户页面直接运行。
-            </li>
-            <li>
-              首次运行按系统提示允许读取和添加日历；读取用于防重复，结果数量来自本次添加动作返回的日程。核对摘要并确认后，自动新建独立日历并批量添加课程，完成后直接打开日历 App。
-            </li>
-          </ol>
+          <p className="text-sm leading-6">
+            首次使用请按照页面上的四步引导操作。下方可选择地图适配版，或查看完整脚本。
+          </p>
           <p className="text-xs leading-6 text-muted-foreground">
             橙色日历：在日历 App 的日历列表，点课表日历右侧 ⓘ，将颜色选为橙色。
             系统“新建日历”动作未提供颜色参数，快捷指令无法自动指定。
           </p>
           <Alert>
             <AlertDescription>
-              添加前会检测是否已存在同名课表日历（应大通课表 · 学期名称）；检测到会停止，不重复创建。个人日程、节假日和其他日历不受影响。旧版按备注标记检测，请重新添加并替换旧快捷指令。
+              添加前会检测是否已存在同名课表日历（应大通课表 ·
+              学期名称）；检测到会停止，不重复创建。个人日程、节假日和其他日历不受影响。旧版按备注标记检测，请重新添加并替换旧快捷指令。
             </AlertDescription>
           </Alert>
           <div className="flex flex-wrap gap-3 text-xs text-primary">
@@ -224,7 +228,8 @@ export default function SafariShortcut() {
             <div>
               <Label htmlFor="shortcut-alert-dialog">第二个提醒</Label>
               <p className="mt-1 text-xs text-muted-foreground">
-                当前离线文件会写入“{alert.label}”；如需更换请在首页重新选择后再添加。
+                当前离线文件会写入“{alert.label}
+                ”；更换提醒后，请重新下载并添加对应安装文件。
               </p>
             </div>
             <NativeSelect
@@ -259,10 +264,7 @@ export default function SafariShortcut() {
           <Button
             className="h-10 w-full text-sm"
             render={
-              <a
-                href={installerUrl(prefix)}
-                download={installerName(prefix)}
-              />
+              <a href={installerUrl(prefix)} download={installerName(prefix)} />
             }
             nativeButton={false}
           >

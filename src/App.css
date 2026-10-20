@@ -1066,7 +1066,7 @@ button:focus-visible {
   margin-bottom: 13px;
 }
 .shortcut-page {
-  max-width: 470px;
+  max-width: 680px;
   margin: 48px auto 0;
 }
 .shortcut-page h1 {
@@ -1208,43 +1208,73 @@ button:focus-visible {
 .ios-download .download-description {
   margin-bottom: 26px;
 }
-.ios-download [data-slot="card"] {
-  box-shadow: none;
-  --tw-ring-shadow: 0 0 #0000;
-  border-radius: 0;
-  background: transparent;
+.shortcut-steps {
+  list-style: none;
+  padding: 0;
   margin: 0;
-  padding: 0;
-  gap: 0;
 }
-.ios-download [data-slot="card-header"] {
-  display: none;
+.shortcut-steps > li + li {
+  margin-top: 26px;
+  padding-top: 26px;
+  border-top: 1px solid var(--border);
 }
-.ios-download [data-slot="card-content"] {
-  padding: 0;
+.shortcut-steps h2 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 12px;
+  font-size: 16px;
+  font-weight: 650;
+  line-height: 1.6;
 }
-.ios-download [data-slot="card-content"] > p:first-child {
-  display: none;
-}
-.ios-download [data-slot="card-content"] > div:first-of-type {
-  flex-direction: column;
-  align-items: stretch;
-  gap: 13px;
-  border-radius: 11px;
-  margin-bottom: 18px;
-  padding: 15px;
-  background: #fafafa;
-}
-.ios-download [data-slot="card-content"] [data-slot="native-select-wrapper"] {
-  width: 100%;
-}
-.ios-download [data-slot="card-content"] > a {
-  height: 43px;
-  border-radius: 11px;
+.shortcut-steps h2 > span {
+  flex-shrink: 0;
+  color: var(--primary);
   font-size: 12px;
 }
-.ios-download [data-slot="card-content"] > div:last-child {
-  font-size: 10px;
+.shortcut-steps li > p {
+  margin-top: 10px;
+  color: var(--muted-foreground);
+  font-size: 13px;
+  line-height: 1.9;
+}
+.shortcut-alert-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 16px;
+  padding: 15px;
+  background: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: 11px;
+}
+.shortcut-alert-options p {
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 1.7;
+}
+.shortcut-alert-options [data-slot="native-select-wrapper"] {
+  width: 100%;
+}
+.shortcut-step-action {
+  margin-top: 16px;
+  border-radius: 11px;
+}
+.shortcut-steps .shortcut-query-note {
+  padding: 12px 15px;
+  border-left: 3px solid var(--primary);
+  border-radius: 0 8px 8px 0;
+  background: var(--muted);
+  color: var(--foreground);
+}
+.shortcut-query-note strong {
+  font-weight: 600;
+}
+.shortcut-steps .shortcut-graduate-note {
+  font-size: 11px;
+}
+.shortcut-more-options {
+  margin-top: 26px;
 }
 .download-help {
   display: flex;
@@ -1323,9 +1353,6 @@ button:focus-visible {
 .dark .platform-icon.android-icon {
   background: #26352a;
   color: #8aa88c;
-}
-.dark .ios-download [data-slot="card-content"] > div:first-of-type {
-  background: #252527;
 }
 .dark .android-art-ring,
 .dark .android-art-ring::before {
