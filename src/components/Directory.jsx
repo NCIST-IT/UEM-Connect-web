@@ -261,15 +261,7 @@ export default function Directory({ onNavigate }) {
                               )}
                               <ArrowUpRightIcon className="site-arrow" />
                             </div>
-                            <h3>
-                              {site.name}
-                              {site.featured && (
-                                <span
-                                  className="frequent-dot"
-                                  title="常用入口"
-                                />
-                              )}
-                            </h3>
+                            <h3>{site.name}</h3>
                             <p>{site.description}</p>
                           </a>
                           <button
@@ -312,7 +304,6 @@ export default function Directory({ onNavigate }) {
                     </button>
                   )}
                 <footer className="school-footer">
-                  <span className="school-footer-dot" />
                   {school.motto}
                   <span className="ml-auto">{school.initials} ↗</span>
                 </footer>

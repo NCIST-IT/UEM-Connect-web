@@ -317,10 +317,10 @@ export default function App() {
             </Button>
             <a
               className="github-link"
-              href={communityUrl}
+              href="https://github.com/NCIST-IT/UEM-Connect-web"
               target="_blank"
               rel="noreferrer"
-              aria-label="IT 智云社 GitHub"
+              aria-label="网站 GitHub 仓库"
             >
               <GithubLogoIcon />
             </a>

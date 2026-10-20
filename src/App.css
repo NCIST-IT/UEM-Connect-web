@@ -412,15 +412,6 @@
   letter-spacing: -0.15px;
   margin-top: 4px;
 }
-.frequent-dot {
-  display: inline-block;
-  vertical-align: middle;
-  margin-left: 6px;
-  height: 4px;
-  width: 4px;
-  background: var(--school-accent);
-  border-radius: 50%;
-}
 .site-status {
   font-size: 8px;
   color: #a5834c;
@@ -495,13 +486,6 @@
   font-size: 9px;
   letter-spacing: 2px;
   background: #fbfbfc;
-}
-.school-footer-dot {
-  background: var(--school-accent);
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  opacity: 0.6;
 }
 .school-footer > span:last-child {
   font: 9px var(--font-heading);
