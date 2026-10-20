@@ -1,0 +1,682 @@
+{
+  "title": "应急管理大学（原华北科技学院/防灾科技学院）Web资源清单",
+  "research_date": "2026-10-20",
+  "caveat": "来自官方导航、公开文件和索引的入口；未逐一在校内登录验证，含历史链接；不是子域名安全扫描。",
+  "items": [
+    {
+      "category": "核心入口",
+      "name": "应急管理大学主站",
+      "url": "https://www.ncist.edu.cn/",
+      "campus": "全校",
+      "status": "官网导航或公告收录",
+      "description": "新大学官网",
+      "source_url": "https://www.ncist.edu.cn/"
+    },
+    {
+      "category": "核心入口",
+      "name": "应大主页另一入口",
+      "url": "https://uem.ncist.edu.cn/",
+      "campus": "全校",
+      "status": "官网链接，待核验",
+      "description": "由原防灾官网标注，未做实时访问测试",
+      "source_url": "https://www1.cidp.edu.cn/"
+    },
+    {
+      "category": "核心入口",
+      "name": "华北科技学院旧主站",
+      "url": "https://www1.ncist.edu.cn/",
+      "campus": "东院",
+      "status": "历史入口（待复核）",
+      "description": "历史主站入口",
+      "source_url": "https://www.ncist.edu.cn/"
+    },
+    {
+      "category": "核心入口",
+      "name": "防灾科技学院旧主站",
+      "url": "https://www1.cidp.edu.cn/",
+      "campus": "西院",
+      "status": "官网导航或公告收录",
+      "description": "历史主站、院系部门导航",
+      "source_url": "https://www1.cidp.edu.cn/"
+    },
+    {
+      "category": "核心入口",
+      "name": "统一身份认证",
+      "url": "https://auth.ncist.edu.cn/",
+      "campus": "全校",
+      "status": "官网导航或公告收录",
+      "description": "东院、西院合并后统一身份认证",
+      "source_url": "https://xxzx.cidp.edu.cn/info/1041/2292.htm"
+    },
+    {
+      "category": "核心入口",
+      "name": "应急管理大学信息门户",
+      "url": "https://my1.ncist.edu.cn/",
+      "campus": "全校",
+      "status": "官网导航或公告收录",
+      "description": "原防灾官网快速通道指向此处",
+      "source_url": "https://www1.cidp.edu.cn/"
+    },
+    {
+      "category": "核心入口",
+      "name": "旧版网上办事大厅",
+      "url": "https://ehall.cidp.edu.cn/",
+      "campus": "西院",
+      "status": "历史入口（待复核）",
+      "description": "2025年统一门户迁移前的入口",
+      "source_url": "https://xxzx.cidp.edu.cn/fwzn1/zhfwmh.htm"
+    },
+    {
+      "category": "核心入口",
+      "name": "东院校园邮箱",
+      "url": "https://mail.ncist.edu.cn/",
+      "campus": "东院",
+      "status": "官网导航或公告收录",
+      "description": "页面可被搜索引擎索引",
+      "source_url": "https://metc.ncist.edu.cn/"
+    },
+    {
+      "category": "核心入口",
+      "name": "西院校园邮箱",
+      "url": "https://mail.cidp.edu.cn/",
+      "campus": "西院",
+      "status": "官网导航或公告收录",
+      "description": "学校信息化服务说明确认",
+      "source_url": "https://xxzx.cidp.edu.cn/fwzn1/dzyxfw.htm"
+    },
+    {
+      "category": "核心入口",
+      "name": "应大新闻网",
+      "url": "https://news.ncist.edu.cn/",
+      "campus": "全校",
+      "status": "官网导航或公告收录",
+      "description": "学校新闻",
+      "source_url": "https://www.ncist.edu.cn/"
+    },
+    {
+      "category": "核心入口",
+      "name": "应大校历",
+      "url": "https://www.ncist.edu.cn/ydxl/index.htm",
+      "campus": "全校",
+      "status": "官网导航或公告收录",
+      "description": "2026—2027学年校历",
+      "source_url": "https://www.ncist.edu.cn/ydxl/index.htm"
+    },
+    {
+      "category": "核心入口",
+      "name": "校园网站高级搜索",
+      "url": "https://www.ncist.edu.cn/cms/web/search/advancedSearch.jsp",
+      "campus": "全校",
+      "status": "官网导航或公告收录",
+      "description": "网站文章检索",
+      "source_url": "https://www.ncist.edu.cn/"
+    },
+    {
+      "category": "网络及生活",
+      "name": "西院WebVPN",
+      "url": "https://webvpn.cidp.edu.cn/",
+      "campus": "西院",
+      "status": "官网导航或公告收录",
+      "description": "校外访问校内应用及授权图书资源",
+      "source_url": "https://xxzx.cidp.edu.cn/fwzn1/VPNfw.htm"
+    },
+    {
+      "category": "网络及生活",
+      "name": "西院无线网络认证",
+      "url": "https://drcomwifi.cidp.edu.cn/",
+      "campus": "西院",
+      "status": "官网导航或公告收录",
+      "description": "无线WIFI认证页面",
+      "source_url": "https://xxzx.cidp.edu.cn/fwzn1/xywfw.htm"
+    },
+    {
+      "category": "网络及生活",
+      "name": "西院有线网络认证",
+      "url": "https://drcom.cidp.edu.cn/",
+      "campus": "西院",
+      "status": "官网导航或公告收录",
+      "description": "有线登录与账号管理",
+      "source_url": "https://xxzx.cidp.edu.cn/fwzn1/xywfw.htm"
+    },
+    {
+      "category": "网络及生活",
+      "name": "西院上网计费自助",
+      "url": "http://drcomzz.cidp.edu.cn:8080/Self/login/?302=LI",
+      "campus": "西院",
+      "status": "官网导航或公告收录",
+      "description": "网络账单/套餐/在线设备管理",
+      "source_url": "https://xxzx.cidp.edu.cn/fwzn1/xywfw.htm"
+    },
+    {
+      "category": "网络及生活",
+      "name": "东院信息化中心",
+      "url": "https://metc.ncist.edu.cn/",
+      "campus": "东院",
+      "status": "官网导航或公告收录",
+      "description": "网络、邮箱、系统使用指南",
+      "source_url": "https://metc.ncist.edu.cn/"
+    },
+    {
+      "category": "网络及生活",
+      "name": "西院信息化中心",
+      "url": "https://xxzx.cidp.edu.cn/",
+      "campus": "西院",
+      "status": "官网导航或公告收录",
+      "description": "校园信息化服务",
+      "source_url": "https://www1.cidp.edu.cn/yxbm1/yxbm.htm"
+    },
+    {
+      "category": "网络及生活",
+      "name": "西院一卡通服务指南",
+      "url": "https://xxzx.cidp.edu.cn/fwzn1/yktfw.htm",
+      "campus": "西院",
+      "status": "官网导航或公告收录",
+      "description": "充值、挂失、完美校园",
+      "source_url": "https://xxzx.cidp.edu.cn/fwzn1/xywfw.htm"
+    },
+    {
+      "category": "网络及生活",
+      "name": "西院网络报修说明",
+      "url": "https://xxzx.cidp.edu.cn/fwzn1/bxfw1.htm",
+      "campus": "西院",
+      "status": "官网导航或公告收录",
+      "description": "网络和多媒体故障报修",
+      "source_url": "https://xxzx.cidp.edu.cn/fwzn1/xywfw.htm"
+    },
+    {
+      "category": "网络及生活",
+      "name": "西院域名固定IP申请说明",
+      "url": "https://xxzx.cidp.edu.cn/fwzn1/ym_gdIPsq.htm",
+      "campus": "西院",
+      "status": "官网导航或公告收录",
+      "description": "部门网站和服务器IP申请",
+      "source_url": "https://xxzx.cidp.edu.cn/fwzn1/xywfw.htm"
+    },
+    {
+      "category": "网络及生活",
+      "name": "西院虚拟机托管说明",
+      "url": "https://xxzx.cidp.edu.cn/fwzn1/xnj_zjtgfw.htm",
+      "campus": "西院",
+      "status": "官网导航或公告收录",
+      "description": "部门服务器与虚拟机托管",
+      "source_url": "https://xxzx.cidp.edu.cn/fwzn1/xywfw.htm"
+    },
+    {
+      "category": "网络及生活",
+      "name": "正版化软件下载",
+      "url": "http://msca.cidp.edu.cn/",
+      "campus": "西院",
+      "status": "官方说明收录，需校内身份",
+      "description": "微软正版软件平台，接入统一认证",
+      "source_url": "https://xxzx.cidp.edu.cn/zbhsc.pdf"
+    },
+    {
+      "category": "网络及生活",
+      "name": "正版软件使用指南",
+      "url": "https://xxzx.cidp.edu.cn/zbhsc.pdf",
+      "campus": "西院",
+      "status": "官网导航或公告收录",
+      "description": "官网下载使用说明PDF",
+      "source_url": "https://xxzx.cidp.edu.cn/zbhsc.pdf"
+    },
+    {
+      "category": "网络及生活",
+      "name": "东院数字后勤平台",
+      "url": "https://ncist.hqbz.cn/lg/",
+      "campus": "东院",
+      "status": "第三方校务平台",
+      "description": "第三方托管数字后勤登录",
+      "source_url": "https://ncist.hqbz.cn/lg/"
+    },
+    {
+      "category": "教务与图书",
+      "name": "东院教务处",
+      "url": "https://jwc.ncist.edu.cn/",
+      "campus": "东院",
+      "status": "官网导航或公告收录",
+      "description": "教学管理、教务通知",
+      "source_url": "https://jwc.ncist.edu.cn/"
+    },
+    {
+      "category": "教务与图书",
+      "name": "西院教务处",
+      "url": "https://dean.cidp.edu.cn/",
+      "campus": "西院",
+      "status": "官网导航或公告收录",
+      "description": "本科教学、教务公告",
+      "source_url": "https://www1.cidp.edu.cn/"
+    },
+    {
+      "category": "教务与图书",
+      "name": "东院历史教务系统",
+      "url": "http://jwgl.ncist.edu.cn/",
+      "campus": "东院",
+      "status": "历史入口（待复核）",
+      "description": "选课、查成绩、课表；历史网址",
+      "source_url": "https://wap.dakao8.com/a/10136/"
+    },
+    {
+      "category": "教务与图书",
+      "name": "西院教务系统入口说明",
+      "url": "https://xxzx.cidp.edu.cn/fwzn1/zhfwmh.htm",
+      "campus": "西院",
+      "status": "官网导航或公告收录",
+      "description": "通过门户进入教务系统；不提供未经证实的直连地址",
+      "source_url": "https://xxzx.cidp.edu.cn/fwzn1/zhfwmh.htm"
+    },
+    {
+      "category": "教务与图书",
+      "name": "东院历史图书馆",
+      "url": "http://lib.ncist.edu.cn/",
+      "campus": "东院",
+      "status": "历史入口（待复核）",
+      "description": "图书馆历史入口",
+      "source_url": "https://wap.dakao8.net/ncist/lib/"
+    },
+    {
+      "category": "教务与图书",
+      "name": "西院图书馆",
+      "url": "https://lib.cidp.edu.cn/",
+      "campus": "西院",
+      "status": "官网导航或公告收录",
+      "description": "馆藏检索、数据库和读者服务",
+      "source_url": "https://www1.cidp.edu.cn/"
+    },
+    {
+      "category": "教务与图书",
+      "name": "西院图书馆数字资源",
+      "url": "https://lib.cidp.edu.cn/szzy_list.jsp?urltype=tree.TreeTempUrl&wbtreeid=1012",
+      "campus": "西院",
+      "status": "官网导航或公告收录",
+      "description": "中文和外文学术数据库目录",
+      "source_url": "https://lib.cidp.edu.cn/info/1016/1288.htm"
+    },
+    {
+      "category": "教务与图书",
+      "name": "西院图书馆座位预约",
+      "url": "https://zwyy.cidp.edu.cn/",
+      "campus": "西院",
+      "status": "官网导航或公告收录",
+      "description": "在线自习座位预约",
+      "source_url": "https://lib.cidp.edu.cn/info/1016/1288.htm"
+    },
+    {
+      "category": "教务与图书",
+      "name": "西院座位预约使用说明",
+      "url": "https://lib.cidp.edu.cn/info/1016/1288.htm",
+      "campus": "西院",
+      "status": "官网导航或公告收录",
+      "description": "座位预约规则",
+      "source_url": "https://lib.cidp.edu.cn/info/1016/1288.htm"
+    },
+    {
+      "category": "教务与图书",
+      "name": "雨课堂学校专区",
+      "url": "https://cidp.yuketang.cn/",
+      "campus": "西院",
+      "status": "学校教学平台",
+      "description": "雨课堂学校登录入口",
+      "source_url": "https://cidp.yuketang.cn/"
+    },
+    {
+      "category": "教务与图书",
+      "name": "超星泛雅网络选修课",
+      "url": "http://fzxy.fanya.chaoxing.com/",
+      "campus": "西院",
+      "status": "第三方教学平台",
+      "description": "在线网络选修课",
+      "source_url": "https://dean.cidp.edu.cn/info/1040/8220.htm"
+    },
+    {
+      "category": "教务与图书",
+      "name": "本科教学项目平台",
+      "url": "https://ncist.zlgc2.chaoxing.com/",
+      "campus": "全校",
+      "status": "第三方教学平台",
+      "description": "教学改革、课程建设、项目成果",
+      "source_url": "https://ncist.zlgc2.chaoxing.com/"
+    },
+    {
+      "category": "教务与图书",
+      "name": "教学质量评估网",
+      "url": "https://pjb.cidp.edu.cn/",
+      "campus": "西院",
+      "status": "官网导航或公告收录",
+      "description": "原教学质量评价公告",
+      "source_url": "https://pjb.cidp.edu.cn/"
+    },
+    {
+      "category": "招生就业",
+      "name": "西院本科招生专区",
+      "url": "https://fzzs.cidp.edu.cn/index.html",
+      "campus": "西院",
+      "status": "官网导航或公告收录",
+      "description": "招生政策、分数、录取查询",
+      "source_url": "https://www1.cidp.edu.cn/"
+    },
+    {
+      "category": "招生就业",
+      "name": "招生就业处",
+      "url": "https://zjb.cidp.edu.cn/",
+      "campus": "全校",
+      "status": "官网导航或公告收录",
+      "description": "学校官方部门站",
+      "source_url": "https://www1.cidp.edu.cn/yxbm1/yxbm.htm"
+    },
+    {
+      "category": "招生就业",
+      "name": "西院就业信息网",
+      "url": "http://jy.cidp.edu.cn/",
+      "campus": "西院",
+      "status": "官网历史公告收录",
+      "description": "校招与双选会",
+      "source_url": "https://dzxy.cidp.edu.cn/info/1074/3161.htm"
+    },
+    {
+      "category": "招生就业",
+      "name": "研究生处",
+      "url": "https://grad.cidp.edu.cn/",
+      "campus": "全校",
+      "status": "官网导航或公告收录",
+      "description": "研究生教育、招生、通知",
+      "source_url": "https://www1.cidp.edu.cn/yxbm1/yxbm.htm"
+    },
+    {
+      "category": "招生就业",
+      "name": "继续教育学院",
+      "url": "https://jjxy.cidp.edu.cn/",
+      "campus": "全校",
+      "status": "官网导航或公告收录",
+      "description": "继续教育、培训",
+      "source_url": "https://www1.cidp.edu.cn/yxbm1/yxbm.htm"
+    },
+    {
+      "category": "招生就业",
+      "name": "西院历史迎新系统",
+      "url": "https://yx.cidp.edu.cn/",
+      "campus": "西院",
+      "status": "历史入口（待复核）",
+      "description": "旧迎新及报到指南",
+      "source_url": "https://yx.cidp.edu.cn/"
+    },
+    {
+      "category": "招生就业",
+      "name": "学生工作处（东院）",
+      "url": "https://xgc.ncist.edu.cn/",
+      "campus": "东院",
+      "status": "官网导航或公告收录",
+      "description": "学工通知",
+      "source_url": "https://xgc.ncist.edu.cn/tzgg/index.htm"
+    },
+    {
+      "category": "招生就业",
+      "name": "学生工作处（西院）",
+      "url": "https://xsc.cidp.edu.cn/",
+      "campus": "西院",
+      "status": "官网导航或公告收录",
+      "description": "资助管理、学生服务、心理咨询",
+      "source_url": "https://www1.cidp.edu.cn/yxbm1/yxbm.htm"
+    },
+    {
+      "category": "招生就业",
+      "name": "西院校园平面图",
+      "url": "https://www1.cidp.edu.cn/zjfz/xxpm.htm",
+      "campus": "西院",
+      "status": "官网导航或公告收录",
+      "description": "原防灾校园地图",
+      "source_url": "https://www1.cidp.edu.cn/"
+    },
+    {
+      "category": "校属部门",
+      "name": "应大党委办公室",
+      "url": "https://dw.ncist.edu.cn/",
+      "campus": "全校",
+      "status": "官网导航或公告收录",
+      "description": "官网原防灾院系部门页列出的子站",
+      "source_url": "https://www1.cidp.edu.cn/yxbm1/yxbm.htm"
+    },
+    {
+      "category": "校属部门",
+      "name": "应大党委组织部",
+      "url": "https://zzb.ncist.edu.cn/",
+      "campus": "全校",
+      "status": "官网导航或公告收录",
+      "description": "官网原防灾院系部门页列出的子站",
+      "source_url": "https://www1.cidp.edu.cn/yxbm1/yxbm.htm"
+    },
+    {
+      "category": "校属部门",
+      "name": "应大党委宣传部",
+      "url": "https://xcb.ncist.edu.cn/",
+      "campus": "全校",
+      "status": "官网导航或公告收录",
+      "description": "官网原防灾院系部门页列出的子站",
+      "source_url": "https://www1.cidp.edu.cn/yxbm1/yxbm.htm"
+    },
+    {
+      "category": "校属部门",
+      "name": "应大教师工作部/人事处",
+      "url": "https://rsc.cidp.edu.cn/",
+      "campus": "全校",
+      "status": "官网导航或公告收录",
+      "description": "官网原防灾院系部门页列出的子站",
+      "source_url": "https://www1.cidp.edu.cn/yxbm1/yxbm.htm"
+    },
+    {
+      "category": "校属部门",
+      "name": "应大纪检室",
+      "url": "https://jwb.cidp.edu.cn/",
+      "campus": "全校",
+      "status": "官网导航或公告收录",
+      "description": "官网原防灾院系部门页列出的子站",
+      "source_url": "https://www1.cidp.edu.cn/yxbm1/yxbm.htm"
+    },
+    {
+      "category": "校属部门",
+      "name": "应大工会",
+      "url": "https://gh.cidp.edu.cn/",
+      "campus": "全校",
+      "status": "官网导航或公告收录",
+      "description": "官网原防灾院系部门页列出的子站",
+      "source_url": "https://www1.cidp.edu.cn/yxbm1/yxbm.htm"
+    },
+    {
+      "category": "校属部门",
+      "name": "应大团委",
+      "url": "https://tw.cidp.edu.cn/",
+      "campus": "全校",
+      "status": "官网导航或公告收录",
+      "description": "官网原防灾院系部门页列出的子站",
+      "source_url": "https://www1.cidp.edu.cn/yxbm1/yxbm.htm"
+    },
+    {
+      "category": "校属部门",
+      "name": "应大离退休工作部",
+      "url": "https://ltb.cidp.edu.cn/",
+      "campus": "全校",
+      "status": "官网导航或公告收录",
+      "description": "官网原防灾院系部门页列出的子站",
+      "source_url": "https://www1.cidp.edu.cn/yxbm1/yxbm.htm"
+    },
+    {
+      "category": "校属部门",
+      "name": "应大校园安全工作处",
+      "url": "https://aqgzc.cidp.edu.cn/",
+      "campus": "全校",
+      "status": "官网导航或公告收录",
+      "description": "官网原防灾院系部门页列出的子站",
+      "source_url": "https://www1.cidp.edu.cn/yxbm1/yxbm.htm"
+    },
+    {
+      "category": "校属部门",
+      "name": "应大校长办公室",
+      "url": "https://bgs.cidp.edu.cn/",
+      "campus": "全校",
+      "status": "官网导航或公告收录",
+      "description": "官网原防灾院系部门页列出的子站",
+      "source_url": "https://www1.cidp.edu.cn/yxbm1/yxbm.htm"
+    },
+    {
+      "category": "校属部门",
+      "name": "应大发展规划与学科建设处",
+      "url": "https://ghxkc.ncist.edu.cn/",
+      "campus": "全校",
+      "status": "官网导航或公告收录",
+      "description": "官网原防灾院系部门页列出的子站",
+      "source_url": "https://www1.cidp.edu.cn/yxbm1/yxbm.htm"
+    },
+    {
+      "category": "校属部门",
+      "name": "应大科技管理处",
+      "url": "https://kyc.cidp.edu.cn/",
+      "campus": "全校",
+      "status": "官网导航或公告收录",
+      "description": "官网原防灾院系部门页列出的子站",
+      "source_url": "https://www1.cidp.edu.cn/yxbm1/yxbm.htm"
+    },
+    {
+      "category": "校属部门",
+      "name": "应大国际合作处",
+      "url": "https://gjc.ncist.edu.cn/",
+      "campus": "全校",
+      "status": "官网导航或公告收录",
+      "description": "官网原防灾院系部门页列出的子站",
+      "source_url": "https://www1.cidp.edu.cn/yxbm1/yxbm.htm"
+    },
+    {
+      "category": "校属部门",
+      "name": "应大财务处（西院）",
+      "url": "https://fcc.cidp.edu.cn/",
+      "campus": "全校",
+      "status": "官网导航或公告收录",
+      "description": "官网原防灾院系部门页列出的子站",
+      "source_url": "https://www1.cidp.edu.cn/yxbm1/yxbm.htm"
+    },
+    {
+      "category": "校属部门",
+      "name": "应大财务处（东院）",
+      "url": "https://cwc.ncist.edu.cn/",
+      "campus": "全校",
+      "status": "官网导航或公告收录",
+      "description": "官网原防灾院系部门页列出的子站",
+      "source_url": "https://www1.cidp.edu.cn/yxbm1/yxbm.htm"
+    },
+    {
+      "category": "校属部门",
+      "name": "应大资产管理处",
+      "url": "https://zcglc.cidp.edu.cn/",
+      "campus": "全校",
+      "status": "官网导航或公告收录",
+      "description": "官网原防灾院系部门页列出的子站",
+      "source_url": "https://www1.cidp.edu.cn/yxbm1/yxbm.htm"
+    },
+    {
+      "category": "校属部门",
+      "name": "应大审计处",
+      "url": "https://sjc.ncist.edu.cn/",
+      "campus": "全校",
+      "status": "官网导航或公告收录",
+      "description": "官网原防灾院系部门页列出的子站",
+      "source_url": "https://www1.cidp.edu.cn/yxbm1/yxbm.htm"
+    },
+    {
+      "category": "校属部门",
+      "name": "应大基建处",
+      "url": "https://jjc.cidp.edu.cn/",
+      "campus": "全校",
+      "status": "官网导航或公告收录",
+      "description": "官网原防灾院系部门页列出的子站",
+      "source_url": "https://www1.cidp.edu.cn/yxbm1/yxbm.htm"
+    },
+    {
+      "category": "校属部门",
+      "name": "应大高等教育研究所",
+      "url": "https://rihe.cidp.edu.cn/",
+      "campus": "全校",
+      "status": "官网导航或公告收录",
+      "description": "官网原防灾院系部门页列出的子站",
+      "source_url": "https://www1.cidp.edu.cn/yxbm1/yxbm.htm"
+    },
+    {
+      "category": "校属部门",
+      "name": "应大学报编辑部",
+      "url": "https://fzxb.cidp.edu.cn/",
+      "campus": "全校",
+      "status": "官网导航或公告收录",
+      "description": "官网原防灾院系部门页列出的子站",
+      "source_url": "https://www1.cidp.edu.cn/yxbm1/yxbm.htm"
+    },
+    {
+      "category": "校属部门",
+      "name": "应大后勤服务管理中心",
+      "url": "https://zhhq.cidp.edu.cn/",
+      "campus": "全校",
+      "status": "官网导航或公告收录",
+      "description": "官网原防灾院系部门页列出的子站",
+      "source_url": "https://www1.cidp.edu.cn/yxbm1/yxbm.htm"
+    },
+    {
+      "category": "校属部门",
+      "name": "采购与招标信息平台",
+      "url": "https://zcglc-cgmh.cidp.edu.cn/sfw_cms/e?page=cms.index",
+      "campus": "全校",
+      "status": "官网导航或公告收录",
+      "description": "公开招标和采购公告",
+      "source_url": "https://www1.cidp.edu.cn/"
+    },
+    {
+      "category": "校属部门",
+      "name": "校园公开招聘信息",
+      "url": "https://www1.cidp.edu.cn/yxbm1/yxbm.htm",
+      "campus": "全校",
+      "status": "官网导航或公告收录",
+      "description": "由校属部门导航入口查询",
+      "source_url": "https://www1.cidp.edu.cn/yxbm1/yxbm.htm"
+    },
+    {
+      "category": "专题及科研",
+      "name": "西院环境与灾害治理学院",
+      "url": "https://see.cidp.edu.cn/",
+      "campus": "西院",
+      "status": "官网导航或公告收录",
+      "description": "教学、科研、专业动态",
+      "source_url": "https://see.cidp.edu.cn/"
+    },
+    {
+      "category": "专题及科研",
+      "name": "西院理科基础部",
+      "url": "https://jcb.cidp.edu.cn/",
+      "campus": "西院",
+      "status": "官网导航或公告收录",
+      "description": "基础课教学",
+      "source_url": "https://jcb.cidp.edu.cn/"
+    },
+    {
+      "category": "专题及科研",
+      "name": "应急技术与指挥学院",
+      "url": "https://yjxy.uem.ncist.edu.cn/",
+      "campus": "全校",
+      "status": "官网导航或公告收录",
+      "description": "学院新闻及课程",
+      "source_url": "https://yjxy.uem.ncist.edu.cn/xwgg/jxd/8cbf54e9918e40ddb89dab956828f865.htm"
+    },
+    {
+      "category": "专题及科研",
+      "name": "资源环境灾变机理及风险监控重点实验室",
+      "url": "https://see-redmrm.cidp.edu.cn/",
+      "campus": "西院",
+      "status": "官网导航或公告收录",
+      "description": "科研与大型仪器共享",
+      "source_url": "https://see-redmrm.cidp.edu.cn/sysgk.htm"
+    },
+    {
+      "category": "专题及科研",
+      "name": "全校科研平台介绍",
+      "url": "https://www.ncist.edu.cn/kxyj/kypt/936972e58b52490c8c46498ea03bf91f.htm",
+      "campus": "全校",
+      "status": "官网导航或公告收录",
+      "description": "学校省部级科研平台概况",
+      "source_url": "https://www.ncist.edu.cn/"
+    }
+  ]
+}

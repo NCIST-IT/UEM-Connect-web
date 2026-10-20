@@ -1,19 +1,8 @@
-# 应大通课表快捷指令网站
+# IT 智云社 · 校园门户
 
-用于安装和查看 Safari 课表快捷指令的纯静态网站。支持本科教务系统与研究生管理系统，将课程批量添加到 iPhone 日历。
+基于 React、Vite、Tailwind CSS 4 和 shadcn/ui 的纯静态校园网站，包含「导航 / 应大通 / 下载」三个页面，默认进入校园导航。
 
-## 使用
-
-1. 在网站选择课程提醒，下载并添加快捷指令；使用说明中可选择 Apple 地图适配版。
-2. 用 Safari 登录学校信息门户，进入对应系统的课表页面。
-3. 从 Safari 分享菜单运行“应大通课表导出”，确认后创建独立课表日历并批量添加课程。
-4. 完成后显示本次添加数量并打开日历 App。
-
-当前安装包为 **v13**，共有标准版 / 地图适配版 × 11 种提醒选项，共 22 个已签名文件。iPhone 实机已确认结束时可以打开日历 App。网页所选提醒对应设备上的第二个提醒，首行“出发时间”仍由系统处理。日历颜色可在日历 App 的日历列表中手动设置。
-
-账号、密码、Cookie 和课表数据留在学校页面及用户设备上；网站只提供安装文件、脚本和使用说明。
-
-## 启动与部署
+## 启动
 
 ```sh
 pnpm install
@@ -21,11 +10,33 @@ pnpm build
 pnpm start
 ```
 
-`pnpm start` 在 `0.0.0.0:5177` 提供构建后的静态网站。开发运行 `pnpm dev`，默认地址为 `http://127.0.0.1:5178`。
+网站监听 `0.0.0.0:8080`；开发模式运行 `pnpm dev`，默认端口 5178。也可以直接把 `dist/` 部署到静态文件服务器。
 
-也可以直接将 `dist/` 部署到静态文件服务器；需保留 `.shortcut` 文件和其他构建资源。
+## 页面与交互
 
-## 验证
+- **导航**：按全校通用、华科（东院）、防灾（西院）分组，支持实时搜索、分类、站点展开与本地收藏。按 `/` 可聚焦搜索框。
+- **应大通**：应用介绍、用户提供的课表和地图实机截图，点击图片可放大。
+- **下载**：Android 最新 APK 代理下载，以及 iOS Safari 课表快捷指令（标准版 / 地图适配版 × 11 种提醒，合计 22 个已签名安装包）。
+- 支持浅色 / 深色模式、移动端布局、键盘操作和减少动态效果偏好。收藏与主题只保存在当前浏览器。
+
+## 数据与资源
+
+- `src/data/resources.json`：用户提供的 2026-10-20 校园 Web 资源清单，75 条入口，保留原始分类、校区、状态和来源。历史 / 待核验入口有状态标记；列表不代表所有链接均已实机登录验证。
+- `src/data/sites.js`：清单展示映射、社区地址和 Android 下载地址。
+- Android 下载：`https://v4.gh-proxy.org/https://github.com/NCIST-IT/UEM-Connect-board/releases/latest/download/uem-connect.apk`。
+- `public/images/community.png`：来自用户指定的 [NCIST-IT/resource](https://github.com/NCIST-IT/resource) 中的 `icon-square.png`。
+- `public/images/schedule.png`、`campus-map.png`：用户提供的两张实机截图。
+- `public/images/app-icon.png`：本地 UEM-Connect 应用项目的图标。
+
+## 设计预设
+
+已通过官方 CLI 应用 **`b1dVJKH6Gm`**：Rhea / Neutral / Orange / Blue charts / Phosphor / Roboto Slab 正文 / Roboto 标题 / Medium radius。中文使用系统字体回退，配置见 `components.json` 与 `src/index.css`。
+
+```sh
+pnpm exec shadcn apply --preset b1dVJKH6Gm --yes
+```
+
+## 验证与快捷指令维护
 
 ```sh
 pnpm test
@@ -33,15 +44,4 @@ pnpm lint
 pnpm build
 ```
 
-测试覆盖学校课表读取、学期识别、日期与去重、地图前缀、原生日历动作、提醒参数和添加结果统计。构建会核验所有安装包及其内置脚本的 SHA-256，防止发布与源码不一致的安装包。
-
-## 项目结构
-
-- `src/components/SafariShortcut.jsx`：安装入口、提醒选择、地图版本和使用说明。
-- `src/shortcut/`：Safari 脚本源码、提醒选项和已签名安装文件。
-- `src/lib/schedule-model.js`、`src/lib/timetable-to-ics.js`：快捷指令使用的课表标准化、日期、去重与日程转换逻辑。
-- `scripts/*safari-shortcut*`：脚本构建、原生动作打包、签名与回读验证。
-- `tests/`：快捷指令与其共用转换逻辑的回归测试。
-- `docs/safari-shortcut.md`：实现细节、打包步骤和版本历史。
-
-React + Vite + Tailwind CSS 4 + shadcn/ui；界面使用 Orange 主题和 Phosphor 图标。快捷指令源码修改后须重新打包、签名并回读验证，步骤见 [快捷指令说明](docs/safari-shortcut.md)。
+`build` 会核验 22 个安装包及其内置脚本的 SHA-256。快捷指令的学校课表解析、原生日历动作、提醒和结果统计测试保留；网页导航不接收学校账号、密码或课表。快捷指令修改后须重新打包、签名和回读验证，见 [快捷指令说明](docs/safari-shortcut.md)。
