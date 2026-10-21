@@ -39,6 +39,21 @@ const icons = {
   museum: BankIcon,
 };
 
+function SiteAddress({ value }) {
+  const labels = value.split(".");
+  return (
+    <span className="site-url">
+      {labels.map((label, index) => (
+        <span key={index}>
+          {label}
+          {index < labels.length - 1 && "."}
+          {index < labels.length - 1 && <wbr />}
+        </span>
+      ))}
+    </span>
+  );
+}
+
 function loadFavorites() {
   try {
     const value = JSON.parse(
@@ -277,6 +292,7 @@ export default function Directory({ onNavigate }) {
                             </div>
                             <h3>{site.name}</h3>
                             <p>{site.description}</p>
+                            <SiteAddress value={site.address} />
                           </a>
                           <button
                             onClick={() => toggleFavorite(site.id)}

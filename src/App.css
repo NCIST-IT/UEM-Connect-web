@@ -313,6 +313,8 @@
   padding: 0 19px 22px;
 }
 .site-tile {
+  display: flex;
+  flex-direction: column;
   min-width: 0;
   position: relative;
   border: 1px solid #eeeeef;
@@ -333,7 +335,9 @@
   border-color: color-mix(in srgb, var(--school-accent) 15%, var(--border));
 }
 .site-link {
-  display: block;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
   padding: 15px 13px 17px;
   outline-offset: 3px;
   border-radius: inherit;
@@ -421,6 +425,16 @@
   margin-left: auto;
   margin-right: 4px;
   white-space: nowrap;
+}
+.site-url {
+  display: block;
+  overflow: hidden;
+  margin-top: auto;
+  padding-top: 10px;
+  color: #8f8e8c;
+  font: 11px/1.5 var(--font-heading);
+  letter-spacing: 0;
+  white-space: normal;
 }
 .expand-sites {
   display: flex;
@@ -1324,6 +1338,9 @@ button:focus-visible {
   background: #222326;
   border-color: #303033;
 }
+.dark .site-url {
+  color: #8f9094;
+}
 .dark .site-featured {
   background: color-mix(in srgb, var(--school-accent) 8%, #222326);
 }
@@ -1984,6 +2001,10 @@ button:focus-visible {
   .site-tile h3 {
     font-size: 11px;
     min-height: 35px;
+  }
+  .site-url {
+    font-size: 10px;
+    letter-spacing: -0.2px;
   }
   .favorite-button {
     top: 53px;
