@@ -314,7 +314,7 @@ export default function App() {
     }
   }, [dark]);
   useEffect(() => {
-    document.title = `${{ navigation: "校园导航", app: "应大通", downloads: "下载", shortcut: "课表导出" }[page]} · IT 智云社`;
+    document.title = `${{ navigation: "校园导航", app: "应大通", downloads: "下载", shortcut: "课表导出" }[page]} · 应急管理大学 IT智云社`;
   }, [page]);
   function navigate(value) {
     setPage(value);
