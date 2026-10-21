@@ -320,10 +320,6 @@
   box-shadow: 0 4px 15px #29221b08;
   transform: translateY(-2px);
 }
-.site-featured {
-  background: color-mix(in srgb, var(--school-soft) 45%, white);
-  border-color: color-mix(in srgb, var(--school-accent) 15%, var(--border));
-}
 .site-link {
   display: flex;
   flex: 1;
@@ -408,8 +404,8 @@
 }
 .site-status {
   font-size: 8px;
-  color: #a5834c;
-  background: #faf3e7;
+  color: var(--muted-foreground);
+  background: var(--muted);
   padding: 2px 4px;
   border-radius: 4px;
   margin-left: auto;
@@ -1338,9 +1334,6 @@ button:focus-visible {
 .dark .site-url {
   color: #8f9094;
 }
-.dark .site-featured {
-  background: color-mix(in srgb, var(--school-accent) 8%, #222326);
-}
 .dark .school-monogram {
   background: color-mix(in srgb, var(--school-accent) 15%, #222326);
 }
@@ -1351,8 +1344,8 @@ button:focus-visible {
   filter: brightness(0.75) saturate(0.75);
 }
 .dark .site-status {
-  color: #c6ac7e;
-  background: #3b3327;
+  color: #a0a1a5;
+  background: #2c2d30;
 }
 .dark .product-banner {
   background: #2b231c;

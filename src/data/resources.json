@@ -167,15 +167,6 @@
     },
     {
       "category": "网络及生活",
-      "name": "正版化软件下载",
-      "url": "http://msca.cidp.edu.cn/",
-      "campus": "西院",
-      "status": "官方说明收录，需校内身份",
-      "description": "微软正版软件平台，接入统一认证",
-      "source_url": "https://xxzx.cidp.edu.cn/zbhsc.pdf"
-    },
-    {
-      "category": "网络及生活",
       "name": "东院数字后勤平台",
       "url": "https://ncist.hqbz.cn/lg/",
       "campus": "东院",
@@ -230,33 +221,6 @@
     },
     {
       "category": "教务与图书",
-      "name": "西院图书馆数字资源",
-      "url": "https://lib.cidp.edu.cn/szzy_list.jsp?urltype=tree.TreeTempUrl&wbtreeid=1012",
-      "campus": "西院",
-      "status": "官网导航或公告收录",
-      "description": "中文和外文学术数据库目录",
-      "source_url": "https://lib.cidp.edu.cn/info/1016/1288.htm"
-    },
-    {
-      "category": "教务与图书",
-      "name": "西院图书馆座位预约",
-      "url": "https://zwyy.cidp.edu.cn/",
-      "campus": "西院",
-      "status": "官网导航或公告收录",
-      "description": "在线自习座位预约",
-      "source_url": "https://lib.cidp.edu.cn/info/1016/1288.htm"
-    },
-    {
-      "category": "教务与图书",
-      "name": "西院座位预约使用说明",
-      "url": "https://lib.cidp.edu.cn/info/1016/1288.htm",
-      "campus": "西院",
-      "status": "官网导航或公告收录",
-      "description": "座位预约规则",
-      "source_url": "https://lib.cidp.edu.cn/info/1016/1288.htm"
-    },
-    {
-      "category": "教务与图书",
       "name": "雨课堂学校专区",
       "url": "https://cidp.yuketang.cn/",
       "campus": "西院",
@@ -308,15 +272,6 @@
       "status": "官网导航或公告收录",
       "description": "学校官方部门站",
       "source_url": "https://www1.cidp.edu.cn/yxbm1/yxbm.htm"
-    },
-    {
-      "category": "招生就业",
-      "name": "西院就业信息网",
-      "url": "http://jy.cidp.edu.cn/",
-      "campus": "西院",
-      "status": "官网历史公告收录",
-      "description": "校招与双选会",
-      "source_url": "https://dzxy.cidp.edu.cn/info/1074/3161.htm"
     },
     {
       "category": "招生就业",
@@ -571,15 +526,6 @@
       "source_url": "https://www1.cidp.edu.cn/"
     },
     {
-      "category": "校属部门",
-      "name": "校园公开招聘信息",
-      "url": "https://www1.cidp.edu.cn/yxbm1/yxbm.htm",
-      "campus": "全校",
-      "status": "官网导航或公告收录",
-      "description": "由校属部门导航入口查询",
-      "source_url": "https://www1.cidp.edu.cn/yxbm1/yxbm.htm"
-    },
-    {
       "category": "专题及科研",
       "name": "西院环境与灾害治理学院",
       "url": "https://see.cidp.edu.cn/",
@@ -614,15 +560,6 @@
       "status": "官网导航或公告收录",
       "description": "科研与大型仪器共享",
       "source_url": "https://see-redmrm.cidp.edu.cn/sysgk.htm"
-    },
-    {
-      "category": "专题及科研",
-      "name": "全校科研平台介绍",
-      "url": "https://www.ncist.edu.cn/kxyj/kypt/936972e58b52490c8c46498ea03bf91f.htm",
-      "campus": "全校",
-      "status": "官网导航或公告收录",
-      "description": "学校省部级科研平台概况",
-      "source_url": "https://www.ncist.edu.cn/"
     }
   ]
 }

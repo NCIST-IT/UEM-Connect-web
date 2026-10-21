@@ -63,12 +63,7 @@ function siteView(item) {
     id: item.url,
     icon: item.icon ?? siteIcon(item),
     address: item.page ? "本站工具" : new URL(item.url).host,
-    featured: /信息门户|统一身份认证|应急管理大学主站/.test(item.name),
-    statusLabel: /历史/.test(item.status)
-      ? "历史入口"
-      : /待核验|待复核/.test(item.status)
-        ? "待核验"
-        : null,
+    statusLabel: /待核验|待复核/.test(item.status) ? "待核验" : null,
   };
 }
 

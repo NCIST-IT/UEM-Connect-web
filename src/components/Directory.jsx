@@ -247,13 +247,7 @@ export default function Directory({ onNavigate }) {
                       const Icon = icons[site.icon];
                       const saved = favorites.includes(site.id);
                       return (
-                        <div
-                          className={cn(
-                            "site-tile",
-                            site.featured && "site-featured",
-                          )}
-                          key={site.id}
-                        >
+                        <div className="site-tile" key={site.id}>
                           <a
                             href={site.url}
                             target={site.page ? undefined : "_blank"}
@@ -363,7 +357,7 @@ export default function Directory({ onNavigate }) {
         <span>
           {totalSites} 个校园资源 · {researchDate}
         </span>
-        <p>按资源清单收录，含历史入口；部分服务需校园网或登录</p>
+        <p>按资源清单收录；部分服务需校园网或登录</p>
         <a
           href="https://github.com/NCIST-IT/UEM-Connect-web/issues/new"
           target="_blank"

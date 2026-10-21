@@ -22,8 +22,8 @@ pnpm start
 
 ## 数据与资源
 
-- `src/data/resources.json`：用户提供的 2026-10-20 校园 Web 资源清单，75 条入口，保留原始分类、校区、状态和来源。历史 / 待核验入口有状态标记；列表不代表所有链接均已实机登录验证。
-- `src/data/sites.js`：清单展示映射、本站课表导出入口、社区地址和 Android 下载地址；首页合计 76 个入口（75 个清单站点 + 1 个本站工具）。
+- `src/data/resources.json`：用户提供的 2026-10-20 校园 Web 资源清单，62 条入口，保留原始分类、校区、状态和来源。仍有待核验入口标记；列表不代表所有链接均已实机登录验证。
+- `src/data/sites.js`：清单展示映射、本站课表导出入口、社区地址和 Android 下载地址；首页合计 63 个入口（62 个清单站点 + 1 个本站工具）。
 - Android 下载：`https://v4.gh-proxy.org/https://github.com/NCIST-IT/UEM-Connect-board/releases/latest/download/uem-connect.apk`。
 - `public/images/community.png`：来自用户指定的 [NCIST-IT/resource](https://github.com/NCIST-IT/resource) 中的 `icon-square.png`。
 - `public/images/schedule.png`、`campus-map.png`：用户提供的两张实机截图。
