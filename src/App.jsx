@@ -345,6 +345,7 @@ export default function App() {
           softness={0.82}
           scale={1.15}
           flow={0.85}
+          offsetY={0.2}
           speed={0.35}
           grain={0.03}
           variation={1}

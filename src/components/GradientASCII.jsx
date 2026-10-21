@@ -48,6 +48,7 @@ uniform int uCount;
 uniform float uScale;
 uniform float uSoftness;
 uniform float uFlow;
+uniform float uOffsetY;
 uniform vec2 uSeed;
 uniform vec4 uTrail[24];
 uniform float uRadius;
@@ -152,6 +153,7 @@ vec4 tone(float t) {
 
 void main() {
   vec2 p = (vUv - 0.5) * vec2(uAspect, 1.0);
+  p.y -= uOffsetY;
   float time = uTime;
   vec2 q = p / uScale;
   vec2 warp = vec2(
@@ -476,6 +478,7 @@ const GradientASCII = ({
   softness = 0.5,
   scale = 1,
   flow = 0.5,
+  offsetY = 0,
   speed = 1,
   gradientOpacity = 0.9,
   grain = 0.08,
@@ -510,6 +513,7 @@ const GradientASCII = ({
     softness: clamp(softness, 0, 1),
     scale: clamp(scale, 0.4, 2.5),
     flow: clamp(flow, 0, 2),
+    offsetY: clamp(offsetY, -1, 1),
     speed: Math.max(0, speed),
     gradientOpacity: clamp(gradientOpacity, 0, 1),
     grain: clamp(grain, 0, 0.4),
@@ -669,6 +673,7 @@ const GradientASCII = ({
       gl.uniform1f(fu.uScale, s.scale);
       gl.uniform1f(fu.uSoftness, s.softness);
       gl.uniform1f(fu.uFlow, s.flow);
+      gl.uniform1f(fu.uOffsetY, s.offsetY);
       gl.uniform2f(fu.uSeed, s.variation * 3.17, s.variation * 1.91);
       gl.uniform4fv(fu.uTrail, trailData);
       gl.uniform1f(fu.uRadius, s.scrambleRadius);
