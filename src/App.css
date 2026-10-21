@@ -1288,8 +1288,7 @@ button:focus-visible {
 .shortcut-query-note strong {
   font-weight: 600;
 }
-.shortcut-steps .shortcut-graduate-note,
-.shortcut-steps .shortcut-version-note {
+.shortcut-steps .shortcut-graduate-note {
   font-size: 11px;
 }
 .shortcut-navigation-option {

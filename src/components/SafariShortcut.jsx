@@ -22,7 +22,7 @@ export default function SafariShortcut() {
   const [alertId, setAlertId] = useState("none");
   const alert =
     shortcutAlerts.find((entry) => entry.id === alertId) ?? shortcutAlerts[0];
-  // Retain the existing artifact IDs; apple-maps now contains the address suffix repair.
+  // Installer variant IDs map to the navigation-repair download option.
   const variant = navigationFix ? "apple-maps" : "default";
   const installerUrl =
     installers[`../shortcut/install/safari-${variant}-${alert.id}.shortcut`];
@@ -77,9 +77,6 @@ export default function SafariShortcut() {
           >
             <PlusIcon /> 添加快捷指令
           </Button>
-          <p className="shortcut-version-note">
-            v14 · 已安装旧版？请重新下载并添加，按系统提示替换原快捷指令。
-          </p>
         </li>
         <li>
           <h2>

@@ -94,7 +94,7 @@ function ProductPage({ onNavigate }) {
             <Button
               variant="ghost"
               className="h-12"
-              render={<a href={projectUrl} target="_blank" rel="noreferrer" />}
+              render={<a href={projectUrl} target="_blank" rel="noopener noreferrer" />}
               nativeButton={false}
             >
               <GithubLogoIcon /> 在 GitHub 看看 <ArrowUpRightIcon />
@@ -123,7 +123,7 @@ function ProductPage({ onNavigate }) {
           由校园里的开发者共同构建。
           <span>你的一点建议，都可能让应大通变得更好。</span>
         </p>
-        <a href={`${projectUrl}/issues`} target="_blank" rel="noreferrer">
+        <a href={`${projectUrl}/issues`} target="_blank" rel="noopener noreferrer">
           一起让它更好 <ArrowUpRightIcon />
         </a>
       </div>
@@ -266,7 +266,7 @@ function DownloadPage({ onNavigate }) {
           </div>
           <Button
             className="h-12 w-full"
-            render={<a href={androidInstaller} rel="noreferrer" />}
+            render={<a href={androidInstaller} rel="noopener noreferrer" />}
             nativeButton={false}
           >
             <DownloadSimpleIcon />
@@ -278,7 +278,7 @@ function DownloadPage({ onNavigate }) {
             <a
               href={`${projectUrl}/releases/latest`}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
             >
               查看更新记录 <ArrowUpRightIcon />
             </a>
@@ -407,7 +407,7 @@ export default function App() {
               className="github-link"
               href="https://github.com/NCIST-IT/UEM-Connect-web"
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               aria-label="网站 GitHub 仓库"
             >
               <GithubLogoIcon />
@@ -438,13 +438,13 @@ export default function App() {
             <span>用技术，让校园更近一点。</span>
           </div>
           <div className="footer-links">
-            <a href={communityUrl} target="_blank" rel="noreferrer">
+            <a href={communityUrl} target="_blank" rel="noopener noreferrer">
               开源社区 <ArrowUpRightIcon />
             </a>
             <a
               href="https://github.com/NCIST-IT/UEM-Connect-web/issues"
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
             >
               建议与反馈 <ArrowUpRightIcon />
             </a>

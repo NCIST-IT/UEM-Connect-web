@@ -356,7 +356,7 @@ export default function Directory({ onNavigate }) {
         <a
           href="https://github.com/NCIST-IT/UEM-Connect-web/issues/new"
           target="_blank"
-          rel="noreferrer"
+          rel="noopener noreferrer"
         >
           反馈失效链接 <ArrowUpRightIcon />
         </a>
