@@ -23,6 +23,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import Directory from "@/components/Directory";
 import PhonePreview from "@/components/PhonePreview";
+import GradientASCII from "@/components/GradientASCII";
 import { androidInstaller, communityUrl, projectUrl } from "@/data/sites";
 import "./App.css";
 
@@ -326,6 +327,32 @@ export default function App() {
       onValueChange={navigate}
       className="site-shell gap-0 font-sans"
     >
+      <div className="site-background" aria-hidden="true">
+        <GradientASCII
+          colors={
+            dark
+              ? ["#7c2d12", "#f97316", "#0c4a6e", "#38bdf8"]
+              : ["#f97316", "#f6f8ff", "#a5d8ff", "#38bdf8"]
+          }
+          shape="rise"
+          characters=" =+xX0S8#@"
+          cellSize={20}
+          density={0.38}
+          glyphOpacity={0.32}
+          gradientOpacity={dark ? 0.38 : 0.34}
+          glow={0.12}
+          flicker={0.12}
+          softness={0.82}
+          scale={1.15}
+          flow={0.85}
+          speed={0.35}
+          grain={0.03}
+          variation={1}
+          mouseInteraction={false}
+          clickEffect="none"
+          lightMode={!dark}
+        />
+      </div>
       <a
         className="skip-link"
         href="#main-content"

@@ -1,11 +1,21 @@
 @reference "./index.css";
 
 .site-shell {
+  position: relative;
+  isolation: isolate;
   min-height: 100dvh;
   color: var(--foreground);
   background: #f8f9fb;
 }
+.site-background {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
 .site-header {
+  position: relative;
+  z-index: 2;
   background: var(--background);
   border-bottom: 1px solid var(--border);
 }
@@ -114,6 +124,8 @@
   height: 21px;
 }
 .site-main {
+  position: relative;
+  z-index: 1;
   flex: 1;
   width: 100%;
   max-width: 1320px;
@@ -612,6 +624,8 @@
   border-radius: inherit;
 }
 .site-footer {
+  position: relative;
+  z-index: 1;
   border-top: 1px solid var(--border);
   background: var(--background);
   color: var(--muted-foreground);
