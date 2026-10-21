@@ -273,11 +273,6 @@ export default function Directory({ onNavigate }) {
                               >
                                 <Icon weight="duotone" />
                               </span>
-                              {site.statusLabel && (
-                                <span className="site-status">
-                                  {site.statusLabel}
-                                </span>
-                              )}
                               {site.page ? (
                                 <ArrowRightIcon className="site-arrow" />
                               ) : (

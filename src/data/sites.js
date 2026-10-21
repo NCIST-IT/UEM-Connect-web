@@ -63,7 +63,6 @@ function siteView(item) {
     id: item.url,
     icon: item.icon ?? siteIcon(item),
     address: item.page ? "本站工具" : new URL(item.url).host,
-    statusLabel: /待核验|待复核/.test(item.status) ? "待核验" : null,
   };
 }
 

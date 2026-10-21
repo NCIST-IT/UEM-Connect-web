@@ -402,16 +402,6 @@
   letter-spacing: -0.15px;
   margin-top: 4px;
 }
-.site-status {
-  font-size: 8px;
-  color: var(--muted-foreground);
-  background: var(--muted);
-  padding: 2px 4px;
-  border-radius: 4px;
-  margin-left: auto;
-  margin-right: 4px;
-  white-space: nowrap;
-}
 .site-url {
   display: block;
   overflow: hidden;
@@ -1343,10 +1333,6 @@ button:focus-visible {
 .dark .site-icon {
   filter: brightness(0.75) saturate(0.75);
 }
-.dark .site-status {
-  color: #a0a1a5;
-  background: #2c2d30;
-}
 .dark .product-banner {
   background: #2b231c;
   border-color: #3c2c22;
@@ -2032,10 +2018,6 @@ button:focus-visible {
   }
   .preview-note {
     bottom: 10px;
-  }
-  .site-status {
-    font-size: 7px;
-    padding: 2px;
   }
 }
 @media (prefers-reduced-motion: reduce) {
