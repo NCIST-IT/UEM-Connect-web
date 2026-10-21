@@ -1029,6 +1029,8 @@ button:focus-visible {
 }
 .android-download,
 .ios-download {
+  display: flex;
+  flex-direction: column;
   border: 1px solid var(--border);
   background: var(--card);
   border-radius: 20px;
@@ -1135,7 +1137,8 @@ button:focus-visible {
 }
 .android-art {
   position: relative;
-  height: 201px;
+  flex: 1;
+  min-height: 201px;
   display: grid;
   place-items: center;
   overflow: hidden;
@@ -1188,26 +1191,30 @@ button:focus-visible {
   font-size: 12px;
 }
 .download-file-note {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 3px;
+  min-height: 30px;
   font-size: 10px;
   color: var(--muted-foreground);
   text-align: center;
   margin-top: 13px;
 }
-.release-link {
-  display: flex;
+.download-file-note a {
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  gap: 4px;
-  font-size: 10px;
+  gap: 3px;
   color: var(--muted-foreground);
-  margin-top: 13px;
+  transition: color 0.2s;
 }
-.release-link:hover {
+.download-file-note a:hover {
   color: var(--primary);
 }
-.release-link svg {
-  width: 11px;
-  height: 11px;
+.download-file-note svg {
+  width: 10px;
+  height: 10px;
 }
 .ios-download .download-description {
   margin-bottom: 26px;
@@ -1909,7 +1916,10 @@ button:focus-visible {
     font-size: 24px;
   }
   .android-art {
-    height: 190px;
+    min-height: 190px;
+  }
+  .shortcut-entry-art {
+    min-height: 190px;
   }
   .download-help {
     align-items: start;

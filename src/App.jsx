@@ -273,16 +273,15 @@ function DownloadPage({ onNavigate }) {
             <ArrowUpRightIcon className="ml-auto" />
           </Button>
           <p className="download-file-note">
-            最新发布版 · APK 安装包 · GitHub 代理下载
+            最新发布版 · APK 安装包 ·{" "}
+            <a
+              href={`${projectUrl}/releases/latest`}
+              target="_blank"
+              rel="noreferrer"
+            >
+              查看更新记录 <ArrowUpRightIcon />
+            </a>
           </p>
-          <a
-            className="release-link"
-            href={`${projectUrl}/releases/latest`}
-            target="_blank"
-            rel="noreferrer"
-          >
-            查看更新记录 <ArrowUpRightIcon />
-          </a>
         </section>
         <IosShortcutCard onNavigate={onNavigate} />
       </div>
