@@ -33,6 +33,20 @@
 
 同源策略限制浏览器跨域读取及资源引用，不阻止正常的学校、GitHub 和下载外链导航，也不构成公开网站的身份认证。
 
+`uem-it.cn` 的 NixOS 配置位于 `deploy/nixos/web/`，允许 Cloudflare Web Analytics
+从 `https://static.cloudflareinsights.com` 加载脚本，并向 `https://cloudflareinsights.com`
+及同源 `/cdn-cgi/rum` 上报。其余 CSP 限制及 CORS 策略保持同源约束。
+
+## 运行环境安全更新
+
+- 生产静态服务使用 **Nginx 1.30.6**，由系统 Flake 的 `nixpkgs-web` 输入提供。
+- 构建使用 **Node.js 24.22.1 LTS** 安全版。网站 Flake 下载官方 Linux x64 安装包，
+  校验固定 SHA-256，并通过 `autoPatchelfHook` 适配 NixOS。
+- Node.js 只参与构建，生产请求由 Nginx 直接读取静态文件。
+
+工具依赖锁定在 `flake.lock`，网站源码跟踪 `main`。升级与验证步骤见
+[NixOS 运维说明](nixos-operations.md)。
+
 ## 前端与数据
 
 - 新窗口外链使用 `noopener noreferrer`。
@@ -55,9 +69,9 @@ pnpm audit
 ## 部署验证
 
 ```sh
-pnpm test
 pnpm lint
 pnpm build
+pnpm test
 ```
 
 自动测试检查跨域请求及预检响应不包含许可头、非法 Host 被拒绝，以及预览与 Nginx 模板安全头一致。

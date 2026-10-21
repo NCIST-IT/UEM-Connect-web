@@ -13,7 +13,9 @@ IT 智云社校园门户，提供校园网站导航、应大通应用介绍与�
 
 ## 本地运行
 
-需要 Node.js 22.12+ 和 pnpm。
+使用 Node.js 24.22.1 LTS 和 pnpm 12。仓库提供 x86_64 Linux 的 Nix Flake，
+安装 direnv 与 nix-direnv 后，执行一次 `direnv allow` 即可在进入目录时自动加载环境。
+也可运行 `nix develop`。
 
 ```sh
 pnpm install --frozen-lockfile
@@ -44,6 +46,10 @@ pnpm build
 
 [`deploy/nginx.conf`](deploy/nginx.conf) 提供 Nginx 静态站点模板。将 `root` 指向服务器上的 `dist/`；使用已有 HTTPS 站点时，将安全响应头和 `location` 规则合并到对应虚拟主机，并执行 `nginx -t` 检查配置。
 
+生产域名为 **https://uem-it.cn**。NixOS 部署使用 Nginx 1.30.6，配置位于
+[`deploy/nixos/web/`](deploy/nixos/web/)，构建环境和 `uem-update` 更新入口定义在
+[`flake.nix`](flake.nix)。目录、发布、回滚与安全更新命令见 [NixOS 运维说明](docs/nixos-operations.md)。
+
 开发和预览服务关闭 CORS 放行；生产模板提供同源资源策略、CSP、防框架嵌入与 MIME 嗅探防护。**响应头需要由部署服务器配置，仅上传静态文件不会自动生效。** 详细策略与依赖审计说明见 [部署安全说明](docs/deployment-security.md)。
 
 ## 项目结构
@@ -57,6 +63,7 @@ src/
 public/images/      社区头像、应用图标与实机截图
 config/             HTTP 安全响应头
 deploy/             静态服务器配置模板
+  nixos/web/        NixOS Web、网络、证书与 direnv 配置
 scripts/            构建、签名与部署检查工具
 tests/              课表转换、快捷指令与安全策略测试
 ```
@@ -77,9 +84,9 @@ React、Vite、Tailwind CSS 4、shadcn/ui 与 Phosphor Icons。shadcn/ui 预设�
 ## 检查与维护
 
 ```sh
-pnpm test
 pnpm lint
 pnpm build
+pnpm test
 ```
 
 构建会校验 22 个签名快捷指令及内置脚本的 SHA-256，并检查站内资源、下载文件、导航 URL、本机与私网地址、源码映射和敏感文件。已有构建产物可使用 `pnpm check:deployment` 单独检查。学校外链的在线状态由维护者验证。
