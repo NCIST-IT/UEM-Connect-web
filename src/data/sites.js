@@ -35,50 +35,72 @@ function siteIcon(item) {
   return "school";
 }
 
+function schoolIdFor(item) {
+  if (item.page) return null;
+  try {
+    const host = new URL(item.url).hostname;
+    if (
+      host === "cidp.edu.cn" ||
+      host.endsWith(".cidp.edu.cn") ||
+      host.startsWith("cidp.")
+    )
+      return "cidp";
+    if (
+      host === "ncist.edu.cn" ||
+      host.endsWith(".ncist.edu.cn") ||
+      host.startsWith("ncist.")
+    )
+      return "ncist";
+  } catch {
+    // Fall back to the campus metadata for unusual or non-web links.
+  }
+  return item.campus === "西院" ? "cidp" : "ncist";
+}
+
+function siteView(item) {
+  return {
+    ...item,
+    id: item.url,
+    icon: item.icon ?? siteIcon(item),
+    address: item.page ? "本站工具" : new URL(item.url).host,
+    featured: /信息门户|统一身份认证|应急管理大学主站/.test(item.name),
+    statusLabel: /历史/.test(item.status)
+      ? "历史入口"
+      : /待核验|待复核/.test(item.status)
+        ? "待核验"
+        : null,
+  };
+}
+
+const shortcut = directoryItems.find((item) => item.page);
+
 export const schools = [
-  {
-    id: "shared",
-    name: "全校通用",
-    fullName: "跨校区资源与服务",
-    initials: "UEM",
-    campus: "全校",
-    motto: "一个校园 · 一站连接",
-    tone: "shared",
-  },
   {
     id: "ncist",
     name: "华科",
-    fullName: "东院 · 原华北科技学院",
+    fullName: "ncist.edu.cn · 东院",
     initials: "NCIST",
-    campus: "东院",
     motto: "仁爱 · 忠勇 · 严明 · 求是",
     tone: "orange",
   },
   {
     id: "cidp",
     name: "防灾",
-    fullName: "西院 · 原防灾科技学院",
+    fullName: "cidp.edu.cn · 西院",
     initials: "CIDP",
-    campus: "西院",
     motto: "崇德 · 博智 · 扶危 · 定倾",
     tone: "green",
   },
 ].map((school) => ({
   ...school,
-  sites: directoryItems
-    .filter((item) => item.campus === school.campus)
-    .map((item) => ({
-      ...item,
-      id: item.url,
-      icon: item.icon ?? siteIcon(item),
-      address: item.page ? "本站工具" : new URL(item.url).host,
-      featured: /信息门户|统一身份认证|应急管理大学主站/.test(item.name),
-      statusLabel: /历史/.test(item.status)
-        ? "历史入口"
-        : /待核验|待复核/.test(item.status)
-          ? "待核验"
-          : null,
-    })),
+  sites: [
+    // The export shortcut lives with the host community's NCIST column; it remains
+    // available to both campuses from the downloads page.
+    ...(school.id === "ncist" && shortcut ? [siteView(shortcut)] : []),
+    ...resources.items
+      .filter((item) => schoolIdFor(item) === school.id)
+      .map(siteView),
+  ],
 }));
 
 export const projectUrl = "https://github.com/NCIST-IT/UEM-Connect-board";

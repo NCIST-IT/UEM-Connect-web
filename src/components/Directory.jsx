@@ -134,7 +134,7 @@ export default function Directory({ onNavigate }) {
             常用的都在这里<span className="text-primary">。</span>
           </h1>
           <p className="hero-description">
-            少一点寻找，多一点时间。属于华科与防灾同学的校园起点。
+            少一点寻找，多一点时间。按域名归档，属于华科与防灾同学的校园起点。
           </p>
         </div>
         <div className="directory-search">
