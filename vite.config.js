@@ -12,4 +12,7 @@ export default defineConfig({
     port: 5178,
     strictPort: true,
   },
+  preview: {
+    allowedHosts: ["nixos.tailbc211e.ts.net"],
+  },
 });
