@@ -167,56 +167,11 @@
     },
     {
       "category": "网络及生活",
-      "name": "西院一卡通服务指南",
-      "url": "https://xxzx.cidp.edu.cn/fwzn1/yktfw.htm",
-      "campus": "西院",
-      "status": "官网导航或公告收录",
-      "description": "充值、挂失、完美校园",
-      "source_url": "https://xxzx.cidp.edu.cn/fwzn1/xywfw.htm"
-    },
-    {
-      "category": "网络及生活",
-      "name": "西院网络报修说明",
-      "url": "https://xxzx.cidp.edu.cn/fwzn1/bxfw1.htm",
-      "campus": "西院",
-      "status": "官网导航或公告收录",
-      "description": "网络和多媒体故障报修",
-      "source_url": "https://xxzx.cidp.edu.cn/fwzn1/xywfw.htm"
-    },
-    {
-      "category": "网络及生活",
-      "name": "西院域名固定IP申请说明",
-      "url": "https://xxzx.cidp.edu.cn/fwzn1/ym_gdIPsq.htm",
-      "campus": "西院",
-      "status": "官网导航或公告收录",
-      "description": "部门网站和服务器IP申请",
-      "source_url": "https://xxzx.cidp.edu.cn/fwzn1/xywfw.htm"
-    },
-    {
-      "category": "网络及生活",
-      "name": "西院虚拟机托管说明",
-      "url": "https://xxzx.cidp.edu.cn/fwzn1/xnj_zjtgfw.htm",
-      "campus": "西院",
-      "status": "官网导航或公告收录",
-      "description": "部门服务器与虚拟机托管",
-      "source_url": "https://xxzx.cidp.edu.cn/fwzn1/xywfw.htm"
-    },
-    {
-      "category": "网络及生活",
       "name": "正版化软件下载",
       "url": "http://msca.cidp.edu.cn/",
       "campus": "西院",
       "status": "官方说明收录，需校内身份",
       "description": "微软正版软件平台，接入统一认证",
-      "source_url": "https://xxzx.cidp.edu.cn/zbhsc.pdf"
-    },
-    {
-      "category": "网络及生活",
-      "name": "正版软件使用指南",
-      "url": "https://xxzx.cidp.edu.cn/zbhsc.pdf",
-      "campus": "西院",
-      "status": "官网导航或公告收录",
-      "description": "官网下载使用说明PDF",
       "source_url": "https://xxzx.cidp.edu.cn/zbhsc.pdf"
     },
     {
@@ -254,15 +209,6 @@
       "status": "历史入口（待复核）",
       "description": "选课、查成绩、课表；历史网址",
       "source_url": "https://wap.dakao8.com/a/10136/"
-    },
-    {
-      "category": "教务与图书",
-      "name": "西院教务系统入口说明",
-      "url": "https://xxzx.cidp.edu.cn/fwzn1/zhfwmh.htm",
-      "campus": "西院",
-      "status": "官网导航或公告收录",
-      "description": "通过门户进入教务系统；不提供未经证实的直连地址",
-      "source_url": "https://xxzx.cidp.edu.cn/fwzn1/zhfwmh.htm"
     },
     {
       "category": "教务与图书",
