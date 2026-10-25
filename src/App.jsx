@@ -71,7 +71,7 @@ function ProductPage({ onNavigate }) {
           <div className="eyebrow">MADE FOR YOUR CAMPUS</div>
           <div className="product-name">
             <span className="product-logo">
-              <img src="/images/app-icon.png" alt="" />
+              <img src="/images/app-icon.webp" alt="" />
             </span>
             <Badge variant="outline">UEM CONNECT</Badge>
           </div>
@@ -259,7 +259,7 @@ function DownloadPage({ onNavigate }) {
           </div>
           <div className="android-art" aria-hidden="true">
             <span className="android-art-ring" />
-            <img src="/images/app-icon.png" alt="" />
+            <img src="/images/app-icon.webp" alt="" />
             <span className="art-spark spark-one">✦</span>
             <span className="art-spark spark-two">✧</span>
             <span className="art-caption">UEM CONNECT</span>
@@ -368,7 +368,13 @@ export default function App() {
         <div className="header-inner">
           <a href="#navigation" className="brand" aria-label="IT 智云社首页">
             <span className="brand-symbol">
-              <img src="/images/community.png" alt="" />
+              <img
+                src="/images/community.webp"
+                alt=""
+                width="128"
+                height="128"
+                decoding="async"
+              />
             </span>
             <span className="brand-name">
               IT 智云社<small>IT CLOUD COMMUNITY</small>
@@ -432,7 +438,14 @@ export default function App() {
       <footer className="site-footer">
         <div className="footer-inner">
           <div className="footer-community">
-            <img src="/images/community.png" alt="" />
+            <img
+              src="/images/community.webp"
+              alt=""
+              width="128"
+              height="128"
+              loading="lazy"
+              decoding="async"
+            />
             <span>IT 智云社</span>
             <span className="footer-divider" />
             <span>用技术，让校园更近一点。</span>

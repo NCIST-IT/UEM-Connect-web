@@ -11,14 +11,14 @@ import {
 const screenshots = [
   {
     id: "map",
-    src: "/images/campus-map.png",
+    src: "/images/campus-map.webp",
     title: "校园地图",
     description: "校园地点标记与位置查看",
     className: "phone-home",
   },
   {
     id: "schedule",
-    src: "/images/schedule.png",
+    src: "/images/schedule.webp",
     title: "每周课表",
     description: "一周课程、时间与教室一目了然",
     className: "phone-schedule",
@@ -42,8 +42,9 @@ export default function PhonePreview() {
             <img
               src={shot.src}
               alt={`应大通${shot.title}实机截图`}
-              width={shot.id === "map" ? 297 : 921}
-              height={shot.id === "map" ? 647 : 2000}
+              width={shot.id === "map" ? 298 : 800}
+              height={shot.id === "map" ? 647 : 1737}
+              decoding="async"
             />
             <span className="screenshot-expand">
               <ArrowsOutSimpleIcon />

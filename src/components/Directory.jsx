@@ -364,7 +364,14 @@ export default function Directory({ onNavigate }) {
 
       <section className="product-banner" aria-label="发现应大通">
         <span className="banner-app-icon">
-          <img src="/images/app-icon.png" alt="" />
+          <img
+            src="/images/app-icon.webp"
+            alt=""
+            width="256"
+            height="256"
+            loading="lazy"
+            decoding="async"
+          />
         </span>
         <div className="banner-copy">
           <span className="eyebrow">MEET UEM CONNECT</span>
