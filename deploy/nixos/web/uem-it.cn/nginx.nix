@@ -6,6 +6,7 @@ in {
     map $uri $uem_it_cache_control {
       default "no-cache";
       ~^/assets/ "public, max-age=31536000, immutable";
+      ~^/images/ "public, max-age=86400, stale-while-revalidate=604800";
     }
   '';
 

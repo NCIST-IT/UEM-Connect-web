@@ -28,6 +28,7 @@
 - **CSP**：生产环境的脚本、字体与网络连接限于本站；图片允许本站及内嵌数据；禁止内联脚本、插件对象、iframe、第三方框架嵌入及向外站提交表单。组件运行时样式使用 `style-src 'unsafe-inline'`。
 - **其他响应头**：`X-Content-Type-Options: nosniff`、`X-Frame-Options: DENY`、`Referrer-Policy: no-referrer`；禁用相机、麦克风和定位权限。
 - **Host 校验**：Vite 使用允许域名列表，自定义预览域名通过 `__VITE_ADDITIONAL_SERVER_ALLOWED_HOSTS` 配置。正式静态托管的域名由 Web 服务器配置。
+- **缓存**：带哈希的 `/assets/` 使用一年 immutable 缓存；图片使用一天缓存并允许后台刷新；HTML 保持 `no-cache`，确保发布后立即更新。
 
 预览响应头覆盖正常响应、Host 拒绝、404 与预检响应。生产模板使用 `always` 设置安全头。静态文件本身不携带这些 HTTP 策略，必须由实际部署服务器提供。
 
