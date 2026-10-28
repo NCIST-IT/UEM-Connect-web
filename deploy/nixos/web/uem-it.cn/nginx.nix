@@ -23,6 +23,7 @@ in {
         error_log /var/log/nginx/uem-it.cn.error.log warn;
       '';
       locations = {
+        "= /".tryFiles = "/index.html =404";
         "= /index.html".return = "301 /$is_args$args";
         "/".tryFiles = "$uri $uri/ =404";
         # The NixOS ACME integration supplies a ^~ challenge location.
